@@ -21,7 +21,7 @@ public abstract class Persoon {
 			Persoon p = (Persoon) obj;
 			gelijk = this.voornaam.equals(p.voornaam) && this.tussenvoegsel.equals(p.tussenvoegsel)
 					&& this.achternaam.equals(p.achternaam) && this.wachtwoord.equals(p.wachtwoord)
-					&& this.gebruikersnaam.equals(gebruikersnaam);
+					&& this.gebruikersnaam.equals(p.gebruikersnaam);
 		}
 		return gelijk;
 	}
@@ -44,7 +44,7 @@ public abstract class Persoon {
 
 	public String getVolledigeAchternaam() {
 		String lVolledigeAchternaam = "";
-		if (this.tussenvoegsel != null && this.tussenvoegsel != "" && this.tussenvoegsel.length() > 0) {
+		if (this.tussenvoegsel != null && !this.tussenvoegsel.equals("") && this.tussenvoegsel.length() > 0) {
 			lVolledigeAchternaam += this.tussenvoegsel + " ";
 		}
 		lVolledigeAchternaam += this.getAchternaam();

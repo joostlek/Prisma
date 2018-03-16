@@ -58,11 +58,9 @@ public class MedestudentenController implements Handler {
 		JsonArrayBuilder lJsonArrayBuilder = Json.createArrayBuilder();						// Uiteindelijk gaat er een array...
 		
 		for (Student lMedeStudent : lStudentenVanKlas) {									        // met daarin voor elke medestudent een JSON-object... 
-			if (lMedeStudent == lStudentZelf) 																			// behalve de student zelf...
-				continue;
-			else {
+			if (lMedeStudent != lStudentZelf) {
 				String lGroepIdAnder = lMedeStudent.getGroepId();
-				boolean lZelfdeGroep = ((lGroepIdZelf != "") && (lGroepIdAnder==lGroepIdZelf));
+				boolean lZelfdeGroep = ((!lGroepIdZelf.equals("")) && (lGroepIdAnder.equals(lGroepIdZelf)));
 				JsonObjectBuilder lJsonObjectBuilderVoorStudent = Json.createObjectBuilder(); // maak het JsonObject voor een student
 				String lLastName = lMedeStudent.getVolledigeAchternaam();
 				lJsonObjectBuilderVoorStudent

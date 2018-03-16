@@ -7,7 +7,6 @@ import model.persoon.Docent;
 import model.persoon.Student;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 
 
@@ -45,9 +44,9 @@ public class PrIS {
 	 * 
 	 */
 	public PrIS() {
-		deDocenten = new ArrayList<Docent>();
-		deStudenten = new ArrayList<Student>();
-		deKlassen = new ArrayList<Klas>();
+		deDocenten = new ArrayList<>();
+		deStudenten = new ArrayList<>();
+		deKlassen = new ArrayList<>();
 
 		// Inladen klassen
 		vulKlassen(deKlassen);
@@ -90,11 +89,7 @@ public class PrIS {
 		if (lDagStr.length() == 1) {
 			lDagStr = "0"+ lDagStr;
 		}
-		String lString = 
-				Integer.toString(lJaar) + "-" +
-				lMaandStr + "-" +
-				lDagStr;
-		return lString;
+		return Integer.toString(lJaar) + "-" + lMaandStr + "-" + lDagStr;
 	}
 
 	public Docent getDocent(String gebruikersnaam) {
@@ -111,7 +106,6 @@ public class PrIS {
 	}
 	
 	public Klas getKlasVanStudent(Student pStudent) {
-	  //used
 		for (Klas lKlas : deKlassen) {
 			if (lKlas.bevatStudent(pStudent)){
 				return (lKlas);
@@ -121,7 +115,6 @@ public class PrIS {
 	}
 	
 	public Student getStudent(String pGebruikersnaam) {
-		// used
 		Student lGevondenStudent = null;
 		
 		for (Student lStudent : deStudenten) {
@@ -135,7 +128,6 @@ public class PrIS {
 	}
 	
 	public Student getStudent(int pStudentNummer) {
-		// used
 		Student lGevondenStudent = null;
 		
 		for (Student lStudent : deStudenten) {
@@ -170,15 +162,13 @@ public class PrIS {
 	private void vulDocenten(ArrayList<Docent> pDocenten) {
 		String csvFile = "././CSV/docenten.csv";
 		BufferedReader br = null;
-		String line = "";
+		String line;
 		String cvsSplitBy = ",";
 			
 		try {
 	
 			br = new BufferedReader(new FileReader(csvFile));
 			while ((line = br.readLine()) != null) {
-	
-			        // use comma as separator
 				String[] element = line.split(cvsSplitBy);
 				String gebruikersnaam = element[0].toLowerCase();
 				String voornaam = element[1];
@@ -190,8 +180,6 @@ public class PrIS {
 		
 			}
 	
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -229,7 +217,7 @@ public class PrIS {
 		for (Klas k : pKlassen) {			
 			String csvFile = "././CSV/" + k.getNaam() + ".csv";
 			BufferedReader br = null;
-			String line = "";
+			String line;
 			String cvsSplitBy = ",";
 
 			try {
@@ -253,8 +241,6 @@ public class PrIS {
 			
 				}
 
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {
