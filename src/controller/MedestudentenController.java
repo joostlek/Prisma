@@ -18,6 +18,7 @@ import server.Handler;
 public class MedestudentenController implements Handler {
 	private PrIS informatieSysteem;
 
+	public static String ROUTE_MEDESTUDENT_OPHALEN = "/student/medestudenten/ophalen";
 	/**
 	 * De StudentController klasse moet alle student-gerelateerde aanvragen
 	 * afhandelen. Methode handle() kijkt welke URI is opgevraagd en laat
@@ -32,7 +33,7 @@ public class MedestudentenController implements Handler {
 	}
 
 	public void handle(Conversation conversation) {
-		if (conversation.getRequestedURI().startsWith("/student/medestudenten/ophalen")) {
+		if (conversation.getRequestedURI().startsWith(ROUTE_MEDESTUDENT_OPHALEN)) {
 			ophalen(conversation);
 		} else {
 			opslaan(conversation);

@@ -11,12 +11,12 @@ import server.Handler;
 class LoginController implements Handler {
 	private PrIS prisma;
 
-	public String ROUTE_LOGIN = "/login";
+	public static String ROUTE_LOGIN = "/login";
 
 	/**
-	 * De LoginController klasse moet alle algemene aanvragen afhandelen. 
-	 * Methode handle() kijkt welke URI is opgevraagd en laat dan de juiste 
-	 * methode het werk doen. Je kunt voor elke nieuwe URI een nieuwe methode 
+	 * De LoginController klasse moet alle algemene aanvragen afhandelen.
+	 * Methode handle() kijkt welke URI is opgevraagd en laat dan de juiste
+	 * methode het werk doen. Je kunt voor elke nieuwe URI een nieuwe methode
 	 * schrijven.
 	 *
 	 * @param infoSys - het toegangspunt tot het domeinmodel
@@ -41,7 +41,7 @@ class LoginController implements Handler {
 	private void login(Conversation conversation) {
 		JsonObject lJsonObjIn = (JsonObject) conversation.getRequestBodyAsJSON();
 
-		String lGebruikersnaam = lJsonObjIn.getString("username");						// Uitlezen van opgestuurde inloggegevens... 
+		String lGebruikersnaam = lJsonObjIn.getString("username");						// Uitlezen van opgestuurde inloggegevens...
 		String lWachtwoord = lJsonObjIn.getString("password");
 		String lRol = prisma.login(lGebruikersnaam, lWachtwoord);		// inloggen methode aanroepen op domeinmodel...
 
