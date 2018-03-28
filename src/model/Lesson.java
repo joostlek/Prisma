@@ -1,4 +1,4 @@
-package model.lesson;
+package model;
 
 public class Lesson {
 }

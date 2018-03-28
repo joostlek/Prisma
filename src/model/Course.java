@@ -1,6 +1,4 @@
-package model.course;
-
-import model.study.Study;
+package model;
 
 public class Course {
     private Study study;
