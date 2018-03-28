@@ -11,6 +11,8 @@ import server.Handler;
 class LoginController implements Handler {
 	private PrIS prisma;
 
+	public String ROUTE_LOGIN = "/login";
+
 	/**
 	 * De LoginController klasse moet alle algemene aanvragen afhandelen. 
 	 * Methode handle() kijkt welke URI is opgevraagd en laat dan de juiste 
@@ -24,7 +26,7 @@ class LoginController implements Handler {
 	}
 
 	public void handle(Conversation conversation) {
-		if (conversation.getRequestedURI().startsWith("/login")) {
+		if (conversation.getRequestedURI().startsWith(ROUTE_LOGIN)) {
 			login(conversation);
 		}
 	}
