@@ -1,5 +1,5 @@
 //checked
-package model.persoon;
+package model.person;
 
 public class Student extends Person {
 	private int studentId;

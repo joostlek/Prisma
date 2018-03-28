@@ -1,4 +1,4 @@
-package model.persoon;
+package model.person;
 
 public abstract class Person {
 	private String firstName;

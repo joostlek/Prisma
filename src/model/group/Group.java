@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import model.persoon.Student;
+import model.person.Student;
 
 public class Group {
 	private String groupCode;

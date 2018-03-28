@@ -11,7 +11,7 @@ import javax.json.JsonObjectBuilder;
 
 import model.PrIS;
 import model.group.Group;
-import model.persoon.Student;
+import model.person.Student;
 import server.Conversation;
 import server.Handler;
 
