@@ -2,8 +2,9 @@ package model;
 
 import java.util.ArrayList;
 
-import model.klas.Klas;
-import model.persoon.Docent;
+import model.group.Group;
+import model.persoon.Person;
+import model.persoon.Teacher;
 import model.persoon.Student;
 
 import java.io.BufferedReader;
@@ -16,9 +17,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class PrIS {
-	private ArrayList<Docent> deDocenten;
-	private ArrayList<Student> deStudenten;
-	private ArrayList<Klas> deKlassen;
+	private ArrayList<Teacher> teachers;
+	private ArrayList<Student> students;
+	private ArrayList<Group> groups;
+	private ArrayList<Person> people;
 
 	/**
 	 * De constructor maakt een set met standaard-data aan. Deze data
@@ -44,20 +46,19 @@ public class PrIS {
 	 *
 	 */
 	public PrIS() {
-		deDocenten = new ArrayList<>();
-		deStudenten = new ArrayList<>();
-		deKlassen = new ArrayList<>();
+		teachers = new ArrayList<>();
+		students = new ArrayList<>();
+		groups = new ArrayList<>();
+		people = new ArrayList<>();
 
-		// Inladen klassen
-		vulKlassen(deKlassen);
+		fillGroup();
+		fillStudents();
+		fillTeachers();
 
-		// Inladen studenten in klassen
-		vulStudenten(deStudenten, deKlassen);
-
-		// Inladen docenten
-		vulDocenten(deDocenten);
-
-	} //Einde Pris constructor
+//		TODO: ADD BETTER LOADING
+		people.addAll(students);
+		people.addAll(teachers);
+	}
 
 	//deze method is static onderdeel van PrIS omdat hij als hulp methode 
 	//in veel controllers gebruikt wordt
@@ -92,94 +93,73 @@ public class PrIS {
 		return Integer.toString(lJaar) + "-" + lMaandStr + "-" + lDagStr;
 	}
 
-	public Docent getDocent(String gebruikersnaam) {
-		Docent resultaat = null;
-
-		for (Docent d : deDocenten) {
-			if (d.getGebruikersnaam().equals(gebruikersnaam)) {
-				resultaat = d;
-				break;
-			}
-		}
-
-		return resultaat;
-	}
-
-	public Klas getKlasVanStudent(Student pStudent) {
-		for (Klas lKlas : deKlassen) {
-			if (lKlas.bevatStudent(pStudent)){
-				return (lKlas);
+	public Teacher getTeacher(String username) {
+		for (Teacher teacher: this.teachers) {
+			if (teacher.getUsername().equals(username)) {
+				return teacher;
 			}
 		}
 		return null;
 	}
 
-	public Student getStudent(String pGebruikersnaam) {
-		Student lGevondenStudent = null;
-
-		for (Student lStudent : deStudenten) {
-			if (lStudent.getGebruikersnaam().equals(pGebruikersnaam)) {
-				lGevondenStudent = lStudent;
-				break;
+	public Group getStudentGroup(Student student) {
+		for (Group group: this.groups) {
+			if (group.hasStudent(student)){
+				return (group);
 			}
 		}
-
-		return lGevondenStudent;
+		return null;
 	}
 
-	public Student getStudent(int pStudentNummer) {
-		Student lGevondenStudent = null;
-
-		for (Student lStudent : deStudenten) {
-			if (lStudent.getStudentNummer()==(pStudentNummer)) {
-				lGevondenStudent = lStudent;
-				break;
+	public Student getStudent(String username) {
+		for (Student student: this.students) {
+			if (student.getUsername().equals(username)) {
+				return student;
 			}
 		}
-
-		return lGevondenStudent;
+		return null;
 	}
 
-	public String login(String gebruikersnaam, String wachtwoord) {
-		for (Docent d : deDocenten) {
-			if (d.getGebruikersnaam().equals(gebruikersnaam)) {
-				if (d.komtWachtwoordOvereen(wachtwoord)) {
-					return "docent";
+	public Student getStudent(int studentId) {
+		for (Student student: this.students) {
+			if (student.getStudentId() == studentId) {
+				return student;
+			}
+		}
+		return null;
+	}
+
+	public String login(String username, String password) {
+		for (Person person: people) {
+			if (person.getUsername().equals(username)) {
+				if (person.samePassword(password)) {
+					if (person instanceof Teacher) {
+						return "docent";
+					} else if (person instanceof Student) {
+						return "student";
+					}
 				}
+				return "incorrect password";
 			}
 		}
-
-		for (Student s : deStudenten) {
-			if (s.getGebruikersnaam().equals(gebruikersnaam)) {
-				if (s.komtWachtwoordOvereen(wachtwoord)) {
-					return "student";
-				}
-			}
-		}
-
-		return "undefined";
+		return "username not found";
 	}
-	private void vulDocenten(ArrayList<Docent> pDocenten) {
+
+	private void fillTeachers() {
 		String csvFile = "././CSV/docenten.csv";
 		BufferedReader br = null;
 		String line;
 		String cvsSplitBy = ",";
-
 		try {
-
 			br = new BufferedReader(new FileReader(csvFile));
 			while ((line = br.readLine()) != null) {
 				String[] element = line.split(cvsSplitBy);
-				String gebruikersnaam = element[0].toLowerCase();
-				String voornaam = element[1];
-				String tussenvoegsel = element[2];
-				String achternaam = element[3];
-				pDocenten.add(new Docent(voornaam, tussenvoegsel, achternaam, "geheim", gebruikersnaam, 1));
-
-				//System.out.println(gebruikersnaam);
-
+				String username = element[0].toLowerCase();
+				String firstName = element[1];
+				String middleName = element[2];
+				String lastName = element[3];
+				this.teachers.add(new Teacher(firstName, middleName, lastName, "geheim", username, 1));
 			}
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -193,37 +173,29 @@ public class PrIS {
 		}
 	}
 
-	private void vulKlassen(ArrayList<Klas> pKlassen) {
-		//TICT-SIE-VIA is de klascode die ook in de rooster file voorkomt
-		//V1A is de naam van de klas die ook als file naam voor de studenten van die klas wordt gebruikt
-		//Klas k1 = new Klas("TICT-SIE-V1A", "V1A");
-		Klas k2 = new Klas("TICT-SIE-V1B", "V1B");
-		Klas k3 = new Klas("TICT-SIE-V1C", "V1C");
-		Klas k4 = new Klas("TICT-SIE-V1D", "V1D");
-		Klas k5 = new Klas("TICT-SIE-V1E", "V1E");
-		Klas k6 = new Klas("TICT-SIE-V1F", "V1F");
+	private void fillGroup() {
+		Group k2 = new Group("TICT-SIE-V1B", "V1B");
+		Group k3 = new Group("TICT-SIE-V1C", "V1C");
+		Group k4 = new Group("TICT-SIE-V1D", "V1D");
+		Group k5 = new Group("TICT-SIE-V1E", "V1E");
+		Group k6 = new Group("TICT-SIE-V1F", "V1F");
 
 		//pKlassen.add(k1);
-		pKlassen.add(k2);
-		pKlassen.add(k3);
-		pKlassen.add(k4);
-		pKlassen.add(k5);
-		pKlassen.add(k6);
+		this.groups.add(k2);
+		this.groups.add(k3);
+		this.groups.add(k4);
+		this.groups.add(k5);
+		this.groups.add(k6);
 	}
-	private void vulStudenten(
-			ArrayList<Student> pStudenten,
-			ArrayList<Klas> pKlassen) {
+	private void fillStudents() {
 		Student lStudent;
-		for (Klas k : pKlassen) {
-			String csvFile = "././CSV/" + k.getNaam() + ".csv";
+		for (Group group: this.groups) {
+			String csvFile = "././CSV/" + group.getName() + ".csv";
 			BufferedReader br = null;
 			String line;
 			String cvsSplitBy = ",";
-
 			try {
-
 				br = new BufferedReader(new FileReader(csvFile));
-
 				while ((line = br.readLine()) != null) {
 					//line = line.replace(",,", ", ,");
 					// use comma as separator
@@ -234,13 +206,9 @@ public class PrIS {
 					String lStudentNrString  = element[0];
 					int lStudentNr = Integer.parseInt(lStudentNrString);
 					lStudent = new Student(element[3], element[2], element[1], "geheim", gebruikersnaam, lStudentNr); //Volgorde 3-2-1 = voornaam, tussenvoegsel en achternaam
-					pStudenten.add(lStudent);
-					k.voegStudentToe(lStudent);
-
-					//System.out.println(gebruikersnaam);
-
+					this.students.add(lStudent);
+					group.addStudent(lStudent);
 				}
-
 			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {
@@ -255,6 +223,4 @@ public class PrIS {
 
 		}
 	}
-
-
 }

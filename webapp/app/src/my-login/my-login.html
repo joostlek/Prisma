@@ -65,8 +65,8 @@
       <iron-icon icon="icons:perm-identity" class="my-icon"></iron-icon>
     </div>
     <div class="my-input">
-      <paper-input id="email_element" on-keydown="_checkForEnter" label="gebruikersnaam" value="{{username}}"></paper-input>
-      <paper-input id="wachtwoord_element" on-keydown="_checkForEnter" label="wachtwoord" type="password" value="{{_password}}"></paper-input>
+      <paper-input id="email_element" on-keydown="_checkForEnter" label="username" value="{{username}}"></paper-input>
+      <paper-input id="wachtwoord_element" on-keydown="_checkForEnter" label="password" type="password" value="{{_password}}"></paper-input>
     </div>
     <paper-button
             id="login_button_element"
@@ -157,7 +157,7 @@
                   /* this._password = ""; /* om snel te kunnen testen is dit verwijderd */
                   if (this.rol === "undefined") {                    //als aanloggen mislukt
                       this.$.email_element.invalid = true;                // markeer email-element
-                      this.$.wachtwoord_element.invalid = true;           // markeer wachtwoord-element
+                      this.$.wachtwoord_element.invalid = true;           // markeer password-element
 
                   } else {                                            // als aanloggen ok
                       this.$.email_element.invalid = false;               // verwijder fout markering

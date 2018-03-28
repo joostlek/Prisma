@@ -10,7 +10,7 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
 import model.PrIS;
-import model.klas.Klas;
+import model.group.Group;
 import model.persoon.Student;
 import server.Conversation;
 import server.Handler;
@@ -26,6 +26,7 @@ public class MedestudentenController implements Handler {
 	 *
 	 * @param infoSys - het toegangspunt tot het domeinmodel
 	 */
+
 	public MedestudentenController(PrIS infoSys) {
 		informatieSysteem = infoSys;
 	}
@@ -49,23 +50,23 @@ public class MedestudentenController implements Handler {
 		JsonObject lJsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
 		String lGebruikersnaam = lJsonObjectIn.getString("username");
 		Student lStudentZelf = informatieSysteem.getStudent(lGebruikersnaam);
-		String  lGroepIdZelf = lStudentZelf.getGroepId();
+		String  lGroepIdZelf = lStudentZelf.getGroupId();
 
-		Klas lKlas = informatieSysteem.getKlasVanStudent(lStudentZelf);		// klas van de student opzoeken
+		Group lKlas = informatieSysteem.getStudentGroup(lStudentZelf);		// Group van de student opzoeken
 
-		List<Student> lStudentenVanKlas = lKlas.getStudenten();	// medestudenten opzoeken
+		List<Student> lStudentenVanKlas = lKlas.getStudents();	// medestudenten opzoeken
 
 		JsonArrayBuilder lJsonArrayBuilder = Json.createArrayBuilder();						// Uiteindelijk gaat er een array...
 
 		for (Student lMedeStudent : lStudentenVanKlas) {									        // met daarin voor elke medestudent een JSON-object... 
 			if (lMedeStudent != lStudentZelf) {
-				String lGroepIdAnder = lMedeStudent.getGroepId();
+				String lGroepIdAnder = lMedeStudent.getGroupId();
 				boolean lZelfdeGroep = ((!lGroepIdZelf.equals("")) && (lGroepIdAnder.equals(lGroepIdZelf)));
 				JsonObjectBuilder lJsonObjectBuilderVoorStudent = Json.createObjectBuilder(); // maak het JsonObject voor een student
-				String lLastName = lMedeStudent.getVolledigeAchternaam();
+				String lLastName = lMedeStudent.getFullLastName();
 				lJsonObjectBuilderVoorStudent
-						.add("id", lMedeStudent.getStudentNummer())																	//vul het JsonObject
-						.add("firstName", lMedeStudent.getVoornaam())
+						.add("id", lMedeStudent.getStudentId())																	//vul het JsonObject
+						.add("firstName", lMedeStudent.getFirstName())
 						.add("lastName", lLastName)
 						.add("sameGroup", lZelfdeGroep);
 
@@ -100,14 +101,14 @@ public class MedestudentenController implements Handler {
 			long lMilliSeconds = lCal.getTimeInMillis();
 			String lGroepId = String.valueOf(lMilliSeconds);
 
-			lStudent.setGroepId(lGroepId);
+			lStudent.setGroupId(lGroepId);
 			for (int i=0;i<lGroepMembers_jArray.size();i++){
 				JsonObject lGroepMember_jsonObj = lGroepMembers_jArray.getJsonObject(i );
 				int lStudentNummer = lGroepMember_jsonObj.getInt("id");
 				boolean lZelfdeGroep = lGroepMember_jsonObj.getBoolean("sameGroup");
 				if (lZelfdeGroep) {
 					Student lGroepStudent = informatieSysteem.getStudent(lStudentNummer);
-					lGroepStudent.setGroepId(lGroepId);
+					lGroepStudent.setGroupId(lGroepId);
 				}
 			}
 		}

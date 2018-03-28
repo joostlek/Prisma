@@ -9,7 +9,7 @@ import server.Conversation;
 import server.Handler;
 
 class LoginController implements Handler {
-	private PrIS informatieSysteem;
+	private PrIS prisma;
 
 	/**
 	 * De LoginController klasse moet alle algemene aanvragen afhandelen. 
@@ -20,7 +20,7 @@ class LoginController implements Handler {
 	 * @param infoSys - het toegangspunt tot het domeinmodel
 	 */
 	public LoginController(PrIS infoSys) {
-		informatieSysteem = infoSys;
+		prisma = infoSys;
 	}
 
 	public void handle(Conversation conversation) {
@@ -41,7 +41,7 @@ class LoginController implements Handler {
 
 		String lGebruikersnaam = lJsonObjIn.getString("username");						// Uitlezen van opgestuurde inloggegevens... 
 		String lWachtwoord = lJsonObjIn.getString("password");
-		String lRol = informatieSysteem.login(lGebruikersnaam, lWachtwoord);		// inloggen methode aanroepen op domeinmodel...
+		String lRol = prisma.login(lGebruikersnaam, lWachtwoord);		// inloggen methode aanroepen op domeinmodel...
 
 		JsonObjectBuilder lJsonObjectBuilder = Json.createObjectBuilder();
 		lJsonObjectBuilder.add("rol", lRol);																	// en teruggekregen gebruikersrol als JSON-object...
