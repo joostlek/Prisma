@@ -2,7 +2,6 @@ package model;
 
 import java.util.ArrayList;
 
-import model.group.Group;
 import model.person.Person;
 import model.person.Teacher;
 import model.person.Student;

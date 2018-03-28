@@ -1,6 +1,6 @@
-package model.study;
+package model;
 
-import model.course.Course;
+import model.Course;
 import model.person.Decaan;
 import model.person.Logistic;
 import model.person.Student;

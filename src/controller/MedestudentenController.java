@@ -10,7 +10,7 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
 import model.PrIS;
-import model.group.Group;
+import model.Group;
 import model.person.Student;
 import server.Conversation;
 import server.Handler;
