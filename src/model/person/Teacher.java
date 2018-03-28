@@ -1,4 +1,4 @@
-package model.persoon;
+package model.person;
 
 public class Teacher extends Person {
 	private int teacherId;

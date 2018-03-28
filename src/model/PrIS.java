@@ -3,9 +3,9 @@ package model;
 import java.util.ArrayList;
 
 import model.group.Group;
-import model.persoon.Person;
-import model.persoon.Teacher;
-import model.persoon.Student;
+import model.person.Person;
+import model.person.Teacher;
+import model.person.Student;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
