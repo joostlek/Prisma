@@ -16,11 +16,11 @@ public class Klas {
 		this.klasCode = klasCode;
 		this.naam = naam;
 	}
-	
+
 	public String getKlasCode() {
 		return klasCode;
 	}
-	
+
 	public String getNaam() {
 		return naam;
 	}
@@ -28,7 +28,7 @@ public class Klas {
 	public List<Student> getStudenten() {
 		return Collections.unmodifiableList(deStudenten);
 	}
-	
+
 	public boolean bevatStudent(Student pStudent) {
 //		for (Student lStudent : this.getStudenten()) {
 //			if (lStudent==pStudent) {

@@ -7,7 +7,7 @@ public class Student extends Persoon {
 	private String groepId;
 
 	public Student(String pVoornaam, String pTussenvoegsel, String pAchternaam, String pWachtwoord,
-			String pGebruikersnaam, int sStudentNummer) {
+				   String pGebruikersnaam, int sStudentNummer) {
 		super(pVoornaam, pTussenvoegsel, pAchternaam, pWachtwoord, pGebruikersnaam);
 		this.studentNummer = sStudentNummer;
 		this.setGroepId("");
@@ -16,8 +16,8 @@ public class Student extends Persoon {
 	@Override
 	public boolean equals(Object obj) {
 		if (super.equals(obj) && obj instanceof Student) {
-				Student s = (Student) obj;
-				return this.studentNummer == s.studentNummer;
+			Student s = (Student) obj;
+			return this.studentNummer == s.studentNummer;
 		} else {
 			return false;
 		}

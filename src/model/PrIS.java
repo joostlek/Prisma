@@ -19,29 +19,29 @@ public class PrIS {
 	private ArrayList<Docent> deDocenten;
 	private ArrayList<Student> deStudenten;
 	private ArrayList<Klas> deKlassen;
-	
+
 	/**
 	 * De constructor maakt een set met standaard-data aan. Deze data
 	 * moet nog uitgebreidt worden met rooster gegevens die uit een bestand worden
 	 * ingelezen, maar dat is geen onderdeel van deze demo-applicatie!
-	 * 
+	 *
 	 * De klasse PrIS (PresentieInformatieSysteem) heeft nu een meervoudige
 	 * associatie met de klassen Docent, Student, Vakken en Klassen Uiteraard kan dit nog veel
 	 * verder uitgebreid en aangepast worden! 
-	 * 
+	 *
 	 * De klasse fungeert min of meer als ingangspunt voor het domeinmodel. Op
 	 * dit moment zijn de volgende methoden aanroepbaar:
-	 * 
+	 *
 	 * String login(String gebruikersnaam, String wachtwoord)
 	 * Docent getDocent(String gebruikersnaam)
 	 * Student getStudent(String gebruikersnaam)
 	 * ArrayList<Student> getStudentenVanKlas(String klasCode)
-	 * 
+	 *
 	 * Methode login geeft de rol van de gebruiker die probeert in te loggen,
 	 * dat kan 'student', 'docent' of 'undefined' zijn! Die informatie kan gebruikt 
 	 * worden om in de Polymer-GUI te bepalen wat het volgende scherm is dat getoond 
 	 * moet worden.
-	 * 
+	 *
 	 */
 	public PrIS() {
 		deDocenten = new ArrayList<>();
@@ -56,9 +56,9 @@ public class PrIS {
 
 		// Inladen docenten
 		vulDocenten(deDocenten);
-	
+
 	} //Einde Pris constructor
-	
+
 	//deze method is static onderdeel van PrIS omdat hij als hulp methode 
 	//in veel controllers gebruikt wordt
 	//een standaardDatumString heeft formaat YYYY-MM-DD
@@ -94,17 +94,17 @@ public class PrIS {
 
 	public Docent getDocent(String gebruikersnaam) {
 		Docent resultaat = null;
-		
+
 		for (Docent d : deDocenten) {
 			if (d.getGebruikersnaam().equals(gebruikersnaam)) {
 				resultaat = d;
 				break;
 			}
 		}
-		
+
 		return resultaat;
 	}
-	
+
 	public Klas getKlasVanStudent(Student pStudent) {
 		for (Klas lKlas : deKlassen) {
 			if (lKlas.bevatStudent(pStudent)){
@@ -113,30 +113,30 @@ public class PrIS {
 		}
 		return null;
 	}
-	
+
 	public Student getStudent(String pGebruikersnaam) {
 		Student lGevondenStudent = null;
-		
+
 		for (Student lStudent : deStudenten) {
 			if (lStudent.getGebruikersnaam().equals(pGebruikersnaam)) {
 				lGevondenStudent = lStudent;
 				break;
 			}
 		}
-		
+
 		return lGevondenStudent;
 	}
-	
+
 	public Student getStudent(int pStudentNummer) {
 		Student lGevondenStudent = null;
-		
+
 		for (Student lStudent : deStudenten) {
 			if (lStudent.getStudentNummer()==(pStudentNummer)) {
 				lGevondenStudent = lStudent;
 				break;
 			}
 		}
-		
+
 		return lGevondenStudent;
 	}
 
@@ -148,7 +148,7 @@ public class PrIS {
 				}
 			}
 		}
-		
+
 		for (Student s : deStudenten) {
 			if (s.getGebruikersnaam().equals(gebruikersnaam)) {
 				if (s.komtWachtwoordOvereen(wachtwoord)) {
@@ -156,7 +156,7 @@ public class PrIS {
 				}
 			}
 		}
-		
+
 		return "undefined";
 	}
 	private void vulDocenten(ArrayList<Docent> pDocenten) {
@@ -164,9 +164,9 @@ public class PrIS {
 		BufferedReader br = null;
 		String line;
 		String cvsSplitBy = ",";
-			
+
 		try {
-	
+
 			br = new BufferedReader(new FileReader(csvFile));
 			while ((line = br.readLine()) != null) {
 				String[] element = line.split(cvsSplitBy);
@@ -175,11 +175,11 @@ public class PrIS {
 				String tussenvoegsel = element[2];
 				String achternaam = element[3];
 				pDocenten.add(new Docent(voornaam, tussenvoegsel, achternaam, "geheim", gebruikersnaam, 1));
-				
+
 				//System.out.println(gebruikersnaam);
-		
+
 			}
-	
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -202,19 +202,19 @@ public class PrIS {
 		Klas k4 = new Klas("TICT-SIE-V1D", "V1D");
 		Klas k5 = new Klas("TICT-SIE-V1E", "V1E");
 		Klas k6 = new Klas("TICT-SIE-V1F", "V1F");
-		
+
 		//pKlassen.add(k1);
 		pKlassen.add(k2);
 		pKlassen.add(k3);
 		pKlassen.add(k4);
 		pKlassen.add(k5);
 		pKlassen.add(k6);
-	}	
+	}
 	private void vulStudenten(
 			ArrayList<Student> pStudenten,
 			ArrayList<Klas> pKlassen) {
 		Student lStudent;
-		for (Klas k : pKlassen) {			
+		for (Klas k : pKlassen) {
 			String csvFile = "././CSV/" + k.getNaam() + ".csv";
 			BufferedReader br = null;
 			String line;
@@ -223,10 +223,10 @@ public class PrIS {
 			try {
 
 				br = new BufferedReader(new FileReader(csvFile));
-				
+
 				while ((line = br.readLine()) != null) {
 					//line = line.replace(",,", ", ,");
-				    // use comma as separator
+					// use comma as separator
 					String[] element = line.split(cvsSplitBy);
 					String gebruikersnaam = (element[3] + "." + element[2] + element[1] + "@student.hu.nl").toLowerCase();
 					// verwijder spaties tussen  dubbele voornamen en tussen bv van der 
@@ -236,9 +236,9 @@ public class PrIS {
 					lStudent = new Student(element[3], element[2], element[1], "geheim", gebruikersnaam, lStudentNr); //Volgorde 3-2-1 = voornaam, tussenvoegsel en achternaam
 					pStudenten.add(lStudent);
 					k.voegStudentToe(lStudent);
-					
+
 					//System.out.println(gebruikersnaam);
-			
+
 				}
 
 			} catch (IOException e) {
@@ -251,10 +251,10 @@ public class PrIS {
 						e.printStackTrace();
 					}
 				}
-			}	
-			
+			}
+
 		}
-	}	
+	}
 
 
 }
