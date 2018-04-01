@@ -7,6 +7,7 @@ import model.person.Teacher;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class PrIS {
@@ -52,7 +53,7 @@ public class PrIS {
         study.setName("HBO-ICT");
         study.setCourses(getCourses());
 
-
+        fillSchedule();
     }
 
     public Teacher getTeacher(String username) {
@@ -215,6 +216,30 @@ public class PrIS {
                 }
             }
 
+        }
+    }
+
+    private void fillSchedule() {
+        String csvFile = "././CSV/rooster.csv";
+        BufferedReader br = null;
+        String line;
+        String cvsSplitBy = ",";
+        try {
+            br = new BufferedReader(new FileReader(csvFile));
+            while ((line = br.readLine()) != null) {
+                String[] element = line.split(cvsSplitBy);
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
