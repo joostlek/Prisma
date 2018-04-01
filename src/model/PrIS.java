@@ -51,6 +51,8 @@ public class PrIS {
         study.setStudents(students);
         study.setName("HBO-ICT");
         study.setCourses(getCourses());
+
+
     }
 
     public Teacher getTeacher(String username) {
