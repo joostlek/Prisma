@@ -117,7 +117,7 @@ public class PrIS {
                 String firstName = element[1];
                 String middleName = element[2];
                 String lastName = element[3];
-                this.teachers.add(new Teacher(firstName, middleName, lastName, "geheim", username, 1));
+                this.teachers.add(new Teacher(firstName, middleName, lastName, "geheim", username, this.teachers.size()));
             }
         } catch (IOException e) {
             e.printStackTrace();
