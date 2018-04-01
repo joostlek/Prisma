@@ -14,6 +14,7 @@ public class PrIS {
     private ArrayList<Student> students;
     private ArrayList<Group> groups;
     private ArrayList<Person> people;
+    private Study study;
 
     /**
      * De constructor maakt een set met standaard-data aan. Deze data
@@ -38,6 +39,7 @@ public class PrIS {
      * moet worden.
      */
     public PrIS() {
+
         teachers = new ArrayList<>();
         students = new ArrayList<>();
         groups = new ArrayList<>();
@@ -46,6 +48,9 @@ public class PrIS {
         fillGroup();
         fillStudents();
         fillTeachers();
+        study.setStudents(students);
+        study.setName("HBO-ICT");
+        study.setCourses(getCourses());
     }
 
     public Teacher getTeacher(String username) {
@@ -98,6 +103,32 @@ public class PrIS {
             }
         }
         return "username not found";
+    }
+
+    private ArrayList<Course> getCourses() {
+        ArrayList<Course> courses = new ArrayList<>();
+        String csvFile = "././CSV/vakken.csv";
+        BufferedReader br = null;
+        String line;
+        String cvsSplitBy = ",";
+        try {
+            br = new BufferedReader(new FileReader(csvFile));
+            while ((line = br.readLine()) != null) {
+                String[] element = line.split(cvsSplitBy);
+                courses.add(new Course(study, element[0], element[1]));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return courses;
     }
 
     private void fillTeachers() {

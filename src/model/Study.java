@@ -1,6 +1,5 @@
 package model;
 
-import model.Course;
 import model.person.Decaan;
 import model.person.Logistic;
 import model.person.Student;
