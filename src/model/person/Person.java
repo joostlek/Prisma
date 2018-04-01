@@ -35,12 +35,16 @@ public abstract class Person {
 		return this.firstName;
 	}
 
-	private String getLastName() {
+	protected String getLastName() {
 		return this.lastName;
 	}
 
 	protected String getPassword() {
 		return this.password;
+	}
+
+	public String getMiddleName() {
+		return middleName;
 	}
 
 	public String getUsername() {
@@ -57,5 +61,12 @@ public abstract class Person {
 
 	public boolean samePassword(String password) {
 		return this.getPassword().equals(password);
+	}
+
+	public String getEmail(){
+		if (this.middleName != null) {
+			return String.format("%s.%s.%s@hu.nl", this.firstName, this.middleName, this.lastName);
+		}
+		return String.format("%s.%s@hu.nl", this.firstName, this.lastName);
 	}
 }
