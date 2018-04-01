@@ -46,10 +46,6 @@ public class PrIS {
         fillGroup();
         fillStudents();
         fillTeachers();
-
-//		TODO: ADD BETTER LOADING
-        people.addAll(students);
-        people.addAll(teachers);
     }
 
     public Teacher getTeacher(String username) {
@@ -117,7 +113,9 @@ public class PrIS {
                 String firstName = element[1];
                 String middleName = element[2];
                 String lastName = element[3];
-                this.teachers.add(new Teacher(firstName, middleName, lastName, "geheim", username, this.teachers.size()));
+                Teacher teacher = new Teacher(firstName, middleName, lastName, "geheim", username, this.teachers.size());
+                this.teachers.add(teacher);
+                this.people.add(teacher);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -157,15 +155,18 @@ public class PrIS {
             try {
                 br = new BufferedReader(new FileReader(csvFile));
                 while ((line = br.readLine()) != null) {
-                    //line = line.replace(",,", ", ,");
-                    // use comma as separator
                     String[] element = line.split(cvsSplitBy);
                     String gebruikersnaam = (element[3] + "." + element[2] + element[1] + "@student.hu.nl").toLowerCase();
-                    // verwijder spaties tussen  dubbele voornamen en tussen bv van der
                     gebruikersnaam = gebruikersnaam.replace(" ", "");
-                    String lStudentNrString = element[0];
-                    int lStudentNr = Integer.parseInt(lStudentNrString);
-                    lStudent = new Student(element[3], element[2], element[1], "geheim", gebruikersnaam, lStudentNr); //Volgorde 3-2-1 = voornaam, tussenvoegsel en achternaam
+                    lStudent = new Student(
+                            element[3],
+                            element[2],
+                            element[1],
+                            "geheim",
+                            gebruikersnaam,
+                            Integer.parseInt(element[0])
+                    );
+                    this.people.add(lStudent);
                     this.students.add(lStudent);
                     group.addStudent(lStudent);
                 }
