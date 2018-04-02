@@ -102,14 +102,14 @@ public class PrIS {
             if (person.getUsername().equals(username)) {
                 if (person.samePassword(password)) {
                     if (person instanceof Teacher) {
-                        return "docent";
+                        return Role.TEACHER.getRole();
                     } else if (person instanceof Student) {
-                        return "student";
+                        return Role.STUDENT.getRole();
                     }
                 }
             }
         }
-        return "undefined";
+        return Role.ERROR.getRole();
     }
 
     private ArrayList<Course> getCourses() {
