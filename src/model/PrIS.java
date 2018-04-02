@@ -3,12 +3,14 @@ package model;
 import model.person.Person;
 import model.person.Student;
 import model.person.Teacher;
+import utils.CSVReader;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PrIS {
     private ArrayList<Teacher> teachers;
@@ -49,9 +51,9 @@ public class PrIS {
         fillGroup();
         fillStudents();
         fillTeachers();
-        study.setStudents(students);
-        study.setName("HBO-ICT");
-        study.setCourses(getCourses());
+//        study.setStudents(students);
+//        study.setName("HBO-ICT");
+//        study.setCourses(getCourses());
 
         fillSchedule();
     }
@@ -110,39 +112,27 @@ public class PrIS {
 
     private ArrayList<Course> getCourses() {
         ArrayList<Course> courses = new ArrayList<>();
-        String csvFile = "././CSV/vakken.csv";
-        BufferedReader br = null;
-        String line;
-        String cvsSplitBy = ",";
+        String csvFile = "./CSV/vakken.csv";
+        CSVReader csvReader = new CSVReader();
         try {
-            br = new BufferedReader(new FileReader(csvFile));
-            while ((line = br.readLine()) != null) {
-                String[] element = line.split(cvsSplitBy);
+            List<String[]> data = csvReader.read(csvFile);
+            for (String[] element : data) {
                 courses.add(new Course(study, element[0], element[1]));
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
+
         return courses;
     }
 
+
     private void fillTeachers() {
-        String csvFile = "././CSV/docenten.csv";
-        BufferedReader br = null;
-        String line;
-        String cvsSplitBy = ",";
+        String csvFile = "./CSV/docenten.csv";
+        CSVReader csvReader = new CSVReader();
         try {
-            br = new BufferedReader(new FileReader(csvFile));
-            while ((line = br.readLine()) != null) {
-                String[] element = line.split(cvsSplitBy);
+            List<String[]> data = csvReader.read(csvFile);
+            for (String[] element : data) {
                 String username = element[0].toLowerCase();
                 String firstName = element[1];
                 String middleName = element[2];
@@ -153,14 +143,6 @@ public class PrIS {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 
@@ -180,19 +162,15 @@ public class PrIS {
     }
 
     private void fillStudents() {
-        Student lStudent;
         for (Group group : this.groups) {
-            String csvFile = "././CSV/" + group.getName() + ".csv";
-            BufferedReader br = null;
-            String line;
-            String cvsSplitBy = ",";
+            String csvFile = "./CSV/" + group.getName() + ".csv";
+            CSVReader csvReader = new CSVReader();
             try {
-                br = new BufferedReader(new FileReader(csvFile));
-                while ((line = br.readLine()) != null) {
-                    String[] element = line.split(cvsSplitBy);
+                List<String[]> data = csvReader.read(csvFile);
+                for (String[] element : data) {
                     String gebruikersnaam = (element[3] + "." + element[2] + element[1] + "@student.hu.nl").toLowerCase();
                     gebruikersnaam = gebruikersnaam.replace(" ", "");
-                    lStudent = new Student(
+                    Student lStudent = new Student(
                             element[3],
                             element[2],
                             element[1],
@@ -206,40 +184,19 @@ public class PrIS {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-            } finally {
-                if (br != null) {
-                    try {
-                        br.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
             }
-
         }
     }
 
     private void fillSchedule() {
-        String csvFile = "././CSV/rooster.csv";
-        BufferedReader br = null;
-        String line;
-        String cvsSplitBy = ",";
+        String csvFile = "./CSV/rooster.csv";
+        CSVReader csvReader = new CSVReader();
         try {
-            br = new BufferedReader(new FileReader(csvFile));
-            while ((line = br.readLine()) != null) {
-                String[] element = line.split(cvsSplitBy);
-
+            List<String[]> data = csvReader.read(csvFile);
+            for (String[] element : data) {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 }

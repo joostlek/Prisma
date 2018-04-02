@@ -1,14 +1,10 @@
-package Utils;
+package utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class Utils {
-
-    private Utils() {
-
-    }
+public class DateHelpers {
 
     //deze method is static onderdeel van PrIS omdat hij als hulp methode
     //in veel controllers gebruikt wordt

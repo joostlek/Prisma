@@ -1,6 +1,6 @@
 package controller;
 
-import Utils.Utils;
+import utils.DateHelpers;
 import model.PrIS;
 import server.Conversation;
 import server.Handler;
@@ -38,8 +38,8 @@ public class SysteemDatumController implements Handler {
         JsonObjectBuilder lJsonObjectBuilder = Json.createObjectBuilder();
         //Deze volgorde mag niet worden gewijzigd i.v.m. JS. (Hier mag dus ook geen andere JSON voor komen.)
         lJsonObjectBuilder
-                .add("eerste_lesdatum", Utils.calToStandaardDatumString(lEersteLesDatum))
-                .add("laatste_lesdatum", Utils.calToStandaardDatumString(lLaatsteLesDatum));
+                .add("eerste_lesdatum", DateHelpers.calToStandaardDatumString(lEersteLesDatum))
+                .add("laatste_lesdatum", DateHelpers.calToStandaardDatumString(lLaatsteLesDatum));
 
         String lJsonOut = lJsonObjectBuilder.build().toString();
 
