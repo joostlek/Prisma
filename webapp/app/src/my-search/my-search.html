@@ -1,0 +1,220 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-styles/typography.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+<link rel="import" href="/bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="/bower_components/paper-material/paper-material.html">
+<link rel="import" href="/bower_components/paper-dropdown-menu.html">
+<link rel="import" href="/bower_components/paper-item/paper-item.html">
+<link rel="import" href="/bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="/bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="/bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+
+<!-- Dit element wordt door de aanwezigheid van de c_visible parameter steeds opnieuw gerefreshed
+     op het moment dat het element in de iron-pages geselecteerd wordt
+     en ook zodra hij weer gedeselecteerd wordt.
+     Deze techniek is bruikbaar om volatile info steeds opnieuw op te halen en niet enkel eenmalig
+     bij start van de applicatie.
+-->
+
+<dom-module id="my-search">
+    <template>
+        <style>
+
+
+            span {
+                @apply --paper-font-body1;
+            }
+
+            .my-title {
+                font-size: 20px;
+                border-bottom: 1px solid gray; /* a red line */
+                padding-bottom: 2px; /* space above the border line */
+            }
+
+            paper-material {
+                display: block;
+                margin: 10px;
+                padding: 10px;
+            }
+
+            paper-dropdown-menu, paper-listbox {
+                width: 200px;
+                margin: auto;
+                display: block;
+                background: transparent;
+                box-shadow: 0 2px 6px rgba(191, 191, 191, 0.48);
+            }
+
+            .search-box {
+                display: flex;
+                margin: 0 auto;
+                width: 500px;
+            }
+
+            .search-box > * {
+                margin: 0 10px;
+                align-self: center;
+            }
+
+            .my-button {
+                width: 30px; /* full width */
+                height: 20px;
+                padding: 20px;
+                margin: 10px;
+                color: white; /* white tekst */
+                background: #1a9fd9; /* kind of blue */
+                --paper-button-ink-color: #00567B; /* kind of dark blue */
+            }
+        </style>
+        <section>
+
+            <paper-material elevation="1">
+                <div class="search-box">
+                    <paper-input id="search_element" on-keydown="_checkForEnter" label="Zoeken"
+                                 value="{{search}}"></paper-input>
+                    <paper-listbox attr-for-selected="item-name" selected="{{itemName}}" fallback-selection="student">
+                        <paper-item item-name="student">Student</paper-item>
+                        <paper-item item-name="cursus">Klas of cursus</paper-item>
+                    </paper-listbox>
+                    <paper-button
+                            class="my-button"
+                            on-click="_medestudenten_opslaan_request_handler">Zoeken
+                    </paper-button>
+                </div>
+
+            </paper-material>
+            <paper-material elevation="1">
+                <div class="my-title">Zoek resultaten</div>
+                <div>Titel</div>
+                <div>Titel</div>
+                <div>Titel</div>
+                <div>Titel</div>
+            </paper-material>
+        </section>
+
+        <!--<table>-->
+        <!--<tr>-->
+        <!--<th class="firstName">Voornaam</th>-->
+        <!--<th class="lastName">Achternaam</th>-->
+        <!--<th class="groepid-header">Mede groepleden</th>-->
+        <!--</tr>-->
+        <!--<template is="dom-repeat" items="[[_c_studenten]]">-->
+        <!--<tr>-->
+        <!--<td class="firstName"><a href$="#/student/details/[[item.firstName]]-[[item.lastName]]">[[item.firstName]]</a>-->
+        <!--</td>-->
+        <!--<td class="lastName"><a href$="#/student/details/[[item.firstName]]-[[item.lastName]]">[[item.lastName]] </a>-->
+        <!--</td>-->
+        <!--<td class="groepid">-->
+        <!--<paper-checkbox-->
+        <!--class="my-check"-->
+        <!--checked="{{item.sameGroup}}">-->
+        <!--</paper-checkbox>-->
+        <!--</td>-->
+        <!--</tr>-->
+        <!--</template>-->
+        <!--</table>-->
+
+
+        <iron-ajax
+                id="ajax_medestudenten_ophalen"
+                method="POST"
+                url="/student/medestudenten/ophalen"
+                handle-as="json"
+                on-response="_medestudenten_ophalen_response_handler">
+        </iron-ajax>
+
+        <iron-ajax
+                id="ajax_medestudenten_opslaan"
+                method="POST"
+                url="/student/medestudenten/opslaan"
+                handle-as="json"
+                on-response="_medestudenten_opslaan_response_handler">
+        </iron-ajax>
+
+    </template>
+
+    <script>
+        (function () {
+            'use strict';
+            /* _xxxx private              : geen external data binding      - geen notify
+               _c_xx private constant     : geen external binding, constant - geen notify
+               c_xx  public constant      : one way external databinding [[c_xx]] - geen notify nodig
+               xxxx  public               : two way external databinding {{xxxx}} - notify nodig
+            */
+            Polymer({
+                is: 'my-search',
+
+                properties: {
+                    _c_studenten: {
+                        type: Array, /* array<student-info>: student-info = {id, firstName, lastName, sameGroup}
+										array is constant groepnr is changable */
+                    },
+                    c_rol: {
+                        type: String,
+                    },
+                    c_username: {
+                        type: String,
+                    },
+                    c_visible: {
+                        type: Boolean, /* true when element is the active visible item */
+                        value: true,
+                        observer: '_initializing', /* wordt ook aangeroepen bijwisseling van true naar false.
+                                                                   regel in de functie dat er niets gebeurd
+                                                                   als c_visible false is */
+                    },
+                },
+
+                _go_home: function () {
+                    var lApp = document.querySelector('my-app');  //het polymer element <my-app>
+                    var lAppRouter = lApp.$.approuter;            // het html-element <app-route> met id=approuter
+                    lAppRouter.data = {page: ""};                   // vul het data attribute met de homepage url
+                                                                    // door de two way binding in <app-route> en <app-location>
+                                                                    // zal ook de url echt wijzigen
+                },
+
+                _initializing: function () {
+                    if (this.c_visible) {                                 // zodra zichtbaar geworden moet er wat worden gedaan
+                    }
+                },
+
+                _medestudenten_ophalen_request_handler: function () {
+                    console.log("_medestudenten_ophalen_request_handler user=" + this.c_username);
+                    this.$.ajax_medestudenten_ophalen.contentType = "application/json";
+                    this.$.ajax_medestudenten_ophalen.body = {
+                        "username": this.c_username
+                    };
+                    this.$.ajax_medestudenten_ophalen.generateRequest();
+                },
+
+                _medestudenten_ophalen_response_handler: function (request) {
+                    console.log("_mededestudenten_ophalen_response_handler aantal studenten=" + request.detail.response.length);
+                    this._c_studenten = request.detail.response;
+                },
+
+                _medestudenten_opslaan_request_handler: function () {
+                    console.log("_medestudenten_opslaan_request_handler user=" + this.c_username);
+                    this.$.ajax_medestudenten_opslaan.contentType = "application/json";
+                    this.$.ajax_medestudenten_opslaan.body = {
+                        "username": this.c_username,
+                        "groupMembers": this._c_studenten
+                    };
+                    this.$.ajax_medestudenten_opslaan.generateRequest();
+                },
+
+                _medestudenten_opslaan_response_handler: function (request) {
+                    console.log("_mededestudenten_opslaan_response_handler errorcode=" + request.detail.response.errorcode);
+                    this._go_home();
+                    /* verlaat de pagina en ga terug naar home page */
+                },
+
+                _toast_clicked: function (e) {
+                    var lToast = this.$.toast_invalid_aanroep;        // meldt ongeldige aanroep
+                    lToast.toggle();
+                    this._go_home();
+                },
+
+            });
+        })();
+    </script>
+</dom-module>
