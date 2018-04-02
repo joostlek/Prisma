@@ -10,6 +10,7 @@ import javax.json.JsonObjectBuilder;
 import java.util.Calendar;
 
 public class SysteemDatumController implements Handler {
+    public static String ROUTE_SYSTEEM_DATUM = "/systeemdatum/lesinfo";
 
     /**
      * De SysteemDatumController klasse moet alle systeem (en test)-gerelateerde aanvragen
@@ -23,7 +24,7 @@ public class SysteemDatumController implements Handler {
     }
 
     public void handle(Conversation conversation) {
-        if (conversation.getRequestedURI().startsWith("/systeemdatum/lesinfo")) {
+        if (conversation.getRequestedURI().startsWith(ROUTE_SYSTEEM_DATUM)) {
             ophalenLesInfo(conversation);
         }
     }

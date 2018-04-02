@@ -5,10 +5,7 @@ import model.person.Student;
 import model.person.Teacher;
 import utils.CSVReader;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,6 +91,12 @@ public class PrIS {
         return null;
     }
 
+    /**
+     * @param username
+     * @param password
+     * Geef een Rol terug zodat we die kunnen gebruiken in de front-end
+     * @return
+     */
     public String login(String username, String password) {
         for (Person person : people) {
             if (person.getUsername().equals(username)) {
@@ -104,10 +107,9 @@ public class PrIS {
                         return "student";
                     }
                 }
-                return "incorrect password";
             }
         }
-        return "username not found";
+        return "undefined";
     }
 
     private ArrayList<Course> getCourses() {

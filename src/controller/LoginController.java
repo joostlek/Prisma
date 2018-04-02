@@ -48,7 +48,6 @@ class LoginController implements Handler {
 		JsonObjectBuilder lJsonObjectBuilder = Json.createObjectBuilder();
 		lJsonObjectBuilder.add("rol", lRol);																	// en teruggekregen gebruikersrol als JSON-object...
 		String lJsonOut = lJsonObjectBuilder.build().toString();
-
 		conversation.sendJSONMessage(lJsonOut);															// terugsturen naar de Polymer-GUI!
 	}
 }
