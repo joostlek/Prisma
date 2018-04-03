@@ -147,6 +147,11 @@
                 <span>Zoeken</span>
             </a>
 
+            <a name="studentinfo" href=[[_c_baseURL]]studentinfo verborgen$="[[!_are_strings_equal(_rol, 'undefined')]]">
+              <iron-icon icon="social:group"></iron-icon>
+              <span>Info student</span>
+            </a>
+
           <!-- beschikbaar voor docent -->
 
           <!-- beschikbaar voor student -->
@@ -232,8 +237,14 @@
                 ></my-search>
             </section>
 
+            <section page-name="studentinfo"
+                     title="studentinfo"
+                     element$="my-studentinfo">
+              <my-studentinfo></my-studentinfo>
+            </section>
 
-          <!-- sections voor docent -->
+
+        <!-- sections voor docent -->
 
 
           <!-- sections voor student -->
