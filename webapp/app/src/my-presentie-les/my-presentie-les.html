@@ -4,7 +4,7 @@
 <link rel="import" href="/bower_components/paper-button/paper-button.html">
 <link rel="import" href="/bower_components/vaadin-checkbox/vaadin-checkbox.html">
 
-<dom-module id="presentie-perles">
+<dom-module id="my-presentie-les">
     <template>
         <style>
             html, body{
@@ -23,7 +23,7 @@
         </style>
        
        <div class="container">
-          <vaadin-grid items="[[lessen]]">
+          <vaadin-grid id="vaadin">
                   <vaadin-grid-column>
                       <template class="header">
                           <vaadin-grid-sorter path="datum">
@@ -70,31 +70,67 @@
                   </vaadin-grid-column>
               </vaadin-grid>
          </div>
+
+        <iron-ajax
+                id="ajax_presentie_per_les"
+                method="POST"
+                url="/presentie/ophalen"
+                handle-as="json"
+                on-response="_search_request_response_handler">
+        </iron-ajax>
     </template>
     <script>
-        class PerLes extends Polymer.Element {
-            static get is() {
-                return 'presentie-perles';
-            }
+        (function () {
+            'use strict';
+            /* _xxxx private              : geen external data binding      - geen notify
+               _c_xx private constant     : geen external binding, constant - geen notify
+               c_xx  public constant      : one way external databinding [[c_xx]] - geen notify nodig
+               xxxx  public               : two way external databinding {{xxxx}} - notify nodig
+            */
+            Polymer({
+                is: 'my-presentie-les',
 
-            static get properties() {
-                return {
-                	lessen: {
+                properties: {
+                    c_data: {
+                        type: String,
+                    },
+                    cursus_results: {
                         type: Array,
-                        value: [
-                          {datum: "01-01-1999", tijd: "13.00", cursus: "AUI"},
-                          {datum: "01-01-1999", tijd: "15.00", cursus: "Group Project"},
-                          {datum: "02-01-1999", tijd: "09.00", cursus: "OODC"},
-                          {datum: "03-01-1999", tijd: "10.00", cursus: "AUI"},
-                          {datum: "04-01-1999", tijd: "14.00", cursus: "Hallo"},
-                          {datum: "05-01-1999", tijd: "13.00", cursus: "Spijkerpoepen"},
-                          {datum: "05-01-1999", tijd: "16.00", cursus: "Koekhappen"}
-                        ]
-                	}
-                }
-            }
-        }
+                    },
+                    c_visible: {
+                        type: Boolean, /* true when element is the active visible item */
+                        value: false,
+                        observer: '_initializing',
+                    },
+                },
 
-        window.customElements.define(PerLes.is, PerLes);
+                _go_home: function () {
+                    var lApp = document.querySelector('my-app');  //het polymer element <my-app>
+                    var lAppRouter = lApp.$.approuter;            // het html-element <app-route> met id=approuter
+                    lAppRouter.data = {page: ""};                   // vul het data attribute met de homepage url
+                                                                    // door de two way binding in <app-route> en <app-location>
+                                                                    // zal ook de url echt wijzigen
+                },
+
+                _initializing: function () {
+                    if (this.c_visible) {
+                        this._search_request_handler();    //    haal info op van server
+                    }
+                },
+
+                _search_request_handler: function () {
+                    console.log("_search keywords=" + this.c_data.subpage);
+                    this.$.ajax_presentie_per_les.contentType = "application/json";
+                    this.$.ajax_presentie_per_les.body = {
+                        "student_id": this.c_data.subpage,
+                    };
+                    this.$.ajax_presentie_per_les.generateRequest();
+                },
+
+                _search_request_response_handler: function (request) {
+                    this.$.vaadin.items = request.detail.response;
+                },
+            });
+        })();
     </script>
 </dom-module>

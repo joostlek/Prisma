@@ -1,6 +1,7 @@
 package controller;
 
 import model.PrIS;
+import model.person.Student;
 import server.JSONFileServer;
 
 import java.io.File;
@@ -35,6 +36,7 @@ public class Application {
         MedestudentenController medestudentenController = new MedestudentenController(infoSysteem);
         AgendaController agendaController = new AgendaController(infoSysteem);
         SearchController searchController = new SearchController(infoSysteem);
+        StudentController studentController = new StudentController(infoSysteem);
 
         CursusController cursusController = new CursusController(infoSysteem);
 
@@ -46,6 +48,7 @@ public class Application {
 
         server.registerHandler(SearchController.ROUTE_SEARCH, searchController);
         server.registerHandler(CursusController.ROUTE_CURSUS, cursusController);
+        server.registerHandler(StudentController.ROUTE_PRESENT_FETCH, studentController);
 
         server.registerHandler("/student/medestudenten/opslaan", medestudentenController);
 
