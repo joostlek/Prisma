@@ -6,6 +6,8 @@ import model.person.Teacher;
 import utils.CSVReader;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +16,6 @@ public class PrIS {
     private ArrayList<Student> students;
     private ArrayList<Group> groups;
     private ArrayList<Person> people;
-    private ArrayList<String[]> schedule;
     private Study study;
 
     /**
@@ -45,7 +46,6 @@ public class PrIS {
         students = new ArrayList<>();
         groups = new ArrayList<>();
         people = new ArrayList<>();
-        schedule = new ArrayList<>();
 
         fillGroup();
         fillStudents();
@@ -211,31 +211,60 @@ public class PrIS {
         }
     }
 
-    public ArrayList<String[]> getSchedule() {
-        return schedule;
-    }
-
-    public ArrayList<String[]> getSchedule(String code) {
-        ArrayList<String[]> data = new ArrayList<>();
-
-        for (String[] element : schedule) {
-            if (element[6].toLowerCase().contains(code.toLowerCase())) {
-                data.add(element);
-            }
-        }
-
-        return data;
-    }
-
     private void fillSchedule() {
         String csvFile = "./CSV/rooster.csv";
         CSVReader csvReader = new CSVReader();
         try {
             List<String[]> all = csvReader.read(csvFile);
-            schedule.addAll(all);
+            /*
+                data index
+                0 = Datum
+                1 = Start Time
+                2 = End Time
+                3 = Curses Code
+                4 = Email / Name
+                5 = Location
+                6 = Class Code
+             */
+            for (String[] element : all) {
+                Group group = getGroup(element[6]);
+                if (group != null) {
+
+                    String start = element[0] + " " + element[1];
+                    String end = element[0] + " " + element[2];
+
+                    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+                    LocalDateTime startTime = LocalDateTime.parse(start, dateTimeFormatter);
+                    LocalDateTime endTime = LocalDateTime.parse(end, dateTimeFormatter);
+                    Course course = getCource(element[3]);
+                    Teacher teacher = getTeacher(element[4]);
+                    String room = element[5];
+
+                    group.addLesson(new Lesson(startTime, endTime, course, teacher, room, group));
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Group getGroup(String code) {
+        for (Group g : groups) {
+            if (g.getGroupCode().equals(code)) {
+                return g;
+            }
+        }
+        return null;
+    }
+
+    public Course getCource(String code) {
+        for (Course c : getCourses()) {
+            if (c.getCourseCode().equals(code)) {
+                return c;
+            }
+        }
+        return null;
     }
 
     public List<Student> getStudentsByGroupCode(String groupCode) {
