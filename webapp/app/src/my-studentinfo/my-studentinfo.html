@@ -1,0 +1,109 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-styles/typography.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+<link rel="import" href="/bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="/bower_components/paper-material/paper-material.html">
+<link rel="import" href="/bower_components/paper-dropdown-menu.html">
+<link rel="import" href="/bower_components/paper-item/paper-item.html">
+<link rel="import" href="/bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="/bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="/bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="my-studentinfo">
+    <template>
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+
+            h1 {
+                text-align: center;
+                font-size: 50px;
+                margin: 30px 0;
+            }
+
+            h2 {
+                margin: 100px 0 10px 50px;
+            }
+
+            .column {
+                float: left;
+                width: 50%;
+            }
+
+            .row:after {
+                content: "";
+                display: table;
+                clear: both;
+            }
+
+            #personal-info {
+                border: 4px solid black;
+                margin: 10%;
+                padding: 20px;
+            }
+        </style>
+        <h1>Eline Nube</h1>
+        <div class="row">
+            <div class="column">
+                <h2>Aantal uren present:</h2>
+                <h2>Aantal uren absent:</h2>
+            </div>
+            <div class="column">
+                <div id="personal-info">
+                    <h3>Persoonlijke gegevens:</h3>
+                    <p>Naam:</p>
+                    <p>Studentnummer:</p>
+                    <p>E-mailadres:</p>
+                    <p>Adres:</p>
+                </div>
+            </div>
+        </div>
+    </template>
+    <script>
+        (function () {
+            'use strict';
+            /* _xxxx private              : geen external data binding      - geen notify
+               _c_xx private constant     : geen external binding, constant - geen notify
+               c_xx  public constant      : one way external databinding [[c_xx]] - geen notify nodig
+               xxxx  public               : two way external databinding {{xxxx}} - notify nodig
+            */
+            Polymer({
+                is: 'my-studentinfo',
+
+                properties: {
+                    _c_studenten: {
+                        type: Array, /* array<student-info>: student-info = {id, firstName, lastName, sameGroup}
+										array is constant groepnr is changable */
+                    },
+                    c_rol: {
+                        type: String,
+                    },
+                    c_username: {
+                        type: String,
+                    },
+                    c_visible: {
+                        type: Boolean, /* true when element is the active visible item */
+                        value: true,
+                        observer: '_initializing', /* wordt ook aangeroepen bijwisseling van true naar false.
+                                                                   regel in de functie dat er niets gebeurd
+                                                                   als c_visible false is */
+                    },
+                },
+                _go_home: function () {
+                    var lApp = document.querySelector('my-app');  //het polymer element <my-app>
+                    var lAppRouter = lApp.$.approuter;            // het html-element <app-route> met id=approuter
+                    lAppRouter.data = {page: ""};                   // vul het data attribute met de homepage url
+                                                                    // door de two way binding in <app-route> en <app-location>
+                                                                    // zal ook de url echt wijzigen
+                },
+
+                _initializing: function () {
+                    if (this.c_visible) {                                 // zodra zichtbaar geworden moet er wat worden gedaan
+                    }
+                }
+            });
+        })();
+    </script>
+</dom-module>
