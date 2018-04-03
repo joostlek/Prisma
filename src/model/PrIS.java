@@ -232,18 +232,7 @@ public class PrIS {
         CSVReader csvReader = new CSVReader();
         try {
             List<String[]> all = csvReader.read(csvFile);
-            for (String[] element : all) {
-                /*
-                0 = Datum
-                1 = Start Time
-                2 = End Time
-                3 = Curses Code
-                4 = Email / Name
-                5 = Location
-                6 = Class Code
-                 */
-                schedule.add(element);
-            }
+            schedule.addAll(all);
         } catch (IOException e) {
             e.printStackTrace();
         }

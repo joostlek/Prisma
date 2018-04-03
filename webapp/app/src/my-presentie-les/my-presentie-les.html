@@ -1,0 +1,136 @@
+<link rel="import" href="/bower_components/polymer/polymer-element.html">
+<link rel="import" href="/bower_components/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="/bower_components/vaadin-grid/vaadin-grid-sorter.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+<link rel="import" href="/bower_components/vaadin-checkbox/vaadin-checkbox.html">
+
+<dom-module id="my-presentie-les">
+    <template>
+        <style>
+            html, body{
+                padding: 0;
+                margin: 0;
+            }
+            
+            vaadin-grid{
+              min-height: 300px;
+              max-height: 300px;
+              width: 700px;
+              margin-left: 10%;
+              margin-top: 10%;
+            }
+            
+        </style>
+       
+       <div class="container">
+          <vaadin-grid id="vaadin">
+                  <vaadin-grid-column>
+                      <template class="header">
+                          <vaadin-grid-sorter path="datum">
+                              Datum
+                          </vaadin-grid-sorter>
+                      </template>
+                      <template>[[item.datum]]</template>
+                  </vaadin-grid-column>
+
+                  <vaadin-grid-column>
+                      <template class="header">
+                          <vaadin-grid-sorter path="tijd">
+                              Tijd
+                          </vaadin-grid-sorter>
+                      </template>
+                      <template>[[item.tijd]]</template>
+                  </vaadin-grid-column>
+
+                  <vaadin-grid-column>
+                      <template class="header">
+                          <vaadin-grid-sorter path="cursus">
+                              Cursus
+                          </vaadin-grid-sorter>
+                      </template>
+                      <template>[[item.cursus]]</template>
+                  </vaadin-grid-column>
+
+                  <vaadin-grid-column>
+                      <template class="header">
+                          <vaadin-grid-sorter>
+                              Present
+                          </vaadin-grid-sorter>
+                      </template>
+                      <template><vaadin-checkbox></vaadin-checkbox></template>
+                  </vaadin-grid-column>
+
+                  <vaadin-grid-column>
+                      <template class="header">
+                          <vaadin-grid-sorter>
+                              Absent
+                          </vaadin-grid-sorter>
+                      </template>
+                      <template><vaadin-checkbox></vaadin-checkbox></template>
+                  </vaadin-grid-column>
+              </vaadin-grid>
+         </div>
+
+        <iron-ajax
+                id="ajax_presentie_per_les"
+                method="POST"
+                url="/presentie/ophalen"
+                handle-as="json"
+                on-response="_search_request_response_handler">
+        </iron-ajax>
+    </template>
+    <script>
+        (function () {
+            'use strict';
+            /* _xxxx private              : geen external data binding      - geen notify
+               _c_xx private constant     : geen external binding, constant - geen notify
+               c_xx  public constant      : one way external databinding [[c_xx]] - geen notify nodig
+               xxxx  public               : two way external databinding {{xxxx}} - notify nodig
+            */
+            Polymer({
+                is: 'my-presentie-les',
+
+                properties: {
+                    c_data: {
+                        type: String,
+                    },
+                    cursus_results: {
+                        type: Array,
+                    },
+                    c_visible: {
+                        type: Boolean, /* true when element is the active visible item */
+                        value: false,
+                        observer: '_initializing',
+                    },
+                },
+
+                _go_home: function () {
+                    var lApp = document.querySelector('my-app');  //het polymer element <my-app>
+                    var lAppRouter = lApp.$.approuter;            // het html-element <app-route> met id=approuter
+                    lAppRouter.data = {page: ""};                   // vul het data attribute met de homepage url
+                                                                    // door de two way binding in <app-route> en <app-location>
+                                                                    // zal ook de url echt wijzigen
+                },
+
+                _initializing: function () {
+                    if (this.c_visible) {
+                        this._search_request_handler();    //    haal info op van server
+                    }
+                },
+
+                _search_request_handler: function () {
+                    console.log("_search keywords=" + this.c_data.subpage);
+                    this.$.ajax_presentie_per_les.contentType = "application/json";
+                    this.$.ajax_presentie_per_les.body = {
+                        "student_id": this.c_data.subpage,
+                    };
+                    this.$.ajax_presentie_per_les.generateRequest();
+                },
+
+                _search_request_response_handler: function (request) {
+                    this.$.vaadin.items = request.detail.response;
+                },
+            });
+        })();
+    </script>
+</dom-module>
