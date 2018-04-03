@@ -46,6 +46,10 @@
                 box-shadow: 0 2px 6px rgba(191, 191, 191, 0.48);
             }
 
+            paper-listbox paper-item:not(:last-child) {
+                border-bottom: 1px solid #e6e6e6;
+            }
+
             .search-box {
                 display: flex;
                 margin: 0 auto;
@@ -72,64 +76,33 @@
             <paper-material elevation="1">
                 <div class="search-box">
                     <paper-input id="search_element" on-keydown="_checkForEnter" label="Zoeken"
-                                 value="{{search}}"></paper-input>
-                    <paper-listbox attr-for-selected="item-name" selected="{{itemName}}" fallback-selection="student">
+                                 value="{{search_keyword}}"></paper-input>
+                    <paper-listbox attr-for-selected="item-name" selected="{{search_type}}" fallback-selection="student">
                         <paper-item item-name="student">Student</paper-item>
                         <paper-item item-name="cursus">Klas of cursus</paper-item>
                     </paper-listbox>
                     <paper-button
                             class="my-button"
-                            on-click="_medestudenten_opslaan_request_handler">Zoeken
+                            on-click="_search_request_handler">Zoeken
                     </paper-button>
                 </div>
-
             </paper-material>
             <paper-material elevation="1">
                 <div class="my-title">Zoek resultaten</div>
-                <div>Titel</div>
-                <div>Titel</div>
-                <div>Titel</div>
-                <div>Titel</div>
+                <template is="dom-repeat" items="[[search_results]]">
+                    <div>
+                        <a href$="#/[[search_type]]/[[item.id]]">[[item.title]]</a>
+                    </div>
+                </template>
             </paper-material>
         </section>
 
-        <!--<table>-->
-        <!--<tr>-->
-        <!--<th class="firstName">Voornaam</th>-->
-        <!--<th class="lastName">Achternaam</th>-->
-        <!--<th class="groepid-header">Mede groepleden</th>-->
-        <!--</tr>-->
-        <!--<template is="dom-repeat" items="[[_c_studenten]]">-->
-        <!--<tr>-->
-        <!--<td class="firstName"><a href$="#/student/details/[[item.firstName]]-[[item.lastName]]">[[item.firstName]]</a>-->
-        <!--</td>-->
-        <!--<td class="lastName"><a href$="#/student/details/[[item.firstName]]-[[item.lastName]]">[[item.lastName]] </a>-->
-        <!--</td>-->
-        <!--<td class="groepid">-->
-        <!--<paper-checkbox-->
-        <!--class="my-check"-->
-        <!--checked="{{item.sameGroup}}">-->
-        <!--</paper-checkbox>-->
-        <!--</td>-->
-        <!--</tr>-->
-        <!--</template>-->
-        <!--</table>-->
-
-
         <iron-ajax
-                id="ajax_medestudenten_ophalen"
+                id="ajax_search"
                 method="POST"
-                url="/student/medestudenten/ophalen"
+                url="/search"
                 handle-as="json"
-                on-response="_medestudenten_ophalen_response_handler">
-        </iron-ajax>
-
-        <iron-ajax
-                id="ajax_medestudenten_opslaan"
-                method="POST"
-                url="/student/medestudenten/opslaan"
-                handle-as="json"
-                on-response="_medestudenten_opslaan_response_handler">
+                on-response="_search_response_handler">
         </iron-ajax>
 
     </template>
@@ -146,7 +119,14 @@
                 is: 'my-search',
 
                 properties: {
-                    _c_studenten: {
+                    search_keyword: {
+                        type: String,
+                    },
+                    search_type: {
+                        type: String, /* array<student-info>: student-info = {id, firstName, lastName, sameGroup}
+										array is constant groepnr is changable */
+                    },
+                    search_results: {
                         type: Array, /* array<student-info>: student-info = {id, firstName, lastName, sameGroup}
 										array is constant groepnr is changable */
                     },
@@ -178,42 +158,20 @@
                     }
                 },
 
-                _medestudenten_ophalen_request_handler: function () {
-                    console.log("_medestudenten_ophalen_request_handler user=" + this.c_username);
-                    this.$.ajax_medestudenten_ophalen.contentType = "application/json";
-                    this.$.ajax_medestudenten_ophalen.body = {
-                        "username": this.c_username
+                _search_request_handler: function () {
+                    console.log("_search keywords=" + this.search_keyword);
+                    this.$.ajax_search.contentType = "application/json";
+                    this.$.ajax_search.body = {
+                        "keywords": this.search_keyword,
+                        "type": this.search_type,
                     };
-                    this.$.ajax_medestudenten_ophalen.generateRequest();
+                    this.$.ajax_search.generateRequest();
                 },
 
-                _medestudenten_ophalen_response_handler: function (request) {
+                _search_response_handler: function (request) {
                     console.log("_mededestudenten_ophalen_response_handler aantal studenten=" + request.detail.response.length);
-                    this._c_studenten = request.detail.response;
+                    this.search_results = request.detail.response;
                 },
-
-                _medestudenten_opslaan_request_handler: function () {
-                    console.log("_medestudenten_opslaan_request_handler user=" + this.c_username);
-                    this.$.ajax_medestudenten_opslaan.contentType = "application/json";
-                    this.$.ajax_medestudenten_opslaan.body = {
-                        "username": this.c_username,
-                        "groupMembers": this._c_studenten
-                    };
-                    this.$.ajax_medestudenten_opslaan.generateRequest();
-                },
-
-                _medestudenten_opslaan_response_handler: function (request) {
-                    console.log("_mededestudenten_opslaan_response_handler errorcode=" + request.detail.response.errorcode);
-                    this._go_home();
-                    /* verlaat de pagina en ga terug naar home page */
-                },
-
-                _toast_clicked: function (e) {
-                    var lToast = this.$.toast_invalid_aanroep;        // meldt ongeldige aanroep
-                    lToast.toggle();
-                    this._go_home();
-                },
-
             });
         })();
     </script>
