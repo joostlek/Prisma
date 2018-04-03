@@ -91,10 +91,30 @@ public class PrIS {
         return null;
     }
 
+    public ArrayList<Student> searchStudents(String keyword) {
+        ArrayList<Student> studentSearch = new ArrayList<>();
+        for (Student student : this.students) {
+            if (student.getUsername().contains(keyword)) {
+                studentSearch.add(student);
+            }
+        }
+
+        return studentSearch;
+    }
+
+    public ArrayList<Group> searchCursus(String keyword) {
+        ArrayList<Group> cursusSearch = new ArrayList<>();
+        for (Group group : this.groups) {
+            if (group.getGroupCode().contains(keyword)) {
+                cursusSearch.add(group);
+            }
+        }
+        return cursusSearch;
+    }
+
     /**
      * @param username
-     * @param password
-     * Geef een Rol terug zodat we die kunnen gebruiken in de front-end
+     * @param password Geef een Rol terug zodat we die kunnen gebruiken in de front-end
      * @return
      */
     public String login(String username, String password) {

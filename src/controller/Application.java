@@ -34,12 +34,16 @@ public class Application {
         LoginController loginController = new LoginController(infoSysteem);
         MedestudentenController medestudentenController = new MedestudentenController(infoSysteem);
         AgendaController agendaController = new AgendaController(infoSysteem);
+        SearchController searchController = new SearchController(infoSysteem);
 
         server.registerHandler(SysteemDatumController.ROUTE_SYSTEEM_DATUM, systeemDatumController);
 
         server.registerHandler(LoginController.ROUTE_LOGIN, loginController);
 
         server.registerHandler(MedestudentenController.ROUTE_MEDESTUDENT_OPHALEN, medestudentenController);
+
+        server.registerHandler(SearchController.ROUTE_SEARCH, searchController);
+
         server.registerHandler("/student/medestudenten/opslaan", medestudentenController);
 
         server.registerHandler(AgendaController.ROUTE_AGENDA_LADEN, agendaController);
