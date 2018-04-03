@@ -14,6 +14,7 @@ public class PrIS {
     private ArrayList<Student> students;
     private ArrayList<Group> groups;
     private ArrayList<Person> people;
+    private ArrayList<String[]> schedule;
     private Study study;
 
     /**
@@ -44,6 +45,7 @@ public class PrIS {
         students = new ArrayList<>();
         groups = new ArrayList<>();
         people = new ArrayList<>();
+        schedule = new ArrayList<>();
 
         fillGroup();
         fillStudents();
@@ -94,7 +96,7 @@ public class PrIS {
     public ArrayList<Student> searchStudents(String keyword) {
         ArrayList<Student> studentSearch = new ArrayList<>();
         for (Student student : this.students) {
-            if (student.getUsername().contains(keyword)) {
+            if (student.getUsername().toLowerCase().contains(keyword.toLowerCase())) {
                 studentSearch.add(student);
             }
         }
@@ -147,7 +149,6 @@ public class PrIS {
 
         return courses;
     }
-
 
     private void fillTeachers() {
         String csvFile = "./CSV/docenten.csv";
@@ -210,12 +211,38 @@ public class PrIS {
         }
     }
 
+    public ArrayList<String[]> getSchedule() {
+        return schedule;
+    }
+
+    public ArrayList<String[]> getSchedule(String code) {
+        ArrayList<String[]> data = new ArrayList<>();
+
+        for (String[] element : schedule) {
+            if (element[6].toLowerCase().contains(code.toLowerCase())) {
+                data.add(element);
+            }
+        }
+
+        return data;
+    }
+
     private void fillSchedule() {
         String csvFile = "./CSV/rooster.csv";
         CSVReader csvReader = new CSVReader();
         try {
-            List<String[]> data = csvReader.read(csvFile);
-            for (String[] element : data) {
+            List<String[]> all = csvReader.read(csvFile);
+            for (String[] element : all) {
+                /*
+                0 = Datum
+                1 = Start Time
+                2 = End Time
+                3 = Curses Code
+                4 = Email / Name
+                5 = Location
+                6 = Class Code
+                 */
+                schedule.add(element);
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,9 +1,9 @@
 package controller;
 
-import java.io.File;
-
 import model.PrIS;
 import server.JSONFileServer;
+
+import java.io.File;
 
 public class Application {
 
@@ -33,6 +33,7 @@ public class Application {
         SysteemDatumController systeemDatumController = new SysteemDatumController(infoSysteem);
         LoginController loginController = new LoginController(infoSysteem);
         MedestudentenController medestudentenController = new MedestudentenController(infoSysteem);
+        AgendaController agendaController = new AgendaController(infoSysteem);
         SearchController searchController = new SearchController(infoSysteem);
 
         CursusController cursusController = new CursusController(infoSysteem);
@@ -47,6 +48,8 @@ public class Application {
         server.registerHandler(CursusController.ROUTE_CURSUS, cursusController);
 
         server.registerHandler("/student/medestudenten/opslaan", medestudentenController);
+
+        server.registerHandler(AgendaController.ROUTE_AGENDA_LADEN, agendaController);
 
         server.start();
     }
