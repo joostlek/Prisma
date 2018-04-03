@@ -1,10 +1,14 @@
 package controller;
 
+import com.google.gson.Gson;
 import model.Group;
 import model.PrIS;
 import model.person.Student;
+import responses.SearchResponse;
+import responses.StudentResponse;
 import server.Conversation;
 import server.Handler;
+import server.JSONFileServer;
 
 import javax.json.*;
 import java.util.ArrayList;
@@ -50,33 +54,26 @@ public class SearchController implements Handler {
 
     private String searchStudent(String keywords) {
         ArrayList<Student> searchResults = informatieSysteem.searchStudents(keywords);
-
-        JsonArrayBuilder lJsonArrayBuilder = Json.createArrayBuilder();                        // Uiteindelijk gaat er een array...
+        ArrayList<SearchResponse> searchResponses = new ArrayList<>();
 
         for (Student student : searchResults) {                                            // met daarin voor elke medestudent een JSON-object...
-            JsonObjectBuilder jsonObjectBuilderStudent = Json.createObjectBuilder(); // maak het JsonObject voor een student
-            jsonObjectBuilderStudent
-                    .add("id", student.getStudentId())                                                                    //vul het JsonObject
-                    .add("title", student.getUsername());
-
-            lJsonArrayBuilder.add(jsonObjectBuilderStudent);                                                    //voeg het JsonObject aan het array toe
+            searchResponses.add(new SearchResponse(String.valueOf(student.getStudentId()), student.getUsername()));
         }
-        return lJsonArrayBuilder.build().toString();                                                // maak er een string van
+
+        Gson gson = new Gson();
+        return gson.toJson(searchResponses);
     }
 
     private String searchCursus(String keywords) {
         ArrayList<Group> searchResults = informatieSysteem.searchCursus(keywords);
 
-        JsonArrayBuilder lJsonArrayBuilder = Json.createArrayBuilder();                        // Uiteindelijk gaat er een array...
+        ArrayList<SearchResponse> searchResponses = new ArrayList<>();
 
-        for (Group group: searchResults) {                                            // met daarin voor elke medestudent een JSON-object...
-            JsonObjectBuilder jsonObjectBuilderStudent = Json.createObjectBuilder(); // maak het JsonObject voor een student
-            jsonObjectBuilderStudent
-                    .add("id", group.getGroupCode())                                                                    //vul het JsonObject
-                    .add("title", group.getName());
-
-            lJsonArrayBuilder.add(jsonObjectBuilderStudent);                                                    //voeg het JsonObject aan het array toe
+        for (Group group : searchResults) {                                            // met daarin voor elke medestudent een JSON-object...
+            searchResponses.add(new SearchResponse(group.getGroupCode(), group.getName()));
         }
-        return lJsonArrayBuilder.build().toString();                                                // maak er een string van
+
+        Gson gson = new Gson();
+        return gson.toJson(searchResponses);
     }
 }
