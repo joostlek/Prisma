@@ -292,6 +292,16 @@
                   c_data="[[_ar_subroute_data]]"
           ></my-klassenlijst>
         </section>
+        
+         <section page-name="Per les"
+                 title="presentiePerLes"
+                 element$="presentie-perles">
+          <my-myperLes
+                  c_visible="[[_are_strings_equal(_ar_page, 'student')]]"
+                  c_data="[[_ar_subroute_data]]"
+          ></my-perLes>
+        </section>
+        
         </iron-pages>
     </app-drawer-layout>
 

@@ -1,0 +1,100 @@
+<link rel="import" href="/bower_components/polymer/polymer-element.html">
+<link rel="import" href="/bower_components/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="/bower_components/vaadin-grid/vaadin-grid-sorter.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+<link rel="import" href="/bower_components/vaadin-checkbox/vaadin-checkbox.html">
+
+<dom-module id="presentie-perles">
+    <template>
+        <style>
+            html, body{
+                padding: 0;
+                margin: 0;
+            }
+            
+            vaadin-grid{
+              min-height: 300px;
+              max-height: 300px;
+              width: 700px;
+              margin-left: 10%;
+              margin-top: 10%;
+            }
+            
+        </style>
+       
+       <div class="container">
+          <vaadin-grid items="[[lessen]]">
+                  <vaadin-grid-column>
+                      <template class="header">
+                          <vaadin-grid-sorter path="datum">
+                              Datum
+                          </vaadin-grid-sorter>
+                      </template>
+                      <template>[[item.datum]]</template>
+                  </vaadin-grid-column>
+
+                  <vaadin-grid-column>
+                      <template class="header">
+                          <vaadin-grid-sorter path="tijd">
+                              Tijd
+                          </vaadin-grid-sorter>
+                      </template>
+                      <template>[[item.tijd]]</template>
+                  </vaadin-grid-column>
+
+                  <vaadin-grid-column>
+                      <template class="header">
+                          <vaadin-grid-sorter path="cursus">
+                              Cursus
+                          </vaadin-grid-sorter>
+                      </template>
+                      <template>[[item.cursus]]</template>
+                  </vaadin-grid-column>
+
+                  <vaadin-grid-column>
+                      <template class="header">
+                          <vaadin-grid-sorter>
+                              Present
+                          </vaadin-grid-sorter>
+                      </template>
+                      <template><vaadin-checkbox></vaadin-checkbox></template>
+                  </vaadin-grid-column>
+
+                  <vaadin-grid-column>
+                      <template class="header">
+                          <vaadin-grid-sorter>
+                              Absent
+                          </vaadin-grid-sorter>
+                      </template>
+                      <template><vaadin-checkbox></vaadin-checkbox></template>
+                  </vaadin-grid-column>
+              </vaadin-grid>
+         </div>
+    </template>
+    <script>
+        class PerLes extends Polymer.Element {
+            static get is() {
+                return 'presentie-perles';
+            }
+
+            static get properties() {
+                return {
+                	lessen: {
+                        type: Array,
+                        value: [
+                          {datum: "01-01-1999", tijd: "13.00", cursus: "AUI"},
+                          {datum: "01-01-1999", tijd: "15.00", cursus: "Group Project"},
+                          {datum: "02-01-1999", tijd: "09.00", cursus: "OODC"},
+                          {datum: "03-01-1999", tijd: "10.00", cursus: "AUI"},
+                          {datum: "04-01-1999", tijd: "14.00", cursus: "Hallo"},
+                          {datum: "05-01-1999", tijd: "13.00", cursus: "Spijkerpoepen"},
+                          {datum: "05-01-1999", tijd: "16.00", cursus: "Koekhappen"}
+                        ]
+                	}
+                }
+            }
+        }
+
+        window.customElements.define(PerLes.is, PerLes);
+    </script>
+</dom-module>
