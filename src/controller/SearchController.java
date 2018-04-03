@@ -5,10 +5,8 @@ import model.Group;
 import model.PrIS;
 import model.person.Student;
 import responses.SearchResponse;
-import responses.StudentResponse;
 import server.Conversation;
 import server.Handler;
-import server.JSONFileServer;
 
 import javax.json.*;
 import java.util.ArrayList;
