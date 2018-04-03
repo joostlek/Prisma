@@ -4,9 +4,13 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
+import com.google.gson.Gson;
 import model.PrIS;
 import server.Conversation;
 import server.Handler;
+
+import java.util.HashMap;
+import java.util.Map;
 
 class LoginController implements Handler {
 	private PrIS prisma;
@@ -41,13 +45,12 @@ class LoginController implements Handler {
 	private void login(Conversation conversation) {
 		JsonObject lJsonObjIn = (JsonObject) conversation.getRequestBodyAsJSON();
 
-		String lGebruikersnaam = lJsonObjIn.getString("username");						// Uitlezen van opgestuurde inloggegevens...
+		String lGebruikersnaam = lJsonObjIn.getString("username");
 		String lWachtwoord = lJsonObjIn.getString("password");
-		String lRol = prisma.login(lGebruikersnaam, lWachtwoord);		// inloggen methode aanroepen op domeinmodel...
 
-		JsonObjectBuilder lJsonObjectBuilder = Json.createObjectBuilder();
-		lJsonObjectBuilder.add("rol", lRol);																	// en teruggekregen gebruikersrol als JSON-object...
-		String lJsonOut = lJsonObjectBuilder.build().toString();
-		conversation.sendJSONMessage(lJsonOut);															// terugsturen naar de Polymer-GUI!
+		Gson gson = new Gson();
+        Map<String, Object> res = new HashMap<>();
+        res.put("rol", prisma.login(lGebruikersnaam, lWachtwoord));
+		conversation.sendJSONMessage(gson.toJson(res));
 	}
 }
