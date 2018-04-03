@@ -25,9 +25,8 @@ public class AgendaController implements Handler {
 
     private void load(Conversation conversation) {
         JsonObject lJsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
-        String lGebruikersnaam = lJsonObjectIn.getString("username");
-        Student lStudentZelf = informatieSysteem.getStudent(lGebruikersnaam);
-        String lGroepIdZelf = lStudentZelf.getGroupId();
+        Student student = informatieSysteem.getStudent(lJsonObjectIn.getString("username"));
+        String Group = student.getGroupId();
 
     }
 }

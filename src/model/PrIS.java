@@ -94,7 +94,7 @@ public class PrIS {
     public ArrayList<Student> searchStudents(String keyword) {
         ArrayList<Student> studentSearch = new ArrayList<>();
         for (Student student : this.students) {
-            if (student.getUsername().contains(keyword)) {
+            if (student.getUsername().toLowerCase().contains(keyword.toLowerCase())) {
                 studentSearch.add(student);
             }
         }
@@ -147,7 +147,6 @@ public class PrIS {
 
         return courses;
     }
-
 
     private void fillTeachers() {
         String csvFile = "./CSV/docenten.csv";
@@ -216,6 +215,7 @@ public class PrIS {
         try {
             List<String[]> data = csvReader.read(csvFile);
             for (String[] element : data) {
+
             }
         } catch (IOException e) {
             e.printStackTrace();
