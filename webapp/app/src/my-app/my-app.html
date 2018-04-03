@@ -147,7 +147,7 @@
                 <span>Zoeken</span>
             </a>
 
-            <a name="studentinfo" href=[[_c_baseURL]]studentinfo verborgen$="[[!_are_strings_equal(_rol, 'undefined')]]">
+            <a name="studentinfo" href$="[[_c_baseURL]]studentinfo" verborgen$="[[!_are_strings_equal(_rol, 'undefined')]]">
               <iron-icon icon="social:group"></iron-icon>
               <span>Info student</span>
             </a>
@@ -236,6 +236,9 @@
                     c_visible="[[_are_strings_equal(_ar_page, 'zoeken')]]"
                 ></my-search>
             </section>
+        <!--
+           SEARCH blocks
+        -->
 
             <section page-name="studentinfo"
                      title="studentinfo"
@@ -280,6 +283,15 @@
               <my-view404></my-view404>
             </paper-material>
           </section>
+
+        <section page-name="cursus"
+                 title="klassenlijst"
+                 element$="my-klassenlijst">
+          <my-klassenlijst
+                  c_visible="[[_are_strings_equal(_ar_page, 'cursus')]]"
+                  c_data="[[_ar_subroute_data]]"
+          ></my-klassenlijst>
+        </section>
         </iron-pages>
     </app-drawer-layout>
 
@@ -398,7 +410,7 @@
           wordt gebruikt in index.html
         */
 	    _are_strings_equal(p_str1, p_str2) {
-	      //console.log("_are_strings_equal: " + p_str1 + " met: " + p_str2);
+            console.log("_are_strings_equal: " + p_str1 + " met: " + p_str2);
 	      return (p_str1==p_str2);
 	    },
 

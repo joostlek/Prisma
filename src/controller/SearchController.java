@@ -36,6 +36,7 @@ public class SearchController implements Handler {
             JsonObject responseObject = (JsonObject) conversation.getRequestBodyAsJSON();
             String keywords = responseObject.getString("keywords");
             String searchType = responseObject.getString("type");
+
             if (searchType.equals(SEARCH_TYPE_STUDENT)) {
                 response = searchStudent(keywords);
             } else if (searchType.equals(SEARCH_TYPE_CURSUS)) {

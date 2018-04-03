@@ -1,0 +1,218 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-styles/typography.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+<link rel="import" href="/bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="/bower_components/paper-material/paper-material.html">
+<link rel="import" href="/bower_components/paper-dropdown-menu.html">
+<link rel="import" href="/bower_components/paper-item/paper-item.html">
+<link rel="import" href="/bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="/bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="/bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="/bower_components/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="/bower_components/vaadin-grid/vaadin-grid-sorter.html">
+
+<dom-module id="my-klassenlijst">
+    <template>
+        <style>
+            span {
+                @apply --paper-font-body1;
+            }
+
+            .my-title {
+                font-size: 20px;
+                border-bottom: 1px solid gray; /* a red line */
+                padding-bottom: 2px; /* space above the border line */
+            }
+
+            paper-material {
+                display: block;
+                margin: 10px;
+                padding: 10px;
+            }
+
+            paper-dropdown-menu, paper-listbox {
+                width: 200px;
+                margin: auto;
+                display: block;
+                background: transparent;
+                box-shadow: 0 2px 6px rgba(191, 191, 191, 0.48);
+            }
+
+            paper-listbox paper-item:not(:last-child) {
+                border-bottom: 1px solid #e6e6e6;
+            }
+
+            .search-box {
+                display: flex;
+                margin: 0 auto;
+                width: 500px;
+            }
+
+            .search-box > * {
+                margin: 0 10px;
+                align-self: center;
+            }
+
+            .my-button {
+                width: 30px; /* full width */
+                height: 20px;
+                padding: 20px;
+                margin: 10px;
+                color: white; /* white tekst */
+                background: #1a9fd9; /* kind of blue */
+                --paper-button-ink-color: #00567B; /* kind of dark blue */
+            }
+
+            .box1 {
+                width: 710px;
+                height: 405px;
+                flex-grow: 0;
+                display: inline-block;
+            }
+
+            .box2 {
+                width: 300px;
+                height: 405px;
+                flex-grow: 0;
+                position: relative;
+                display: inline-block;
+            }
+
+            .vaadinButton {
+                width: 100px;
+                float: right;
+            }
+
+            vaadin-grid {
+                min-height: 404px;
+                max-height: 404px;
+                display: block;
+            }
+
+            paper-button {
+                height: 5px;
+                font-size: 15px;
+                border-style: solid;
+                border-color: grey;
+                animation-name: example;
+                animation-duration: 10s;
+                animation-delay: 0s;
+                animation-iteration-count: infinite;
+                animation-direction: alternate-reverse;
+            }
+
+        </style>
+
+
+        <section>
+
+            <paper-material elevation="1">
+                <h1>[[c_data.subpage]]</h1>
+            </paper-material>
+            <!--<template is="dom-repeat" items="[[search_results]]">-->
+            <!--<div>-->
+            <!--<a href$="#/[[search_type]]/[[item.id]]">[[item.title]]</a>-->
+            <!--</div>-->
+            <!--</template>-->
+        </section>
+
+        <div class="container">
+            <paper-material elevation="1">
+                <vaadin-grid items="[[cursus_results]]" id="lol">
+                    <vaadin-grid-column>
+                        <template class="header">
+                            <vaadin-grid-sorter path="title">
+                                <b>Naam Klas/Cursus<b>
+                            </vaadin-grid-sorter>
+                        </template>
+                        <template>
+                            [[item.title]]
+                        </template>
+                    </vaadin-grid-column>
+
+                    <vaadin-grid-column>
+                        <template class="header"></template>
+                        <template>
+                            <a href$="#/student/[[item.id]]">Bekijk</a>
+                        </template>
+                    </vaadin-grid-column>
+
+                </vaadin-grid>
+            </paper-material>
+            <paper-material elevation="1">
+                <div class="box2text">
+                    <p>Presentie: </p>
+                    <p>Absentie: </p>
+                    <p>Aantal mannen: </p>
+                    <p>Aantal vrouwen: </p>
+                </div>
+            </paper-material>
+        </div>
+
+        <iron-ajax
+                id="ajax_cursus_information"
+                method="POST"
+                url="/cursus"
+                handle-as="json"
+                on-response="_cursus_information_response_handler">
+        </iron-ajax>
+
+    </template>
+
+    <script>
+        (function () {
+            'use strict';
+            /* _xxxx private              : geen external data binding      - geen notify
+               _c_xx private constant     : geen external binding, constant - geen notify
+               c_xx  public constant      : one way external databinding [[c_xx]] - geen notify nodig
+               xxxx  public               : two way external databinding {{xxxx}} - notify nodig
+            */
+            Polymer({
+                is: 'my-klassenlijst',
+
+                properties: {
+                    c_data: {
+                        type: String,
+                    },
+                    cursus_results: {
+                        type: Array,
+                    },
+                    c_visible: {
+                        type: Boolean, /* true when element is the active visible item */
+                        value: false,
+                        observer: '_initializing',
+                    },
+                },
+
+                _go_home: function () {
+                    var lApp = document.querySelector('my-app');  //het polymer element <my-app>
+                    var lAppRouter = lApp.$.approuter;            // het html-element <app-route> met id=approuter
+                    lAppRouter.data = {page: ""};                   // vul het data attribute met de homepage url
+                                                                    // door de two way binding in <app-route> en <app-location>
+                                                                    // zal ook de url echt wijzigen
+                },
+
+                _initializing: function () {
+                    if (this.c_visible) {
+                        this._search_request_handler();    //    haal info op van server
+                    }
+                },
+
+                _search_request_handler: function () {
+                    console.log("_search keywords=" + this.c_data.subpage);
+                    this.$.ajax_cursus_information.contentType = "application/json";
+                    this.$.ajax_cursus_information.body = {
+                        "cursus": this.c_data.subpage,
+                    };
+                    this.$.ajax_cursus_information.generateRequest();
+                },
+
+                _cursus_information_response_handler: function (request) {
+                    console.log("_mededestudenten_ophalen_response_handler aantal studenten=" + request.detail.response.length);
+                    this.$.lol.items = request.detail.response;
+                },
+            });
+        })();
+    </script>
+</dom-module>

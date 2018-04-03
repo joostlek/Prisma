@@ -221,4 +221,13 @@ public class PrIS {
             e.printStackTrace();
         }
     }
+
+    public List<Student> getStudentsByGroupCode(String groupCode) {
+        for (Group group : groups) {
+            if (group.getGroupCode().equals(groupCode)) {
+                return group.getStudents();
+            }
+        }
+        return null;
+    }
 }
