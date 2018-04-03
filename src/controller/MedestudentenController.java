@@ -1,7 +1,6 @@
 package controller;
 
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -9,6 +8,7 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
+import com.google.gson.Gson;
 import model.PrIS;
 import model.Group;
 import model.person.Student;
@@ -48,34 +48,27 @@ public class MedestudentenController implements Handler {
 	 * @param conversation - alle informatie over het request
 	 */
 	private void ophalen(Conversation conversation) {
-		JsonObject lJsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
-		String lGebruikersnaam = lJsonObjectIn.getString("username");
-		Student lStudentZelf = informatieSysteem.getStudent(lGebruikersnaam);
-		String  lGroepIdZelf = lStudentZelf.getGroupId();
+		JsonObject jsonRequest = (JsonObject) conversation.getRequestBodyAsJSON();
+		String username = jsonRequest.getString("username");
+		Student student = informatieSysteem.getStudent(username);
+		Group klas = informatieSysteem.getStudentGroup(student);		// Group van de student opzoeken
 
-		Group lKlas = informatieSysteem.getStudentGroup(lStudentZelf);		// Group van de student opzoeken
+		List<Student> lStudentenVanKlas = klas.getStudents();	// medestudenten opzoeken
 
-		List<Student> lStudentenVanKlas = lKlas.getStudents();	// medestudenten opzoeken
+        ArrayList<Map<String, Object>> res = new ArrayList<>();
 
-		JsonArrayBuilder lJsonArrayBuilder = Json.createArrayBuilder();						// Uiteindelijk gaat er een array...
-
-		for (Student lMedeStudent : lStudentenVanKlas) {									        // met daarin voor elke medestudent een JSON-object... 
-			if (lMedeStudent != lStudentZelf) {
-				String lGroepIdAnder = lMedeStudent.getGroupId();
-				boolean lZelfdeGroep = ((!lGroepIdZelf.equals("")) && (lGroepIdAnder.equals(lGroepIdZelf)));
-				JsonObjectBuilder lJsonObjectBuilderVoorStudent = Json.createObjectBuilder(); // maak het JsonObject voor een student
-				String lLastName = lMedeStudent.getFullLastName();
-				lJsonObjectBuilderVoorStudent
-						.add("id", lMedeStudent.getStudentId())																	//vul het JsonObject
-						.add("firstName", lMedeStudent.getFirstName())
-						.add("lastName", lLastName)
-						.add("sameGroup", lZelfdeGroep);
-
-				lJsonArrayBuilder.add(lJsonObjectBuilderVoorStudent);													//voeg het JsonObject aan het array toe
-			}
-		}
-		String lJsonOutStr = lJsonArrayBuilder.build().toString();												// maak er een string van
-		conversation.sendJSONMessage(lJsonOutStr);																				// string gaat terug naar de Polymer-GUI!
+        for (Student medeStudent: klas.getStudents()) {
+            if (medeStudent != student) {
+                Map<String, Object> otherStudent = new HashMap<>();
+                otherStudent.put("id", medeStudent.getStudentId());
+                otherStudent.put("firstName", medeStudent.getFirstName());
+                otherStudent.put("lastName", medeStudent.getFullLastName());
+                otherStudent.put("sameGroup", (!student.getGroupId().equals("") && medeStudent.getGroupId().equals(student.getGroupId())));
+                res.add(otherStudent);
+            }
+        }
+        Gson gson = new Gson();
+		conversation.sendJSONMessage(gson.toJson(res));
 	}
 
 	/**
