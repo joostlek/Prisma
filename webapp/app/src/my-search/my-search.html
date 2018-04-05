@@ -10,7 +10,7 @@
 <link rel="import" href="/bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
 
-<!-- Dit element wordt door de aanwezigheid van de c_visible parameter steeds opnieuw gerefreshed
+<!-- Dit element wordt door de aanwezigheid van de c_visible parameter steeds opnie uw gerefreshed
      op het moment dat het element in de iron-pages geselecteerd wordt
      en ook zodra hij weer gedeselecteerd wordt.
      Deze techniek is bruikbaar om volatile info steeds opnieuw op te halen en niet enkel eenmalig
@@ -68,6 +68,26 @@
                 background: #1a9fd9; /* kind of blue */
                 --paper-button-ink-color: #00567B; /* kind of dark blue */
             }
+            
+            #present-button{
+            	float: right;
+            }
+            
+            
+            vaadin-grid-cell-content{
+            	display: inline-block;
+            }
+            
+            .resultaat{
+            	margin-top: 10%;
+            }
+            
+            a:-webkit-any-link {
+			    color: black;
+			    cursor: pointer;
+			    text-decoration: none;
+			}
+            
         </style>
         <section>
 
@@ -88,15 +108,24 @@
             </paper-material>
             <paper-material elevation="1">
                 <div class="my-title">Zoek resultaten</div>
+<<<<<<< HEAD
+                
+                   <vaadin-grid items="[[search_results]]" id="lol">
+                    <vaadin-grid-column>
+                        <template class="cell">
+                            <a class="resultaat" href$="#/[[search_type]]/[[item.id]]">[[item.title]]</a>
+                            <paper-button  href$="#/student_presentie/[[item.id]]" class="my-button" id="present-button">Presentie</paper-button>
+=======
                 <template is="dom-repeat" items="[[search_results]]">
                     <div>
                         <a href$="#/[[search_type]]/[[item.id]]">[[item.title]]</a>
                         <template is="dom-if" if="[[render_student_present_option]]">
                             <paper-button href$="#/student_presentie/[[item.id]]" class="my-button">Presentie
                             </paper-button>
+>>>>>>> 29c2dda984fb144b3fa08c3dbd4f14bbd49c341c
                         </template>
-                    </div>
-                </template>
+                    </vaadin-grid-column>
+
             </paper-material>
         </section>
 
