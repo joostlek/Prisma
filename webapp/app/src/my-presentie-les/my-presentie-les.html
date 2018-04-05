@@ -7,69 +7,72 @@
 <dom-module id="my-presentie-les">
     <template>
         <style>
-            html, body{
+            html, body {
                 padding: 0;
                 margin: 0;
             }
-            
-            vaadin-grid{
-              min-height: 300px;
-              max-height: 300px;
-              width: 700px;
-              margin-left: 10%;
-              margin-top: 10%;
+
+            vaadin-grid {
+                min-height: 300px;
+                max-height: 300px;
+                width: 700px;
+                margin: 20px auto;
             }
-            
+
         </style>
-       
-       <div class="container">
-          <vaadin-grid id="vaadin">
-                  <vaadin-grid-column>
-                      <template class="header">
-                          <vaadin-grid-sorter path="datum">
-                              Datum
-                          </vaadin-grid-sorter>
-                      </template>
-                      <template>[[item.datum]]</template>
-                  </vaadin-grid-column>
 
-                  <vaadin-grid-column>
-                      <template class="header">
-                          <vaadin-grid-sorter path="tijd">
-                              Tijd
-                          </vaadin-grid-sorter>
-                      </template>
-                      <template>[[item.tijd]]</template>
-                  </vaadin-grid-column>
+        <div class="container">
+            <vaadin-grid id="vaadin">
+                <vaadin-grid-column>
+                    <template class="header">
+                        <vaadin-grid-sorter path="datum">
+                            Datum
+                        </vaadin-grid-sorter>
+                    </template>
+                    <template>[[item.datum]]</template>
+                </vaadin-grid-column>
 
-                  <vaadin-grid-column>
-                      <template class="header">
-                          <vaadin-grid-sorter path="cursus">
-                              Cursus
-                          </vaadin-grid-sorter>
-                      </template>
-                      <template>[[item.cursus]]</template>
-                  </vaadin-grid-column>
+                <vaadin-grid-column>
+                    <template class="header">
+                        <vaadin-grid-sorter path="tijd">
+                            Tijd
+                        </vaadin-grid-sorter>
+                    </template>
+                    <template>[[item.fromTime]] - [[item.toTime]]</template>
+                </vaadin-grid-column>
 
-                  <vaadin-grid-column>
-                      <template class="header">
-                          <vaadin-grid-sorter>
-                              Present
-                          </vaadin-grid-sorter>
-                      </template>
-                      <template><vaadin-checkbox></vaadin-checkbox></template>
-                  </vaadin-grid-column>
+                <vaadin-grid-column>
+                    <template class="header">
+                        <vaadin-grid-sorter path="cursus">
+                            Cursus
+                        </vaadin-grid-sorter>
+                    </template>
+                    <template>[[item.cursus]]</template>
+                </vaadin-grid-column>
 
-                  <vaadin-grid-column>
-                      <template class="header">
-                          <vaadin-grid-sorter>
-                              Absent
-                          </vaadin-grid-sorter>
-                      </template>
-                      <template><vaadin-checkbox></vaadin-checkbox></template>
-                  </vaadin-grid-column>
-              </vaadin-grid>
-         </div>
+                <vaadin-grid-column>
+                    <template class="header">
+                        <vaadin-grid-sorter>
+                            Present
+                        </vaadin-grid-sorter>
+                    </template>
+                    <template>
+                        <vaadin-checkbox></vaadin-checkbox>
+                    </template>
+                </vaadin-grid-column>
+
+                <vaadin-grid-column>
+                    <template class="header">
+                        <vaadin-grid-sorter>
+                            Absent
+                        </vaadin-grid-sorter>
+                    </template>
+                    <template>
+                        <vaadin-checkbox></vaadin-checkbox>
+                    </template>
+                </vaadin-grid-column>
+            </vaadin-grid>
+        </div>
 
         <iron-ajax
                 id="ajax_presentie_per_les"
