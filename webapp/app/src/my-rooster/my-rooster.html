@@ -1,0 +1,117 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+
+
+<dom-module id="my-rooster">
+    <template>
+        <style>
+        	.maandag{
+        		text-align: center;
+        		width: 200px;
+        		height: 600px;
+        		background: aqua;
+        		display: inline-block;
+        		position: relative;       		
+        	}
+        	.dinsdag{
+        		text-align: center;
+        		width: 200px;
+        		height: 600px;
+        		background: aqua;
+        		display: inline-block;
+        		position: relative;
+        	}
+ 	        .woensdag{
+        		text-align: center;
+        		width: 200px;
+        		height: 600px;
+        		background: aqua;
+        		display: inline-block;
+        		position: relative;
+        		margin-right: 0px;
+				margin-left: 0px;
+        	}
+        	.donderdag{
+        		text-align: center;
+        		width: 200px;
+        		height: 600px;
+        		background: aqua;
+        		display: inline-block;
+        		position: relative;
+        		margin-right: 0px;
+				margin-left: 0px;
+        	}
+        	.vrijdag{
+        		text-align: center;
+        		width: 200px;
+        		height: 600px;
+        		background: aqua;
+        		display: inline-block;
+        		position: relative;
+        		margin-right: 0px;
+				margin-left: 0px;
+        	}
+        	
+        </style>
+			<section class="maandag">
+				<h1>maandag</h1>
+			</section>
+			<section class="dinsdag">
+				<h1>dinsdag</h1>
+			</section>
+			<section class="woensdag">
+				<h1>woensdag</h1>
+			</section>
+			<section class="donderdag">
+				<h1>donderdag</h1>
+			</section>
+			<section class="vrijdag">
+				<h1>vrijdag</h1>
+			</section>
+    </template>
+    <script>
+        (function () {
+            'use strict';
+            /* _xxxx private              : geen external data binding      - geen notify
+               _c_xx private constant     : geen external binding, constant - geen notify
+               c_xx  public constant      : one way external databinding [[c_xx]] - geen notify nodig
+               xxxx  public               : two way external databinding {{xxxx}} - notify nodig
+            */
+            Polymer({
+                is: 'my-rooster',
+
+                properties: {
+                    _c_studenten: {
+                        type: Array, /* array<student-info>: student-info = {id, firstName, lastName, sameGroup}
+										array is constant groepnr is changable */
+                    },
+                    c_rol: {
+                        type: String,
+                    },
+                    c_username: {
+                        type: String,
+                    },
+                    c_visible: {
+                        type: Boolean, /* true when element is the active visible item */
+                        value: true,
+                        observer: '_initializing', /* wordt ook aangeroepen bijwisseling van true naar false.
+                                                                   regel in de functie dat er niets gebeurd
+                                                                   als c_visible false is */
+                    },
+                },
+                _go_home: function () {
+                    var lApp = document.querySelector('my-app');  //het polymer element <my-app>
+                    var lAppRouter = lApp.$.approuter;            // het html-element <app-route> met id=approuter
+                    lAppRouter.data = {page: ""};                   // vul het data attribute met de homepage url
+                                                                    // door de two way binding in <app-route> en <app-location>
+                                                                    // zal ook de url echt wijzigen
+                },
+
+                _initializing: function () {
+                    if (this.c_visible) {                                 // zodra zichtbaar geworden moet er wat worden gedaan
+                    }
+                }
+            });
+        })();
+    </script>
+</dom-module>
