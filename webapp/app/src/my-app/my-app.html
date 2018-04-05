@@ -131,13 +131,13 @@
                         <span>(test) Instellen systeemdatum</span>
                     </a>
 
-                    <a name="login" href$="[[_c_baseURL]]login" verborgen$="[[!_are_strings_equal(_rol, 'undefined')]]">
+                    <a name="login" href$="[[_c_baseURL]]login" verborgen$="[[_has_role('undefined')]]">
                         <iron-icon icon="account-box"></iron-icon>
                         <span>Inloggen</span>
                     </a>
 
                     <a name="logout" href$="[[_c_baseURL]]logout"
-                       verborgen$="[[_are_strings_equal(_rol, 'undefined')]]">
+                       verborgen$="[[!_has_role('undefined')]]">
                         <iron-icon icon="account-box"></iron-icon>
                         <span>Uitloggen</span>
                     </a>
@@ -145,13 +145,13 @@
                      @TODO: Alleen toegestaan voor bepaalde groep mensen
                     -->
                     <a name="zoeken" href$="[[_c_baseURL]]zoeken"
-                       verborgen$="[[!_are_strings_equal(_rol, 'undefined')]]">
+                       verborgen$="[[_has_role('slb', 'decaan', 'logistiek')]]">
                         <iron-icon icon="social:group"></iron-icon>
                         <span>Zoeken</span>
                     </a>
 
                     <a name="studentinfo" href$="[[_c_baseURL]]studentinfo"
-                       verborgen$="[[!_are_strings_equal(_rol, 'undefined')]]">
+                       verborgen$="[[_has_role('student')]]">
                         <iron-icon icon="social:group"></iron-icon>
                         <span>Eigen gegevens</span>
                     </a>
@@ -440,6 +440,15 @@
                 _are_strings_equal(p_str1, p_str2) {
                     console.log("_are_strings_equal: " + p_str1 + " met: " + p_str2);
                     return (p_str1 == p_str2);
+                },
+
+                _has_role(...role_needed) {
+                    for (let role of role_needed) {
+                        if (role == this._rol) {
+                            return role == this._rol;
+                        }
+                    }
+                    return false;
                 },
 
                 ready: function () {
