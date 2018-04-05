@@ -5,69 +5,37 @@
 <dom-module id="my-rooster">
     <template>
         <style>
-        	.maandag{
-        		text-align: center;
-        		width: 200px;
-        		height: 600px;
-        		background: aqua;
-        		display: inline-block;
-        		position: relative;       		
-        	}
-        	.dinsdag{
-        		text-align: center;
-        		width: 200px;
-        		height: 600px;
-        		background: aqua;
-        		display: inline-block;
-        		position: relative;
-        	}
- 	        .woensdag{
-        		text-align: center;
-        		width: 200px;
-        		height: 600px;
-        		background: aqua;
-        		display: inline-block;
-        		position: relative;
-        		margin-right: 0px;
-				margin-left: 0px;
-        	}
-        	.donderdag{
-        		text-align: center;
-        		width: 200px;
-        		height: 600px;
-        		background: aqua;
-        		display: inline-block;
-        		position: relative;
-        		margin-right: 0px;
-				margin-left: 0px;
-        	}
-        	.vrijdag{
-        		text-align: center;
-        		width: 200px;
-        		height: 600px;
-        		background: aqua;
-        		display: inline-block;
-        		position: relative;
-        		margin-right: 0px;
-				margin-left: 0px;
-        	}
-        	
+            .rooster {
+                display: flex;
+            }
+            .rooster > section {
+                text-align: center;
+                width: 200px;
+                height: 600px;
+
+                background: aqua;
+                display: inline-block;
+                position: relative;
+            }
+
         </style>
-			<section class="maandag">
-				<h1>maandag</h1>
-			</section>
-			<section class="dinsdag">
-				<h1>dinsdag</h1>
-			</section>
-			<section class="woensdag">
-				<h1>woensdag</h1>
-			</section>
-			<section class="donderdag">
-				<h1>donderdag</h1>
-			</section>
-			<section class="vrijdag">
-				<h1>vrijdag</h1>
-			</section>
+        <section class="rooster">
+            <section class="maandag">
+                <h1>maandag</h1>
+            </section>
+            <section class="dinsdag">
+                <h1>dinsdag</h1>
+            </section>
+            <section class="woensdag">
+                <h1>woensdag</h1>
+            </section>
+            <section class="donderdag">
+                <h1>donderdag</h1>
+            </section>
+            <section class="vrijdag">
+                <h1>vrijdag</h1>
+            </section>
+        </section>
     </template>
     <script>
         (function () {
