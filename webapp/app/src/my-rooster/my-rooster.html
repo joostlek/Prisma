@@ -5,56 +5,45 @@
 <dom-module id="my-rooster">
     <template>
         <style>
-        	.maandag{
-        		text-align: center;
-        		width: 200px;
-        		height: 600px;
-        		background: aqua;
-        		display: inline-block;
-        		position: relative;       		
+            .rooster {
+                display: flex;
+            }
+            .rooster > section {
+                text-align: center;
+                width: 200px;
+                height: 600px;
+        		box-shadow: 0px 2px 2px gray;
+
+        		background: #A9E2F3;
+                display: inline-block;
+                position: relative;
+      
         	}
-        	.dinsdag{
-        		text-align: center;
-        		width: 200px;
-        		height: 600px;
-        		background: aqua;
-        		display: inline-block;
-        		position: relative;
+        	.les{
+        		text-align: left;
+        		width: 180px;
+        		margin-left: 10px;
+        		margin-right: 10px;
+        		background: #81DAF5;
+        		display: block;
+        		box-shadow: 0px 2px 2px gray;
+        		padding-top: 5px;
+        		padding-bottom: 5px;
         	}
- 	        .woensdag{
-        		text-align: center;
-        		width: 200px;
-        		height: 600px;
-        		background: aqua;
+        	a{
         		display: inline-block;
-        		position: relative;
-        		margin-right: 0px;
-				margin-left: 0px;
+        		padding-left: 5px;
         	}
-        	.donderdag{
-        		text-align: center;
-        		width: 200px;
-        		height: 600px;
-        		background: aqua;
-        		display: inline-block;
-        		position: relative;
-        		margin-right: 0px;
-				margin-left: 0px;
-        	}
-        	.vrijdag{
-        		text-align: center;
-        		width: 200px;
-        		height: 600px;
-        		background: aqua;
-        		display: inline-block;
-        		position: relative;
-        		margin-right: 0px;
-				margin-left: 0px;
-        	}
-        	
         </style>
+        <section class="rooster">
 			<section class="maandag">
 				<h1>maandag</h1>
+				<section class="les">
+					<a>vak</a><br>
+					<a>leraar</a><br>
+					<a>tijd</a><br>
+					<a>lokaal</a>
+				</section>
 			</section>
 			<section class="dinsdag">
 				<h1>dinsdag</h1>
@@ -68,6 +57,7 @@
 			<section class="vrijdag">
 				<h1>vrijdag</h1>
 			</section>
+        </section>
     </template>
     <script>
         (function () {
