@@ -62,9 +62,9 @@
             }
 
             .my-button {
-                width: 30px; /* full width */
+                /*width: 30px; !* full width *!*/
                 height: 20px;
-                padding: 20px;
+                padding: 20px 10px;
                 margin: 10px;
                 color: white; /* white tekst */
                 background: #1a9fd9; /* kind of blue */
@@ -92,7 +92,9 @@
                 <template is="dom-repeat" items="[[search_results]]">
                     <div>
                         <a href$="#/[[search_type]]/[[item.id]]">[[item.title]]</a>
-                        <a href$="#/student_presentie/[[item.id]]">[[item.title]]</a>
+                        <template is="dom-if" if="[[render_student_present_option]]">
+                            <paper-button href$="#/student_presentie/[[item.id]]" class="my-button">Presentie</paper-button>
+                        </template>
                     </div>
                 </template>
             </paper-material>
@@ -122,10 +124,12 @@
                 properties: {
                     search_keyword: {
                         type: String,
+                        value: '',
                     },
                     search_type: {
                         type: String, /* array<student-info>: student-info = {id, firstName, lastName, sameGroup}
 										array is constant groepnr is changable */
+                        observer: '_search_type_changed',
                     },
                     search_results: {
                         type: Array, /* array<student-info>: student-info = {id, firstName, lastName, sameGroup}
@@ -144,6 +148,10 @@
                                                                    regel in de functie dat er niets gebeurd
                                                                    als c_visible false is */
                     },
+                    render_student_present_option: {
+                        type: Boolean,
+                        value: false,
+                    }
                 },
 
                 _go_home: function () {
@@ -158,6 +166,19 @@
                     if (this.c_visible) {                                 // zodra zichtbaar geworden moet er wat worden gedaan
                     }
                 },
+
+                _search_type_changed: function () {
+                    this.search_results = [];
+                    console.log(this.search_type === "student");
+                    this.render_student_present_option = this.search_type === "student";
+                },
+
+                _checkForEnter: function (e) {
+                    if (e.keyCode === 13) {
+                        this._search_request_handler();
+                    }
+                },
+
 
                 _search_request_handler: function () {
                     console.log("_search keywords=" + this.search_keyword);

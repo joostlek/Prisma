@@ -32,26 +32,35 @@ public class Application {
         PrIS infoSysteem = new PrIS();
 
         SysteemDatumController systeemDatumController = new SysteemDatumController(infoSysteem);
-        LoginController loginController = new LoginController(infoSysteem);
         MedestudentenController medestudentenController = new MedestudentenController(infoSysteem);
         AgendaController agendaController = new AgendaController(infoSysteem);
         SearchController searchController = new SearchController(infoSysteem);
         StudentController studentController = new StudentController(infoSysteem);
-
         CursusController cursusController = new CursusController(infoSysteem);
 
-        server.registerHandler(SysteemDatumController.ROUTE_SYSTEEM_DATUM, systeemDatumController);
 
+        // @route /login
+        LoginController loginController = new LoginController(infoSysteem);
         server.registerHandler(LoginController.ROUTE_LOGIN, loginController);
 
+        // @route /systeemdatum/lesinfo
+        server.registerHandler(SysteemDatumController.ROUTE_SYSTEEM_DATUM, systeemDatumController);
+
+        // @route /student/medestudenten/ophalen
         server.registerHandler(MedestudentenController.ROUTE_MEDESTUDENT_OPHALEN, medestudentenController);
 
+        // @route /search/
         server.registerHandler(SearchController.ROUTE_SEARCH, searchController);
+
+        // @route /cursus/
         server.registerHandler(CursusController.ROUTE_CURSUS, cursusController);
+
+        // @route /presentie/ophalen
         server.registerHandler(StudentController.ROUTE_PRESENT_FETCH, studentController);
 
         server.registerHandler("/student/medestudenten/opslaan", medestudentenController);
 
+        // @route /agenda/laad
         server.registerHandler(AgendaController.ROUTE_AGENDA_LADEN, agendaController);
 
         server.start();
