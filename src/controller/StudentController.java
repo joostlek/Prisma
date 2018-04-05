@@ -1,21 +1,16 @@
 package controller;
 
 import com.google.gson.Gson;
-import model.Course;
 import model.Group;
 import model.Lesson;
 import model.PrIS;
 import model.person.Student;
-import responses.CourseResponse;
+import responses.LessonResponse;
 import server.Conversation;
 import server.Handler;
 
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 import java.util.ArrayList;
-import java.util.List;
 
 public class StudentController implements Handler {
     private PrIS informatieSysteem;
@@ -38,7 +33,7 @@ public class StudentController implements Handler {
 
     public void handle(Conversation conversation) {
         if (conversation.getRequestedURI().startsWith(ROUTE_PRESENT_FETCH)) {
-            ArrayList<CourseResponse> presentResponse = new ArrayList<>();
+            ArrayList<LessonResponse> presentResponse = new ArrayList<>();
 
 
             JsonObject responseObject = (JsonObject) conversation.getRequestBodyAsJSON();
@@ -47,7 +42,7 @@ public class StudentController implements Handler {
             Group group = informatieSysteem.getStudentGroup(student);
             System.out.println(student.getGroupId());
             for (Lesson lesson : group.getLessons()) {
-                presentResponse.add(new CourseResponse(lesson.getCourse().getName(), lesson.getFromTime(), lesson.getToTime()));
+                presentResponse.add(new LessonResponse(lesson.getCourse().getName(), lesson.getFromTime(), lesson.getToTime()));
             }
 
             Gson gson = new Gson();

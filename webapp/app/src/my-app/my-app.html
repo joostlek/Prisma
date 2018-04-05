@@ -155,6 +155,12 @@
                         <iron-icon icon="social:group"></iron-icon>
                         <span>Eigen gegevens</span>
                     </a>
+                    
+                   	<a name="rooster" href$="[[_c_baseURL]]rooster"
+                       verborgen$="[[!_are_strings_equal(_rol, 'undefined')]]">
+                        <iron-icon icon="social:group"></iron-icon>
+                        <span>Rooster</span>
+                    </a>
 
                     <!-- beschikbaar voor docent -->
 
@@ -250,6 +256,13 @@
                          title="studentinfo"
                          element$="my-studentinfo">
                     <my-studentinfo></my-studentinfo>
+                </section>
+                
+                <section page-name="rooster"
+                         title="ROOSTER"
+                         element$="my-rooster">
+                    <my-rooster>
+                    </my-rooster>
                 </section>
 
 
