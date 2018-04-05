@@ -42,10 +42,10 @@ public class StudentController implements Handler {
 
 
             JsonObject responseObject = (JsonObject) conversation.getRequestBodyAsJSON();
-            String studentId = responseObject.getString("student_id");
+            int studentId = Integer.parseInt(responseObject.getString("student_id"));
             Student student = informatieSysteem.getStudent(studentId);
             Group group = informatieSysteem.getStudentGroup(student);
-
+            System.out.println(student.getGroupId());
             for (Lesson lesson : group.getLessons()) {
                 presentResponse.add(new CourseResponse(lesson.getCourse().getName(), lesson.getFromTime(), lesson.getToTime()));
             }
