@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import model.PrIS;
 import model.Group;
 import model.person.Student;
+import responses.StudentResponse;
 import server.Conversation;
 import server.Handler;
 
@@ -51,20 +52,12 @@ public class MedestudentenController implements Handler {
 		JsonObject jsonRequest = (JsonObject) conversation.getRequestBodyAsJSON();
 		String username = jsonRequest.getString("username");
 		Student student = informatieSysteem.getStudent(username);
-		Group klas = informatieSysteem.getStudentGroup(student);		// Group van de student opzoeken
-
-		List<Student> lStudentenVanKlas = klas.getStudents();	// medestudenten opzoeken
-
-        ArrayList<Map<String, Object>> res = new ArrayList<>();
-
+		Group klas = informatieSysteem.getStudentGroup(student);
+        ArrayList<StudentResponse> res = new ArrayList<>();
         for (Student medeStudent: klas.getStudents()) {
             if (medeStudent != student) {
-                Map<String, Object> otherStudent = new HashMap<>();
-                otherStudent.put("id", medeStudent.getStudentId());
-                otherStudent.put("firstName", medeStudent.getFirstName());
-                otherStudent.put("lastName", medeStudent.getFullLastName());
-                otherStudent.put("sameGroup", (!student.getGroupId().equals("") && medeStudent.getGroupId().equals(student.getGroupId())));
-                res.add(otherStudent);
+            	StudentResponse response = new StudentResponse(medeStudent, (!student.getGroupId().equals("") && medeStudent.getGroupId().equals(student.getGroupId())));
+                res.add(response);
             }
         }
         Gson gson = new Gson();
