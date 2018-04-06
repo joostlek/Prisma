@@ -108,21 +108,11 @@
             </paper-material>
             <paper-material elevation="1">
                 <div class="my-title">Zoek resultaten</div>
-<<<<<<< HEAD
-                
                    <vaadin-grid items="[[search_results]]" id="lol">
                     <vaadin-grid-column>
                         <template class="cell">
                             <a class="resultaat" href$="#/[[search_type]]/[[item.id]]">[[item.title]]</a>
                             <paper-button  href$="#/student_presentie/[[item.id]]" class="my-button" id="present-button">Presentie</paper-button>
-=======
-                <template is="dom-repeat" items="[[search_results]]">
-                    <div>
-                        <a href$="#/[[search_type]]/[[item.id]]">[[item.title]]</a>
-                        <template is="dom-if" if="[[render_student_present_option]]">
-                            <paper-button href$="#/student_presentie/[[item.id]]" class="my-button">Presentie
-                            </paper-button>
->>>>>>> 29c2dda984fb144b3fa08c3dbd4f14bbd49c341c
                         </template>
                     </vaadin-grid-column>
 
