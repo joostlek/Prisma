@@ -65,7 +65,7 @@
 	                <template is="dom-repeat" items="{{item.items}}" as="les">
 						<ul class="les">
 							<li>{{les.naam}}</li>
-							<li>leraar</li>
+							<li>{{les.leraar}}</li>
 							<li>tijd</li>
 							<li>lokaal</li>
 						</ul>
@@ -115,11 +115,11 @@
                     	type: Array,
                     	value() {
                     		return [
-                    			{datum: "6-4-2016", items: [{naam: "ICT"},{naam: "ENGELS"}]},
-                    			{datum: "7-4-2016", items: [{naam: "ICT"}]},
-                    			{datum: "8-4-2016", items: [{naam: "ICT"}]},
-                    			{datum: "9-4-2016", items: [{naam: "ICT"}]},
-                    			{datum: "9-4-2016", items: [{naam: "ICT"}]}
+                    			{datum: "6-4-2016", items: [{naam: "ICT", leraar: "jan van den bakker"},{naam: "ENGELS", leraar: "jan van den bakker"}]},
+                    			{datum: "7-4-2016", items: [{naam: "ICT", leraar: "jan van den bakker"}]},
+                    			{datum: "8-4-2016", items: [{naam: "ICT", leraar: "jan van den bakker"}]},
+                    			{datum: "9-4-2016", items: [{naam: "ICT", leraar: "jan van den bakker"}]},
+                    			{datum: "9-4-2016", items: [{naam: "ICT", leraar: "jan van den bakker"}]}
                     		];
                     	}
                     },
@@ -140,8 +140,8 @@
                 },
                 
                 _date_to_string: function (date) {
-               		
-                }
+               		return null;
+                },
                 
 
                 _initializing: function () {

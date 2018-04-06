@@ -1,15 +1,21 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
 <link rel="import" href="/bower_components/paper-styles/typography.html">
-<link rel="import" href="/bower_components/paper-button/paper-button.html">
-<link rel="import" href="/bower_components/paper-checkbox/paper-checkbox.html">
-<link rel="import" href="/bower_components/paper-material/paper-material.html">
+<link rel="import"
+	href="/bower_components/paper-button/paper-button.html">
+<link rel="import"
+	href="/bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import"
+	href="/bower_components/paper-material/paper-material.html">
 <link rel="import" href="/bower_components/paper-dropdown-menu.html">
 <link rel="import" href="/bower_components/paper-item/paper-item.html">
-<link rel="import" href="/bower_components/paper-listbox/paper-listbox.html">
-<link rel="import" href="/bower_components/paper-listbox/paper-listbox.html">
+<link rel="import"
+	href="/bower_components/paper-listbox/paper-listbox.html">
+<link rel="import"
+	href="/bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="/bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
 
+<<<<<<< HEAD
 <!-- Dit element wordt door de aanwezigheid van de c_visible parameter steeds opnie uw gerefreshed
      op het moment dat het element in de iron-pages geselecteerd wordt
      en ook zodra hij weer gedeselecteerd wordt.
@@ -203,3 +209,203 @@
         })();
     </script>
 </dom-module>
+=======
+<dom-module id="my-search"> <template>
+<style>
+span { @apply --paper-font-body1;
+	
+}
+
+.my-title {
+	font-size: 20px;
+	border-bottom: 1px solid gray; /* a red line */
+	padding-bottom: 2px; /* space above the border line */
+}
+
+paper-material {
+	display: block;
+	margin: 10px;
+	padding: 10px;
+}
+
+paper-dropdown-menu, paper-listbox {
+	width: 200px;
+	margin: auto;
+	display: block;
+	background: transparent;
+	box-shadow: 0 2px 6px rgba(191, 191, 191, 0.48);
+}
+
+paper-listbox
+ 
+paper-item
+:not
+ 
+(
+:last-child
+ 
+)
+{
+border-bottom
+:
+ 
+1
+px
+ 
+solid
+ 
+#e6e6e6
+;
+
+
+}
+.search-box {
+	display: flex;
+	margin: 0 auto;
+	width: 500px;
+}
+
+.search-box>* {
+	margin: 0 10px;
+	align-self: center;
+}
+
+.my-button {
+	/*width: 30px; !* full width *!*/
+	height: 20px;
+	padding: 20px 10px;
+	margin: 10px;
+	color: white; /* white tekst */
+	background: #1a9fd9; /* kind of blue */ -
+	-paper-button-ink-color: #00567B; /* kind of dark blue */
+}
+
+#present-button {
+	float: right;
+	color: white;
+	height: 20px;
+	border-radius: 3px;
+	padding: 14px 10px;
+}
+
+vaadin-grid-cell-content {
+	display: inline-block;
+}
+
+.resultaat {
+	margin-top: 10%;
+}
+
+a:-webkit-any-link {
+	color: black;
+	cursor: pointer;
+	text-decoration: none;
+}
+</style>
+<section>
+
+	<paper-material elevation="1">
+	<div class="search-box">
+		<paper-input id="search_element" on-keydown="_checkForEnter"
+			label="Zoeken" value="{{search_keyword}}"></paper-input>
+		<paper-listbox attr-for-selected="item-name"
+			selected="{{search_type}}" fallback-selection="student">
+		<paper-item item-name="student">Student</paper-item> <paper-item
+			item-name="cursus">Klas of cursus</paper-item> </paper-listbox>
+		<paper-button class="my-button" on-click="_search_request_handler">Zoeken
+		</paper-button>
+	</div>
+	</paper-material>
+	<paper-material elevation="1">
+	<div class="my-title">Zoek resultaten</div>
+	<vaadin-grid items="[[search_results]]" id="lol"> <vaadin-grid-column>
+	<template class="cell"> <a class="resultaat"
+		href$="#/[[search_type]]/[[item.id]]">[[item.title]]</a> <template
+		is="dom-if" if="[[render_student_present_option]]"> <a
+		href$="#/student_presentie/[[item.id]]" class="my-button"
+		id="present-button">PRESENTIE</a> </template> </template> </vaadin-grid-column></paper-material>
+</section>
+
+<!-- <template is="dom-repeat" items="[[search_results]]">
+            <div>
+                <a href$="#/[[search_type]]/[[item.id]]">[[item.title]]</a>
+                <template is="dom-if" if="[[render_student_present_option]]">
+                    <paper-button href$="#/student_presentie/[[item.id]]" class="my-button">Presentie
+                    </paper-button> --> <iron-ajax id="ajax_search"
+	method="POST" url="/search" handle-as="json"
+	on-response="_search_response_handler"> </iron-ajax> </template> <script>
+		(function() {
+			'use strict';
+			Polymer({
+				is : 'my-search',
+
+				properties : {
+					search_keyword : {
+						type : String,
+						value : '',
+					},
+					search_type : {
+						type : String,
+						observer : '_search_type_changed',
+					},
+					search_results : {
+						type : Array,
+					},
+					c_rol : {
+						type : String,
+					},
+					c_username : {
+						type : String,
+					},
+					c_visible : {
+						type : Boolean,
+						value : true,
+						observer : '_initializing',
+					},
+					render_student_present_option : {
+						type : Boolean,
+						value : false,
+					}
+				},
+
+				_go_home : function() {
+					var lApp = document.querySelector('my-app');
+					var lAppRouter = lApp.$.approuter;
+					lAppRouter.data = {
+						page : ""
+					};
+				},
+
+				_initializing : function() {
+					if (this.c_visible) {
+					}
+				},
+
+				_search_type_changed : function() {
+					this.search_results = [];
+					console.log(this.search_type === "student");
+					this.render_student_present_option = this.search_type === "student";
+				},
+
+				_checkForEnter : function(e) {
+					if (e.keyCode === 13) {
+						this._search_request_handler();
+					}
+				},
+
+				_search_request_handler : function() {
+					this.$.ajax_search.contentType = "application/json";
+					this.$.ajax_search.body = {
+						"keywords" : this.search_keyword,
+						"type" : this.search_type,
+					};
+					this.$.ajax_search.generateRequest();
+				},
+
+				_search_response_handler : function(request) {
+					this.search_results = request.detail.response;
+				},
+			});
+		})();
+	</script> </dom-module>
+>>>>>>> 63facf2b01fa91fb44df81d82ce0addd0aee1cde
