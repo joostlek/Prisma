@@ -56,8 +56,7 @@ public class MedestudentenController implements Handler {
         ArrayList<StudentResponse> res = new ArrayList<>();
         for (Student medeStudent: klas.getStudents()) {
             if (medeStudent != student) {
-            	StudentResponse response = new StudentResponse(medeStudent, (!student.getGroupId().equals("") && medeStudent.getGroupId().equals(student.getGroupId())));
-                res.add(response);
+                res.add(new StudentResponse(medeStudent, (!student.getGroupId().equals("") && medeStudent.getGroupId().equals(student.getGroupId()))));
             }
         }
         Gson gson = new Gson();
