@@ -130,7 +130,7 @@
                     </a>
 
                     <a name="studentinfo"
-                       href$="[[_c_baseURL]]studentinfo"
+                       href$="[[_c_baseURL]]studentinfo/[[_username]]"
                        verborgen$="[[!_has_role(_rol, 'student')]]">
                         <iron-icon icon="social:group"></iron-icon>
                         <span>Eigen gegevens</span>
@@ -314,7 +314,7 @@
                             c_data="[[_ar_subroute_data]]">
                     </my-presentie-les>
                 </section>
-                
+
                 <section page-name="student_presentie_lijst"
                          title="presentie lijst"
                          element$="my-presentie-lijst">
