@@ -36,8 +36,9 @@ public class StudentController implements Handler {
     public void handle(Conversation conversation) {
         if (conversation.getRequestedURI().startsWith(ROUTE_PRESENT_FETCH)) {
             handlePresent(conversation);
+        } else if (conversation.getRequestedURI().startsWith(ROUTE_STUDENT_INFO)) {
+            handleStudentInfo(conversation);
         }
-
     }
 
     public void handlePresent(Conversation conversation) {
