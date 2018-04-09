@@ -59,7 +59,7 @@
         </style>
         <section class="rooster">
         	<paper-button class="my-button"><iron-icon icon="icons:chevron-left"></iron-icon></paper-button>
-              <template is="dom-repeat" items="{{dates}}">
+              <template is="dom-repeat" items="{{dates}}" id="rooster_list">
 				<section class="maandag">
 					<h1>[[item.datum]]</h1>
 	                <template is="dom-repeat" items="{{item.items}}" as="les">
@@ -87,6 +87,12 @@
 			</section> -->
 			<paper-button class="my-button"><iron-icon icon="icons:chevron-right"></iron-icon></paper-button>
         </section>
+		<iron-ajax
+				id="ajax_rooster"
+				method="GET"
+				url="/agenda/laad"
+				handle-as="json"
+				on-response="_rooster_response_handler"></iron-ajax>
     </template>
     <script>
         (function () {
@@ -110,25 +116,14 @@
                     c_username: {
                         type: String,
                     },
-                    
+
                     dates: {
                     	type: Array,
-                    	value() {
-                    		return [
-                    			{datum: {day: 6, month: 4, year: 2016}, items: [{naam: "ICT", leraar: "jan van den bakker"},{naam: "ENGELS", leraar: "jan van den bakker"}]},
-                    			{datum: {day: 6, month: 4, year: 2016}, items: [{naam: "ICT", leraar: "jan van den bakker"}]},
-                    			{datum: {day: 6, month: 4, year: 2016}, items: [{naam: "ICT", leraar: "jan van den bakker"}]},
-                    			{datum: {day: 6, month: 4, year: 2016}, items: [{naam: "ICT", leraar: "jan van den bakker"}]},
-                    			{datum: {day: 6, month: 4, year: 2016}, items: [{naam: "ICT", leraar: "jan van den bakker"}]}
-                    		];
-                    	}
                     },
                     c_visible: {
                         type: Boolean, /* true when element is the active visible item */
                         value: true,
-                        observer: '_initializing', /* wordt ook aangeroepen bijwisseling van true naar false.
-                                                                   regel in de functie dat er niets gebeurd
-                                                                   als c_visible false is */
+                        observer: '_initializing',
                     },
                 },
                 _go_home: function () {
@@ -138,16 +133,27 @@
                                                                     // door de two way binding in <app-route> en <app-location>
                                                                     // zal ook de url echt wijzigen
                 },
-                
-                _date_to_string: function (date) {
-               		return null;
-                },
-                
+
 
                 _initializing: function () {
                     if (this.c_visible) {                                 // zodra zichtbaar geworden moet er wat worden gedaan
+                    	this._rooster_request_handler()
                     }
-                }
+                },
+
+                _rooster_request_handler: function() {
+                    this.$.ajax_rooster.contentType = "application/json";
+                    this.$.ajax_rooster.body = {
+                        "username" : this.c_username,
+                    };
+                    this.$.ajax_rooster.generateRequest();
+                },
+
+                _rooster_response_handler: function(request) {
+                    console.log(this.$.rooster_list.items)
+					console.log(request.detail.response)
+                    this.$.rooster_list.items = request.detail.response;
+                },
             });
         })();
     </script>

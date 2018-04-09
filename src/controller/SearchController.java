@@ -8,7 +8,8 @@ import responses.SearchResponse;
 import server.Conversation;
 import server.Handler;
 
-import javax.json.*;
+import javax.json.Json;
+import javax.json.JsonObject;
 import java.util.ArrayList;
 
 public class SearchController implements Handler {

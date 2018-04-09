@@ -37,24 +37,18 @@ public class AgendaController implements Handler {
 
     private void load(Conversation conversation) {
         JsonObject lJsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
-        Student student = informatieSysteem.getStudent(lJsonObjectIn.getString("username"));
-        String groupCode = student.getGroupId();
-        Group group = informatieSysteem.getGroup(groupCode);
+//        Student student = informatieSysteem.getStudent(lJsonObjectIn.getString("username"));
+//        String groupCode = student.getGroupId();
+//        Group group = informatieSysteem.getGroup(groupCode);
 
         Calendar cal = Calendar.getInstance();
-        if (!lJsonObjectIn.isNull("weeknummer")) {
-            cal.set(Calendar.WEEK_OF_YEAR, Integer.parseInt(lJsonObjectIn.getString("weeknummer")));
-        } else {
-            cal.set(Calendar.WEEK_OF_YEAR, cal.getWeekYear());
-        }
+    //        if (!lJsonObjectIn.isNull("weeknummer")) {
+    //            cal.set(Calendar.WEEK_OF_YEAR, Integer.parseInt(lJsonObjectIn.getString("weeknummer")));
+    //        } else {
+    //            cal.set(Calendar.WEEK_OF_YEAR, cal.getWeekYear());
+    //        }
 
         Gson gson = new Gson();
-        conversation.sendJSONMessage("[\n" +
-                "{datum: {day: 6, month: 4, year: 2016}, items: [{naam: \"ICT\", leraar: \"jan van den bakker\"},{naam: \"ENGELS\", leraar: \"jan van den bakker\"}]},\n" +
-                "{datum: {day: 6, month: 4, year: 2016}, items: [{naam: \"ICT\", leraar: \"jan van den bakker\"}]},\n" +
-                "{datum: {day: 6, month: 4, year: 2016}, items: [{naam: \"ICT\", leraar: \"jan van den bakker\"}]},\n" +
-                "{datum: {day: 6, month: 4, year: 2016}, items: [{naam: \"ICT\", leraar: \"jan van den bakker\"}]},\n" +
-                "{datum: {day: 6, month: 4, year: 2016}, items: [{naam: \"ICT\", leraar: \"jan van den bakker\"}]}\n" +
-                "]");
+        conversation.sendJSONMessage("[{\"datum\":{\"day\":6,\"month\":4,\"year\":2016},\"items\":[{\"naam\":\"ICT\",\"leraar\":\"jan van den bakker\"},{\"naam\":\"ENGELS\",\"leraar\":\"jan van den bakker\"}]},{\"datum\":{\"day\":6,\"month\":4,\"year\":2016},\"items\":[{\"naam\":\"ICT\",\"leraar\":\"jan van den bakker\"}]},{\"datum\":{\"day\":6,\"month\":4,\"year\":2016},\"items\":[{\"naam\":\"ICT\",\"leraar\":\"jan van den bakker\"}]},{\"datum\":{\"day\":6,\"month\":4,\"year\":2016},\"items\":[{\"naam\":\"ICT\",\"leraar\":\"jan van den bakker\"}]},{\"datum\":{\"day\":6,\"month\":4,\"year\":2016},\"items\":[{\"naam\":\"ICT\",\"leraar\":\"jan van den bakker\"}]}]");
     }
 }
