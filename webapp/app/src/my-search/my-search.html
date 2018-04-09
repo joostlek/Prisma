@@ -1,4 +1,4 @@
-<link rel="import" href="/bower_components/polymer/polymer.html">
+ <link rel="import" href="/bower_components/polymer/polymer.html">
 <link rel="import" href="/bower_components/paper-styles/typography.html">
 <link rel="import"
       href="/bower_components/paper-button/paper-button.html">
@@ -126,12 +126,7 @@
             </paper-material>
         </section>
 
-        <!-- <template is="dom-repeat" items="[[search_results]]">
-                    <div>
-                        <a href$="#/[[search_type]]/[[item.id]]">[[item.title]]</a>
-                        <template is="dom-if" if="[[render_student_present_option]]">
-                            <paper-button href$="#/student_presentie/[[item.id]]" class="my-button">Presentie
-                            </paper-button> -->
+        
         <iron-ajax
                 id="ajax_search"
                 method="POST"
