@@ -165,7 +165,13 @@ public class PrIS {
                 String firstName = element[1];
                 String middleName = element[2];
                 String lastName = element[3];
-                Teacher teacher = new Teacher(firstName, middleName, lastName, "geheim", username, this.teachers.size());
+                Teacher teacher;
+                if (this.teachers.size() == 0) {
+                    teacher = new Teacher(firstName, middleName, lastName, "geheim", username, this.teachers.size(), this.groups.get(0));
+                    this.groups.get(0).setSlb(teacher);
+                } else {
+                    teacher = new Teacher(firstName, middleName, lastName, "geheim", username, this.teachers.size());
+                }
                 this.teachers.add(teacher);
                 this.people.add(teacher);
             }
@@ -181,7 +187,6 @@ public class PrIS {
         Group k5 = new Group("TICT-SIE-V1E", "V1E");
         Group k6 = new Group("TICT-SIE-V1F", "V1F");
 
-        //pKlassen.add(k1);
         this.groups.add(k2);
         this.groups.add(k3);
         this.groups.add(k4);

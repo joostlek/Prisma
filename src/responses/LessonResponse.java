@@ -3,10 +3,8 @@ package responses;
 import model.Lesson;
 import model.Presention;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Map;
 
 public class LessonResponse {
 
