@@ -13,7 +13,7 @@ public class Lesson {
     private Teacher teacher;
     private String room;
     private Group group;
-    private ArrayList<Presention> presentions = new ArrayList<>();
+    private ArrayList<Presention> presentions;
     private int lessonId;
 
     public Lesson(LocalDateTime fromTime, LocalDateTime toTime, Course course, Teacher teacher, String room, Group group, int lessonId) {
@@ -24,6 +24,7 @@ public class Lesson {
         this.room = room;
         this.group = group;
         this.lessonId = lessonId;
+        this.presentions = new ArrayList<>();
     }
 
     public LocalDateTime getFromTime() {
@@ -84,6 +85,10 @@ public class Lesson {
 
     public LessonResponse toLessonResponse() {
         return new LessonResponse(this);
+    }
+
+    public void addPresention(Presention presention) {
+        this.presentions.add(presention);
     }
 
     public int getLessonId() {

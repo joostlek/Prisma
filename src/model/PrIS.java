@@ -124,6 +124,17 @@ public class PrIS {
         return cursusSearch;
     }
 
+    public Lesson getLesson(int lessonId) {
+        for (Group group: this.groups) {
+            for (Lesson lesson: group.getLessons()) {
+                if (lesson.getLessonId() == lessonId) {
+                    return lesson;
+                }
+            }
+        }
+        return null;
+    }
+
     /**
      * @param username
      * @param password

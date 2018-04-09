@@ -26,6 +26,7 @@ public class LessonResponse {
         this.lokaal = lesson.getRoom();
         this.klas = lesson.getGroup().getGroupCode();
         this.id = lesson.getLessonId();
+        this.presentionResponses = new ArrayList<>();
         for (Presention presention: lesson.getPresentions()) {
             this.presentionResponses.add(presention.toPresentionResponse());
         }
