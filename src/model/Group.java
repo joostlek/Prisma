@@ -1,3 +1,4 @@
+
 package model;
 
 import java.util.ArrayList;
@@ -5,12 +6,14 @@ import java.util.Collections;
 import java.util.List;
 
 import model.person.Student;
+import model.person.Teacher;
 
 public class Group {
 	private String groupCode;
 	private String name;
 	private ArrayList<Student> students = new ArrayList<>();
 	private ArrayList<Lesson> lessons;
+	private Teacher slb;
 
 	public Group(String groupCode, String name) {
 		this.groupCode = groupCode;
@@ -50,5 +53,13 @@ public class Group {
 
 	public void addLesson(Lesson lesson) {
 		this.lessons.add(lesson);
+	}
+
+	public Teacher getSlb() {
+		return slb;
+	}
+
+	public void setSlb(Teacher slb) {
+		this.slb = slb;
 	}
 }

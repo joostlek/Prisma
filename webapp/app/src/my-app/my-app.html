@@ -1,3 +1,4 @@
+
 <!doctype html>
 
 <link rel="import" href="elements.html"> <!-- gewijzigd tov PSK -->
@@ -15,32 +16,27 @@
                 font-size: 14px; /*toegevoegd tov psk                */
                 font-weight: 400; /*toegevoegd tov psk                */
             }
-
             app-drawer { /*toegevoegd tov psk */
                 --app-drawer-content-container: {
                     background-color: var(--app-lightgray);
                 }
             }
-
             .toolbar {
                 background: var(--app-blue);
                 color: white;
                 height: 56px; /* to have a fixed height */
             }
-
             #toolbarlogo {
                 height: 37px;
                 background: white;
                 padding: 4px; /* to adjust the icon position */
                 padding-left: 11px; /* to adjust the icon position */
             }
-
             .drawer-list {
                 margin: 0 20px;
                 font-size: 14px; /*toegevoegd tov psk */
                 font-weight: 400; /*toegevoegd tov psk */
             }
-
             .drawer-list a {
                 display: block;
                 padding: 0 16px;
@@ -48,25 +44,21 @@
                 color: black;
                 line-height: 40px;
             }
-
             .drawer-list a.iron-selected {
                 color: #3f51b5; /* blue-ish, gewijzigd tov psk      */
                 color: var(--app-blue);
                 font-weight: bold;
             }
-
             .drawer-list a[verborgen] { /* toegevoegd tov PSK               */
                 /* als verborgen true is dan ..     */
                 display: none; /* onzichtbaar maken                */
             }
-
             paper-material {
                 padding: 16px 16px 16px 16px;
                 width: calc(98% - 132px);
                 margin: 16px auto 16px auto;
                 background: var(--app-lightgray);
             }
-
         </style>
 
         <app-location route="{{_ar_route}}" use-hash-as-path></app-location>
@@ -130,14 +122,14 @@
                     </a>
 
                     <a name="studentinfo"
-                       href$="[[_c_baseURL]]studentinfo"
+                       href$="[[_c_baseURL]]studentinfo/[[_username]]"
                        verborgen$="[[!_has_role(_rol, 'student')]]">
                         <iron-icon icon="social:group"></iron-icon>
                         <span>Eigen gegevens</span>
                     </a>
 
                     <a name="rooster" href$="[[_c_baseURL]]rooster"
-                       verborgen$="[[_has_role(_rol, 'undefined')]]">
+                       verborgen$="[[!_has_role(_rol, 'docent', 'slb')]]">
                         <iron-icon icon="social:group"></iron-icon>
                         <span>Rooster</span>
                     </a>
@@ -249,13 +241,18 @@
                 <section page-name="studentinfo"
                          title="studentinfo"
                          element$="my-studentinfo">
-                    <my-studentinfo></my-studentinfo>
+                    <my-studentinfo
+                            c_data="[[_ar_subroute_data]]"
+                            c_visible="[[_are_strings_equal(_ar_page, 'studentinfo')]]">
+                    </my-studentinfo>
                 </section>
 
                 <section page-name="rooster"
                          title="ROOSTER"
                          element$="my-rooster">
-                    <my-rooster>
+                    <my-rooster
+                            c_username="[[_username]]"
+                            c_visible="[[_are_strings_equal(_ar_page, 'rooster')]]">
                     </my-rooster>
                 </section>
 
@@ -314,7 +311,7 @@
                             c_data="[[_ar_subroute_data]]">
                     </my-presentie-les>
                 </section>
-                
+
                 <section page-name="student_presentie_lijst"
                          title="presentie lijst"
                          element$="my-presentie-lijst">
@@ -330,7 +327,6 @@
     <script>
         (function () {
             'use strict';
-
             /* _xxxx private              : geen external data binding      - geen notify
                _c_xx private constant     : geen external binding, constant - geen notify
                c_xx  public constant      : one way external databinding [[c_xx]] - geen notify nodig
@@ -338,7 +334,6 @@
             */
             Polymer({
                 is: 'my-app',
-
                 properties: {
                     _c_baseURL: {
                         type: String,
@@ -387,12 +382,10 @@
                         type: String,
                     },
                 },  //end of properties
-
                 observers: [
                     '_ar_route_data_page_changed(_ar_route_data.page)',
                     '_ar_subroute_data_subpage_changed(_ar_subroute_data.subpage)',
                 ],
-
                 _ar_route_data_page_changed: function (pNewPage) {
                     //if (!this.$.drawer.persistent) {
                     //  this.$.drawer.close();
@@ -403,7 +396,6 @@
                         this._ar_page = pNewPage;
                     }
                 },
-
                 _ar_selected_object_changed: function (pSelectedObject) {
                     // Load page import on demand. Show 404 page if fails
                     if (pSelectedObject == undefined) {
@@ -423,11 +415,9 @@
                     var resolvedPageUrl = this.resolveUrl("../" + lElementName + '/' + lElementName + '.html');
                     this.importHref(resolvedPageUrl, null, this._ar_showPage404, true);
                 },
-
                 _ar_showPage404: function () {
                     this._ar_page = 'view404';
                 },
-
                 _ar_subroute_data_subpage_changed(pNewSubpage) {
                     if ((pNewSubpage == "") || (pNewSubpage == undefined)) {
                         // nothing to do
@@ -435,7 +425,6 @@
                         this._ar_page = this._ar_route_data.page + "_" + pNewSubpage;
                     }
                 },
-
                 /* de volgende functie wordt gebruikt om een boolean te produceren
                   die true is als de twee strings gelijk zijn.
                   wordt gebruikt in index.html
@@ -444,55 +433,54 @@
                     console.log("_are_strings_equal: " + p_str1 + " met: 2 " + p_str2);
                     return (p_str1 == p_str2);
                 },
-
-                _has_role(role, ...role_needed) {
-                    console.log(role)
-                    return role_needed.includes(role);
-                },
-
-                ready: function () {
-                    var eenDatumObject = new Date(); // is vandaag
-                    this._systeemdatumstandaard = this.date_to_standaard_string(eenDatumObject);
-                    this._systeemdatumlokaal = eenDatumObject.toLocaleDateString();
-                    console.log("application ready to run");
-                },
-
-                // convert a JSDate-object to standaard format (=YYYY-MM-DD)
-                date_to_standaard_string: function (p_JSDate) {
-                    var lJaar = p_JSDate.getFullYear();
-                    var lMaand = p_JSDate.getMonth() + 1;
-                    var lDag = p_JSDate.getDate();
-
-                    var lMaandStr = lMaand.toString();
-                    if (lMaandStr.length == 1) {
-                        lMaandStr = "0" + lMaandStr;
-                    }
-                    var lDagStr = lDag.toString();
-                    if (lDagStr.length == 1) {
-                        lDagStr = "0" + lDagStr;
-                    }
-                    var lString =
-                        lJaar.toString() + "-" +
-                        lMaandStr + "-" +
-                        lDagStr;
-                    return lString;
-                },
-
-                // convert a YY-MM-DD string to local format (dutch lokaal: DD-MM-YYYY)
-                standaarddatumstring_to_lokaledatumstring: function (p_standaarddatumstring) {
-                    var lokaledatumstring = "";
-                    if (p_standaarddatumstring != "") {
-                        /* gebruikt het Javascript date object om op basis van een standaarddatumstring
-                           een object te maken en via dit een lokaledatumstring te maken */
-                        var eenDatumObject = new Date(p_standaarddatumstring);
-                        lokaledatumstring = eenDatumObject.toLocaleDateString();
-                        /*deze conversie werk zowel voor nederlandse windows als internationale windows. */
-                    }
-                    return lokaledatumstring;
-                },
-
-            });
-
+                _has_role(role,...role_needed)
+            {
+                console.log(role)
+                return role_needed.includes(role);
+            }
+        ,
+            ready: function () {
+                var eenDatumObject = new Date(); // is vandaag
+                this._systeemdatumstandaard = this.date_to_standaard_string(eenDatumObject);
+                this._systeemdatumlokaal = eenDatumObject.toLocaleDateString();
+                console.log("application ready to run");
+            }
+        ,
+            // convert a JSDate-object to standaard format (=YYYY-MM-DD)
+            date_to_standaard_string: function (p_JSDate) {
+                var lJaar = p_JSDate.getFullYear();
+                var lMaand = p_JSDate.getMonth() + 1;
+                var lDag = p_JSDate.getDate();
+                var lMaandStr = lMaand.toString();
+                if (lMaandStr.length == 1) {
+                    lMaandStr = "0" + lMaandStr;
+                }
+                var lDagStr = lDag.toString();
+                if (lDagStr.length == 1) {
+                    lDagStr = "0" + lDagStr;
+                }
+                var lString =
+                    lJaar.toString() + "-" +
+                    lMaandStr + "-" +
+                    lDagStr;
+                return lString;
+            }
+        ,
+            // convert a YY-MM-DD string to local format (dutch lokaal: DD-MM-YYYY)
+            standaarddatumstring_to_lokaledatumstring: function (p_standaarddatumstring) {
+                var lokaledatumstring = "";
+                if (p_standaarddatumstring != "") {
+                    /* gebruikt het Javascript date object om op basis van een standaarddatumstring
+                       een object te maken en via dit een lokaledatumstring te maken */
+                    var eenDatumObject = new Date(p_standaarddatumstring);
+                    lokaledatumstring = eenDatumObject.toLocaleDateString();
+                    /*deze conversie werk zowel voor nederlandse windows als internationale windows. */
+                }
+                return lokaledatumstring;
+            }
+        ,
+        })
+            ;
         })();
     </script>
 

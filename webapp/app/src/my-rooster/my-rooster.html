@@ -66,7 +66,7 @@
         	<paper-button class="my-button" onclick="_rooster_previous_week()"><iron-icon icon="icons:chevron-left"></iron-icon></paper-button>
               <template is="dom-repeat" items="{{dates}}" id="rooster_list">
 				<section class="maandag">
-					<h1>[[item.datum=]]</h1>
+					<h1>[[item.datum]]</h1>
 	                <template is="dom-repeat" items="{{item.items}}" as="les">
 						<a href="#/student_presentie">
 						<ul class="les">
@@ -83,8 +83,8 @@
         </section>
 		<iron-ajax
 				id="ajax_rooster"
-				method="GET"
-				url="../agenda/laad"
+				method="POST"
+				url="/agenda/laad"
 				handle-as="json"
 				on-response="_rooster_response_handler">
 		</iron-ajax>
@@ -147,7 +147,7 @@
                 _rooster_response_handler: function(request) {
                     console.log(this.$.rooster_list.items)
 					console.log(request.detail.response)
-                    this.$.rooster_list.items = request.detail.response;
+                    this.$.rooster_list.items = request.detail.response.rooster;
                 },
                 
                 _rooster_next_week: function(week) {

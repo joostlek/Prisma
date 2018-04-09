@@ -1,8 +1,7 @@
+
 package model;
 
-import model.person.Person;
-import model.person.Student;
-import model.person.Teacher;
+import model.person.*;
 import utils.CSVReader;
 
 import java.io.IOException;
@@ -16,6 +15,8 @@ public class PrIS {
     private ArrayList<Student> students;
     private ArrayList<Group> groups;
     private ArrayList<Person> people;
+    private ArrayList<Decaan> decanen;
+    private ArrayList<Logistic> logistics;
     private Study study;
 
     /**
@@ -46,6 +47,9 @@ public class PrIS {
         students = new ArrayList<>();
         groups = new ArrayList<>();
         people = new ArrayList<>();
+        decanen = new ArrayList<>();
+        logistics = new ArrayList<>();
+
 
         fillGroup();
         fillStudents();
@@ -55,6 +59,8 @@ public class PrIS {
 //        study.setCourses(getCourses());
 
         fillSchedule();
+        fillDecanen();
+        fillLogistics();
     }
 
     public Teacher getTeacher(String username) {
@@ -73,6 +79,10 @@ public class PrIS {
             }
         }
         return null;
+    }
+
+    public ArrayList<Group> getGroups() {
+        return groups;
     }
 
     public Student getStudent(String username) {
@@ -113,6 +123,17 @@ public class PrIS {
             }
         }
         return cursusSearch;
+    }
+
+    public Lesson getLesson(int lessonId) {
+        for (Group group: this.groups) {
+            for (Lesson lesson: group.getLessons()) {
+                if (lesson.getLessonId() == lessonId) {
+                    return lesson;
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -161,7 +182,13 @@ public class PrIS {
                 String firstName = element[1];
                 String middleName = element[2];
                 String lastName = element[3];
-                Teacher teacher = new Teacher(firstName, middleName, lastName, "geheim", username, this.teachers.size());
+                Teacher teacher;
+                if (this.teachers.size() == 0) {
+                    teacher = new Teacher(firstName, middleName, lastName, "geheim", username, this.teachers.size(), this.groups.get(0));
+                    this.groups.get(0).setSlb(teacher);
+                } else {
+                    teacher = new Teacher(firstName, middleName, lastName, "geheim", username, this.teachers.size());
+                }
                 this.teachers.add(teacher);
                 this.people.add(teacher);
             }
@@ -171,18 +198,49 @@ public class PrIS {
     }
 
     private void fillGroup() {
-        Group k2 = new Group("TICT-SIE-V1B", "V1B");
-        Group k3 = new Group("TICT-SIE-V1C", "V1C");
-        Group k4 = new Group("TICT-SIE-V1D", "V1D");
-        Group k5 = new Group("TICT-SIE-V1E", "V1E");
-        Group k6 = new Group("TICT-SIE-V1F", "V1F");
+        this.groups.add(new Group("TICT-SIE-V1B", "V1B"));
+        this.groups.add(new Group("TICT-SIE-V1C", "V1C"));
+        this.groups.add(new Group("TICT-SIE-V1D", "V1D"));
+        this.groups.add(new Group("TICT-SIE-V1E", "V1E"));
+        this.groups.add(new Group("TICT-SIE-V1F", "V1F"));
+    }
 
-        //pKlassen.add(k1);
-        this.groups.add(k2);
-        this.groups.add(k3);
-        this.groups.add(k4);
-        this.groups.add(k5);
-        this.groups.add(k6);
+    private void fillDecanen() {
+        String csvFile = "./CSV/decaan.csv";
+        CSVReader csvReader = new CSVReader();
+        try {
+            List<String[]> data = csvReader.read(csvFile);
+            for (String[] element : data) {
+                String username = element[0].toLowerCase();
+                String firstName = element[1];
+                String middleName = element[2];
+                String lastName = element[3];
+                Decaan decaan = new Decaan(firstName, middleName, lastName, "geheim", username);
+                this.decanen.add(decaan);
+                this.people.add(decaan);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void fillLogistics() {
+        String csvFile = "./CSV/logistiek.csv";
+        CSVReader csvReader = new CSVReader();
+        try {
+            List<String[]> data = csvReader.read(csvFile);
+            for (String[] element : data) {
+                String username = element[0].toLowerCase();
+                String firstName = element[1];
+                String middleName = element[2];
+                String lastName = element[3];
+                Logistic logistic = new Logistic(firstName, middleName, lastName, "geheim", username);
+                this.logistics.add(logistic);
+                this.people.add(logistic);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void fillStudents() {
@@ -216,6 +274,7 @@ public class PrIS {
     private void fillSchedule() {
         String csvFile = "./CSV/rooster.csv";
         CSVReader csvReader = new CSVReader();
+        int i = 1;
         try {
             List<String[]> all = csvReader.read(csvFile);
             /*
@@ -243,7 +302,7 @@ public class PrIS {
                     Teacher teacher = getTeacher(element[4]);
                     String room = element[5];
 
-                    group.addLesson(new Lesson(startTime, endTime, course, teacher, room, group));
+                    group.addLesson(new Lesson(startTime, endTime, course, teacher, room, group, i++));
                 }
             }
         } catch (IOException e) {

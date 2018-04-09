@@ -44,6 +44,7 @@ public class StudentController implements Handler {
     public void handlePresent(Conversation conversation) {
         ArrayList<LessonResponse> presentResponse = new ArrayList<>();
 
+
         JsonObject responseObject = (JsonObject) conversation.getRequestBodyAsJSON();
         int studentId = Integer.parseInt(responseObject.getString("student_id"));
         Student student = informatieSysteem.getStudent(studentId);
@@ -55,7 +56,6 @@ public class StudentController implements Handler {
 
         Gson gson = new Gson();
         conversation.sendJSONMessage(gson.toJson(presentResponse));
-
     }
 
     public void handleStudentInfo(Conversation conversation) {

@@ -1,5 +1,7 @@
-//checked
+
 package model.person;
+
+import responses.StudentResponse;
 
 public class Student extends Person {
 	private int studentId;
@@ -31,5 +33,9 @@ public class Student extends Person {
 
 	public int getStudentId() {
 		return this.studentId;
+	}
+
+	public StudentResponse toStudentResponse() {
+		return new StudentResponse(this, true);
 	}
 }
