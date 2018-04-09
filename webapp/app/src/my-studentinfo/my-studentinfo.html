@@ -30,19 +30,37 @@
             .column {
                 float: left;
                 width: 50%;
+                padding: 10px;
             }
-
+                        
             .row:after {
                 content: "";
                 display: table;
                 clear: both;
+                padding: 40px;
             }
 
             #personal-info {
                 border: 4px solid black;
-                margin: 10%;
-                padding: 20px;
+                padding: 20px;S
             }
+            
+
+			#present-button {
+				margin-top: 10px;
+				float: right;
+				color: white;
+				border-radius: 3px;
+				padding: 14px 10px;
+				background: #1a9fd9; /* kind of blue */ -
+				-paper-button-ink-color: #00567B; /* kind of dark blue */
+			}
+            
+            a:-webkit-any-link {
+				cursor: pointer;
+				text-decoration: none;
+			}
+            
         </style>
         <h1>Eline Nube</h1>
         <div class="row">
@@ -58,8 +76,14 @@
                     <p>E-mailadres:</p>
                     <p>Adres:</p>
                 </div>
+                 <div class="wat">
+            <a
+		href$="#/student_presentie/[[item.id]]"
+		id="present-button">PRESENTIE</a>
             </div>
-        </div>
+            </div>
+       </div>
+     
     </template>
     <script>
         (function () {
