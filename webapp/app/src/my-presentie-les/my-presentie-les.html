@@ -45,7 +45,7 @@
                             Tijd
                         </vaadin-grid-sorter>
                     </template>
-                    <template>[[item.fromTime]] - [[item.toTime]]</template>
+                    <template>[[item.starttijd]] - [[item.eindtijd]]</template>
                 </vaadin-grid-column>
 
                 <vaadin-grid-column>
@@ -54,7 +54,7 @@
                             Cursus
                         </vaadin-grid-sorter>
                     </template>
-                    <template>[[item.cursus]]</template>
+                    <template>[[item.naam]]</template>
                 </vaadin-grid-column>
 
                 <vaadin-grid-column>
@@ -132,7 +132,7 @@
                     console.log("_search keywords=" + this.c_data.subpage);
                     this.$.ajax_presentie_per_les.contentType = "application/json";
                     this.$.ajax_presentie_per_les.body = {
-                        "student_id": this.c_data.subpage,
+                        "username": this.c_data.subpage,
                     };
                     this.$.ajax_presentie_per_les.generateRequest();
                 },

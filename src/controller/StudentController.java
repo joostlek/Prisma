@@ -46,8 +46,9 @@ public class StudentController implements Handler {
 
 
         JsonObject responseObject = (JsonObject) conversation.getRequestBodyAsJSON();
-        int studentId = Integer.parseInt(responseObject.getString("student_id"));
-        Student student = informatieSysteem.getStudent(studentId);
+        String studentUsername = responseObject.getString("username");
+
+        Student student = informatieSysteem.getStudent(studentUsername);
         Group group = informatieSysteem.getStudentGroup(student);
         System.out.println(student.getGroupId());
         for (Lesson lesson : group.getLessons()) {
