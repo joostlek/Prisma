@@ -1,6 +1,7 @@
 package model;
 
 import model.person.Teacher;
+import responses.LessonResponse;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -77,5 +78,9 @@ public class Lesson {
 
     public void setPresentions(ArrayList<Presention> presentions) {
         this.presentions = presentions;
+    }
+
+    public LessonResponse toLessonResponse() {
+        return new LessonResponse(this);
     }
 }

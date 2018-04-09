@@ -92,7 +92,6 @@
 
         </style>
         <section>
-
             <paper-material elevation="1">
                 <div class="search-box">
                     <paper-input id="search_element" on-keydown="_checkForEnter" label="Zoeken"
@@ -141,75 +140,75 @@
                 on-response="_search_response_handler"></iron-ajax>
     </template>
     <script>
-        (function () {
+        (function() {
             'use strict';
             Polymer({
-                is: 'my-search',
+                is : 'my-search',
 
-                properties: {
-                    search_keyword: {
-                        type: String,
-                        value: '',
+                properties : {
+                    search_keyword : {
+                        type : String,
+                        value : '',
                     },
-                    search_type: {
-                        type: String,
-                        observer: '_search_type_changed',
+                    search_type : {
+                        type : String,
+                        observer : '_search_type_changed',
                     },
-                    search_results: {
-                        type: Array,
+                    search_results : {
+                        type : Array,
                     },
-                    c_rol: {
-                        type: String,
+                    c_rol : {
+                        type : String,
                     },
-                    c_username: {
-                        type: String,
+                    c_username : {
+                        type : String,
                     },
-                    c_visible: {
-                        type: Boolean,
-                        value: true,
-                        observer: '_initializing',
+                    c_visible : {
+                        type : Boolean,
+                        value : true,
+                        observer : '_initializing',
                     },
-                    render_student_present_option: {
-                        type: Boolean,
-                        value: false,
+                    render_student_present_option : {
+                        type : Boolean,
+                        value : false,
                     }
                 },
 
-                _go_home: function () {
+                _go_home : function() {
                     var lApp = document.querySelector('my-app');
                     var lAppRouter = lApp.$.approuter;
                     lAppRouter.data = {
-                        page: ""
+                        page : ""
                     };
                 },
 
-                _initializing: function () {
+                _initializing : function() {
                     if (this.c_visible) {
                     }
                 },
 
-                _search_type_changed: function () {
+                _search_type_changed : function() {
                     this.search_results = [];
                     console.log(this.search_type === "student");
                     this.render_student_present_option = this.search_type === "student";
                 },
 
-                _checkForEnter: function (e) {
+                _checkForEnter : function(e) {
                     if (e.keyCode === 13) {
                         this._search_request_handler();
                     }
                 },
 
-                _search_request_handler: function () {
+                _search_request_handler : function() {
                     this.$.ajax_search.contentType = "application/json";
                     this.$.ajax_search.body = {
-                        "keywords": this.search_keyword,
-                        "type": this.search_type,
+                        "keywords" : this.search_keyword,
+                        "type" : this.search_type,
                     };
                     this.$.ajax_search.generateRequest();
                 },
 
-                _search_response_handler: function (request) {
+                _search_response_handler : function(request) {
                     this.search_results = request.detail.response;
                 },
             });

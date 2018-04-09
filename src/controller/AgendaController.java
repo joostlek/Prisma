@@ -2,12 +2,17 @@ package controller;
 
 import com.google.gson.Gson;
 import model.Group;
+import model.Lesson;
 import model.PrIS;
 import model.person.Student;
 import server.Conversation;
 import server.Handler;
 
 import javax.json.JsonObject;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AgendaController implements Handler {
 
@@ -36,7 +41,20 @@ public class AgendaController implements Handler {
         String groupCode = student.getGroupId();
         Group group = informatieSysteem.getGroup(groupCode);
 
+        Calendar cal = Calendar.getInstance();
+        if (!lJsonObjectIn.isNull("weeknummer")) {
+            cal.set(Calendar.WEEK_OF_YEAR, Integer.parseInt(lJsonObjectIn.getString("weeknummer")));
+        } else {
+            cal.set(Calendar.WEEK_OF_YEAR, cal.getWeekYear());
+        }
+
         Gson gson = new Gson();
-        conversation.sendJSONMessage(gson.toJson(group));
+        conversation.sendJSONMessage("[\n" +
+                "{datum: {day: 6, month: 4, year: 2016}, items: [{naam: \"ICT\", leraar: \"jan van den bakker\"},{naam: \"ENGELS\", leraar: \"jan van den bakker\"}]},\n" +
+                "{datum: {day: 6, month: 4, year: 2016}, items: [{naam: \"ICT\", leraar: \"jan van den bakker\"}]},\n" +
+                "{datum: {day: 6, month: 4, year: 2016}, items: [{naam: \"ICT\", leraar: \"jan van den bakker\"}]},\n" +
+                "{datum: {day: 6, month: 4, year: 2016}, items: [{naam: \"ICT\", leraar: \"jan van den bakker\"}]},\n" +
+                "{datum: {day: 6, month: 4, year: 2016}, items: [{naam: \"ICT\", leraar: \"jan van den bakker\"}]}\n" +
+                "]");
     }
 }

@@ -44,12 +44,7 @@ public class StudentController implements Handler {
             Group group = informatieSysteem.getStudentGroup(student);
             System.out.println(student.getGroupId());
             for (Lesson lesson : group.getLessons()) {
-                ArrayList<PresentionResponse> presentionResponses = new ArrayList<>();
-                for (Presention presention: lesson.getPresentions()) {
-                    presentionResponses.add(presention.toPresentionResponse());
-                }
-                LessonResponse lessonResponse = new LessonResponse(lesson.getCourse().getName(), lesson.getFromTime(), lesson.getToTime(), presentionResponses);
-                presentResponse.add(lessonResponse);
+                presentResponse.add(new LessonResponse(lesson));
             }
 
             Gson gson = new Gson();
