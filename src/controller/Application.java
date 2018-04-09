@@ -37,6 +37,7 @@ public class Application {
         SearchController searchController = new SearchController(infoSysteem);
         StudentController studentController = new StudentController(infoSysteem);
         CursusController cursusController = new CursusController(infoSysteem);
+        TeacherController teacherController = new TeacherController(infoSysteem);
 
 
         // @route /login
@@ -58,10 +59,16 @@ public class Application {
         // @route /presentie/ophalen
         server.registerHandler(StudentController.ROUTE_PRESENT_FETCH, studentController);
 
+        // @route /student/info
+        server.registerHandler(StudentController.ROUTE_STUDENT_INFO, studentController);
+
         server.registerHandler("/student/medestudenten/opslaan", medestudentenController);
 
         // @route /agenda/laad
         server.registerHandler(AgendaController.ROUTE_AGENDA_LADEN, agendaController);
+
+        // @route /presentie
+        server.registerHandler(TeacherController.ROUTE_PRESENTION, teacherController);
 
         server.start();
     }

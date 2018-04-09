@@ -130,14 +130,14 @@
                     </a>
 
                     <a name="studentinfo"
-                       href$="[[_c_baseURL]]studentinfo"
+                       href$="[[_c_baseURL]]studentinfo/[[_username]]"
                        verborgen$="[[!_has_role(_rol, 'student')]]">
                         <iron-icon icon="social:group"></iron-icon>
                         <span>Eigen gegevens</span>
                     </a>
 
                     <a name="rooster" href$="[[_c_baseURL]]rooster"
-                       verborgen$="[[_has_role(_rol, 'undefined')]]">
+                       verborgen$="[[!_has_role(_rol, 'docent', 'slb')]]">
                         <iron-icon icon="social:group"></iron-icon>
                         <span>Rooster</span>
                     </a>
@@ -249,13 +249,18 @@
                 <section page-name="studentinfo"
                          title="studentinfo"
                          element$="my-studentinfo">
-                    <my-studentinfo></my-studentinfo>
+                    <my-studentinfo
+                            c_data="[[_ar_subroute_data]]"
+                            c_visible="[[_are_strings_equal(_ar_page, 'studentinfo')]]">
+                    </my-studentinfo>
                 </section>
 
                 <section page-name="rooster"
                          title="ROOSTER"
                          element$="my-rooster">
-                    <my-rooster>
+                    <my-rooster
+                            c_username="[[_username]]"
+                            c_visible="[[_are_strings_equal(_ar_page, 'rooster')]]">
                     </my-rooster>
                 </section>
 
@@ -314,7 +319,7 @@
                             c_data="[[_ar_subroute_data]]">
                     </my-presentie-les>
                 </section>
-                
+
                 <section page-name="student_presentie_lijst"
                          title="presentie lijst"
                          element$="my-presentie-lijst">
@@ -445,53 +450,59 @@
                     return (p_str1 == p_str2);
                 },
 
-                _has_role(role, ...role_needed) {
-                    console.log(role)
-                    return role_needed.includes(role);
-                },
+                _has_role(role,...role_needed)
+            {
+                console.log(role)
+                return role_needed.includes(role);
+            }
+        ,
 
-                ready: function () {
-                    var eenDatumObject = new Date(); // is vandaag
-                    this._systeemdatumstandaard = this.date_to_standaard_string(eenDatumObject);
-                    this._systeemdatumlokaal = eenDatumObject.toLocaleDateString();
-                    console.log("application ready to run");
-                },
+            ready: function () {
+                var eenDatumObject = new Date(); // is vandaag
+                this._systeemdatumstandaard = this.date_to_standaard_string(eenDatumObject);
+                this._systeemdatumlokaal = eenDatumObject.toLocaleDateString();
+                console.log("application ready to run");
+            }
+        ,
 
-                // convert a JSDate-object to standaard format (=YYYY-MM-DD)
-                date_to_standaard_string: function (p_JSDate) {
-                    var lJaar = p_JSDate.getFullYear();
-                    var lMaand = p_JSDate.getMonth() + 1;
-                    var lDag = p_JSDate.getDate();
+            // convert a JSDate-object to standaard format (=YYYY-MM-DD)
+            date_to_standaard_string: function (p_JSDate) {
+                var lJaar = p_JSDate.getFullYear();
+                var lMaand = p_JSDate.getMonth() + 1;
+                var lDag = p_JSDate.getDate();
 
-                    var lMaandStr = lMaand.toString();
-                    if (lMaandStr.length == 1) {
-                        lMaandStr = "0" + lMaandStr;
-                    }
-                    var lDagStr = lDag.toString();
-                    if (lDagStr.length == 1) {
-                        lDagStr = "0" + lDagStr;
-                    }
-                    var lString =
-                        lJaar.toString() + "-" +
-                        lMaandStr + "-" +
-                        lDagStr;
-                    return lString;
-                },
+                var lMaandStr = lMaand.toString();
+                if (lMaandStr.length == 1) {
+                    lMaandStr = "0" + lMaandStr;
+                }
+                var lDagStr = lDag.toString();
+                if (lDagStr.length == 1) {
+                    lDagStr = "0" + lDagStr;
+                }
+                var lString =
+                    lJaar.toString() + "-" +
+                    lMaandStr + "-" +
+                    lDagStr;
+                return lString;
+            }
+        ,
 
-                // convert a YY-MM-DD string to local format (dutch lokaal: DD-MM-YYYY)
-                standaarddatumstring_to_lokaledatumstring: function (p_standaarddatumstring) {
-                    var lokaledatumstring = "";
-                    if (p_standaarddatumstring != "") {
-                        /* gebruikt het Javascript date object om op basis van een standaarddatumstring
-                           een object te maken en via dit een lokaledatumstring te maken */
-                        var eenDatumObject = new Date(p_standaarddatumstring);
-                        lokaledatumstring = eenDatumObject.toLocaleDateString();
-                        /*deze conversie werk zowel voor nederlandse windows als internationale windows. */
-                    }
-                    return lokaledatumstring;
-                },
+            // convert a YY-MM-DD string to local format (dutch lokaal: DD-MM-YYYY)
+            standaarddatumstring_to_lokaledatumstring: function (p_standaarddatumstring) {
+                var lokaledatumstring = "";
+                if (p_standaarddatumstring != "") {
+                    /* gebruikt het Javascript date object om op basis van een standaarddatumstring
+                       een object te maken en via dit een lokaledatumstring te maken */
+                    var eenDatumObject = new Date(p_standaarddatumstring);
+                    lokaledatumstring = eenDatumObject.toLocaleDateString();
+                    /*deze conversie werk zowel voor nederlandse windows als internationale windows. */
+                }
+                return lokaledatumstring;
+            }
+        ,
 
-            });
+        })
+            ;
 
         })();
     </script>

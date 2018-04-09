@@ -4,10 +4,9 @@ import com.google.gson.Gson;
 import model.Group;
 import model.Lesson;
 import model.PrIS;
-import model.Presention;
 import model.person.Student;
 import responses.LessonResponse;
-import responses.PresentionResponse;
+import responses.StudentResponse;
 import server.Conversation;
 import server.Handler;
 
@@ -18,6 +17,7 @@ public class StudentController implements Handler {
     private PrIS informatieSysteem;
 
     public static String ROUTE_PRESENT_FETCH = "/presentie/ophalen";
+    public static String ROUTE_STUDENT_INFO = "/student/info";
 
 
     /**
@@ -35,22 +35,38 @@ public class StudentController implements Handler {
 
     public void handle(Conversation conversation) {
         if (conversation.getRequestedURI().startsWith(ROUTE_PRESENT_FETCH)) {
-            ArrayList<LessonResponse> presentResponse = new ArrayList<>();
-
-
-            JsonObject responseObject = (JsonObject) conversation.getRequestBodyAsJSON();
-            int studentId = Integer.parseInt(responseObject.getString("student_id"));
-            Student student = informatieSysteem.getStudent(studentId);
-            Group group = informatieSysteem.getStudentGroup(student);
-            System.out.println(student.getGroupId());
-            for (Lesson lesson : group.getLessons()) {
-                presentResponse.add(new LessonResponse(lesson));
-            }
-
-            Gson gson = new Gson();
-            conversation.sendJSONMessage(gson.toJson(presentResponse));
+            handlePresent(conversation);
         }
 
     }
 
+    public void handlePresent(Conversation conversation) {
+        ArrayList<LessonResponse> presentResponse = new ArrayList<>();
+
+        JsonObject responseObject = (JsonObject) conversation.getRequestBodyAsJSON();
+        int studentId = Integer.parseInt(responseObject.getString("student_id"));
+        Student student = informatieSysteem.getStudent(studentId);
+        Group group = informatieSysteem.getStudentGroup(student);
+        System.out.println(student.getGroupId());
+        for (Lesson lesson : group.getLessons()) {
+            presentResponse.add(new LessonResponse(lesson));
+        }
+
+        Gson gson = new Gson();
+        conversation.sendJSONMessage(gson.toJson(presentResponse));
+
+    }
+
+    public void handleStudentInfo(Conversation conversation) {
+        JsonObject responseObject = (JsonObject) conversation.getRequestBodyAsJSON();
+        String studentUsername = responseObject.getString("username");
+
+        Student student = informatieSysteem.getStudent(studentUsername);
+
+        StudentResponse studentResponse = new StudentResponse(student);
+        studentResponse.calculatePresent();
+
+        Gson gson = new Gson();
+        conversation.sendJSONMessage(gson.toJson(studentResponse));
+    }
 }
