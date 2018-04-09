@@ -75,6 +75,10 @@ public class PrIS {
         return null;
     }
 
+    public ArrayList<Group> getGroups() {
+        return groups;
+    }
+
     public Student getStudent(String username) {
         System.out.println(username);
         for (Student student : this.students) {

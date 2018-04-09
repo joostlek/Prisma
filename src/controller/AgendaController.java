@@ -5,6 +5,7 @@ import model.Group;
 import model.Lesson;
 import model.PrIS;
 import model.person.Student;
+import model.person.Teacher;
 import responses.LessonResponse;
 import server.Conversation;
 import server.Handler;
@@ -37,41 +38,43 @@ public class AgendaController implements Handler {
 
     private void load(Conversation conversation) {
         JsonObject lJsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
-        Student student = informatieSysteem.getStudent(lJsonObjectIn.getString("username"));
-        String groupCode = student.getGroupId();
-        Group group = informatieSysteem.getGroup(groupCode);
+        Teacher teacher = informatieSysteem.getTeacher(lJsonObjectIn.getString("username"));
 
         Calendar cal = Calendar.getInstance();
+        Calendar friday = Calendar.getInstance();
         cal.set(Calendar.YEAR, 2018);
+        friday.set(Calendar.YEAR, 2018);
         if (lJsonObjectIn.containsKey("weeknummer")) {
             cal.set(Calendar.WEEK_OF_YEAR, lJsonObjectIn.getInt("weeknummer"));
-        } else {
-            cal.set(Calendar.WEEK_OF_YEAR, cal.get(Calendar.WEEK_OF_YEAR));
+            friday.set(Calendar.WEEK_OF_YEAR, lJsonObjectIn.getInt("weeknummer"));
         }
         cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-        Calendar friday = (Calendar) cal.clone();
+        friday.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
         ArrayList<Map<String, Object>> res = new ArrayList<>();
-        for (cal.get(Calendar.DAY_OF_WEEK); cal.get(Calendar.DAY_OF_WEEK) < Calendar.SATURDAY; cal.add(Calendar.DAY_OF_WEEK, 1)) {
+        for (cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY); cal.get(Calendar.DAY_OF_WEEK) < Calendar.SATURDAY; cal.add(Calendar.DAY_OF_MONTH, 1)) {
             HashMap<String, Object> r = new HashMap<>();
             HashMap<String, Object> date = new HashMap<>();
             date.put("day", cal.get(Calendar.DAY_OF_MONTH));
-            date.put("month", cal.get(Calendar.MONTH));
+            date.put("month", cal.get(Calendar.MONTH) + 1);
             date.put("year", cal.get(Calendar.YEAR));
             r.put("datum", date);
             r.put("items", new ArrayList<LessonResponse>());
             res.add(r);
         }
+        System.out.println(cal.toString());
+        System.out.println(friday.toString());
         cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-        System.out.println(groupCode);
-        for (Lesson lesson: group.getLessons()) {
-            System.out.println(lesson.getTeacher().getTeacherId());
-            System.out.println(cal.getTimeInMillis() / 1000);
-            System.out.println(lesson.getFromTime().atZone(ZoneId.systemDefault()).toEpochSecond());
-            if (cal.getTimeInMillis() / 1000 < lesson.getFromTime().atZone(ZoneId.systemDefault()).toEpochSecond() && friday.getTimeInMillis() / 1000 < lesson.getToTime().toEpochSecond(ZoneOffset.UTC)) {
-                ArrayList<LessonResponse> lessonResponses = (ArrayList<LessonResponse>) res.get(cal.get(Calendar.DAY_OF_WEEK) - 1).get("items");
-                lessonResponses.add(lesson.toLessonResponse());
+        for (Group group: informatieSysteem.getGroups()) {
+            for (Lesson lesson: group.getLessons()) {
+                if (lesson.getTeacher() == teacher) {
+                    if (cal.getTimeInMillis() / 1000 < lesson.getFromTime().atZone(ZoneId.systemDefault()).toEpochSecond() && friday.getTimeInMillis() / 1000 > lesson.getToTime().toEpochSecond(ZoneOffset.UTC)) {
+                        ArrayList<LessonResponse> lessonResponses = (ArrayList<LessonResponse>) res.get(lesson.getFromTime().getDayOfWeek().getValue() - 1).get("items");
+                        lessonResponses.add(lesson.toLessonResponse());
+                    }
+                }
             }
         }
+
         HashMap<String, Object> ress = new HashMap<>();
         ress.put("rooster", res);
         ress.put("weeknummer", cal.get(Calendar.WEEK_OF_YEAR));

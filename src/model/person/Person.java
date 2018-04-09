@@ -56,7 +56,7 @@ public abstract class Person {
 	}
 
 	public String getFullName() {
-		return getFullLastName() + this.lastName;
+		return this.firstName + ' ' + getFullLastName();
 	}
 
 	public boolean samePassword(String password) {
