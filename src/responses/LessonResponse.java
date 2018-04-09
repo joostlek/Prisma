@@ -15,6 +15,7 @@ public class LessonResponse {
     public String lokaal;
     public String klas;
     public ArrayList<PresentionResponse> presentionResponses;
+    public int id;
 
     public LessonResponse(Lesson lesson) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
@@ -24,6 +25,7 @@ public class LessonResponse {
         this.leraar = lesson.getTeacher().getFullName();
         this.lokaal = lesson.getRoom();
         this.klas = lesson.getGroup().getGroupCode();
+        this.id = lesson.getLessonId();
         for (Presention presention: lesson.getPresentions()) {
             this.presentionResponses.add(presention.toPresentionResponse());
         }

@@ -181,17 +181,11 @@ public class PrIS {
     }
 
     private void fillGroup() {
-        Group k2 = new Group("TICT-SIE-V1B", "V1B");
-        Group k3 = new Group("TICT-SIE-V1C", "V1C");
-        Group k4 = new Group("TICT-SIE-V1D", "V1D");
-        Group k5 = new Group("TICT-SIE-V1E", "V1E");
-        Group k6 = new Group("TICT-SIE-V1F", "V1F");
-
-        this.groups.add(k2);
-        this.groups.add(k3);
-        this.groups.add(k4);
-        this.groups.add(k5);
-        this.groups.add(k6);
+        this.groups.add(new Group("TICT-SIE-V1B", "V1B"));
+        this.groups.add(new Group("TICT-SIE-V1C", "V1C"));
+        this.groups.add(new Group("TICT-SIE-V1D", "V1D"));
+        this.groups.add(new Group("TICT-SIE-V1E", "V1E"));
+        this.groups.add(new Group("TICT-SIE-V1F", "V1F"));
     }
 
     private void fillStudents() {
@@ -225,6 +219,7 @@ public class PrIS {
     private void fillSchedule() {
         String csvFile = "./CSV/rooster.csv";
         CSVReader csvReader = new CSVReader();
+        int i = 1;
         try {
             List<String[]> all = csvReader.read(csvFile);
             /*
@@ -252,7 +247,7 @@ public class PrIS {
                     Teacher teacher = getTeacher(element[4]);
                     String room = element[5];
 
-                    group.addLesson(new Lesson(startTime, endTime, course, teacher, room, group));
+                    group.addLesson(new Lesson(startTime, endTime, course, teacher, room, group, i++));
                 }
             }
         } catch (IOException e) {
