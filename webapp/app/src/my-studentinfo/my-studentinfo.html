@@ -16,53 +16,52 @@
             * {
                 box-sizing: border-box;
             }
-            
-            h1{
-            	text-align: center;
-            }
-            
-            h2{
-            	margin: 50px;
-            	margin-left: 0px;
+
+            h1 {
+                text-align: center;
             }
 
-            .container{
-            	padding: 50px;
-            	display: flex;
+            h2 {
+                margin: 50px;
+                margin-left: 0px;
             }
-            
-            .links{
-            	flex: 2;
+
+            .container {
+                padding: 50px;
+                display: flex;
             }
-            
-            .rechts{
-            	flex: 1;
+
+            .links {
+                flex: 2;
+            }
+
+            .rechts {
+                flex: 1;
             }
 
             #personal-info {
                 border: 4px solid black;
                 padding: 20px;
-                
-            }
-            
 
-			#present-button {
-				margin-top: 10px;
-				float: right;
-				color: white;
-				border-radius: 3px;
-				padding: 14px 10px;
-				background: #1a9fd9; /* kind of blue */ -
-				-paper-button-ink-color: #00567B; /* kind of dark blue */
-			}
-            
+            }
+
+            #present-button {
+                margin-top: 10px;
+                float: right;
+                color: white;
+                border-radius: 3px;
+                padding: 14px 10px;
+                background: #1a9fd9; /* kind of blue */
+                --paper-button-ink-color: #00567B; /* kind of dark blue */
+            }
+
             a:-webkit-any-link {
-				cursor: pointer;
-				text-decoration: none;
-			}
-            
+                cursor: pointer;
+                text-decoration: none;
+            }
+
         </style>
-        <h1>Eline Nube</h1>
+        <h1>[[user_results.fullName]]</h1>
         <div class="container">
             <div class="links">
                 <h2>Aantal uren present:</h2>
@@ -76,14 +75,21 @@
                     <p>E-mailadres:</p>
                     <p>Adres:</p>
                 </div>
-                 <div class="wat">
-            <a
-		href$="#/student_presentie/[[item.id]]"
-		id="present-button">PRESENTIE</a>
+                <div class="wat">
+                    <a href$="/student_presentie/[[item.id]]"
+                       id="present-button">PRESENTIE</a>
+                </div>
             </div>
-            </div>
-       </div>
-     
+        </div>
+
+
+        <iron-ajax
+                id="ajax_student_info"
+                method="POST"
+                url="/student/info"
+                handle-as="json"
+                on-response="_student_info_response_handler"></iron-ajax>
+
     </template>
     <script>
         (function () {
@@ -97,6 +103,9 @@
                 is: 'my-studentinfo',
 
                 properties: {
+                    c_data: {
+                        type: String,
+                    },
                     _c_studenten: {
                         type: Array, /* array<student-info>: student-info = {id, firstName, lastName, sameGroup}
 										array is constant groepnr is changable */
@@ -109,11 +118,12 @@
                     },
                     c_visible: {
                         type: Boolean, /* true when element is the active visible item */
-                        value: true,
-                        observer: '_initializing', /* wordt ook aangeroepen bijwisseling van true naar false.
-                                                                   regel in de functie dat er niets gebeurd
-                                                                   als c_visible false is */
+                        value: false,
+                        observer: '_initializing',
                     },
+                    user_results: {
+                        type: Object,
+                    }
                 },
                 _go_home: function () {
                     var lApp = document.querySelector('my-app');  //het polymer element <my-app>
@@ -125,9 +135,23 @@
 
                 _initializing: function () {
                     if (this.c_visible) {                                 // zodra zichtbaar geworden moet er wat worden gedaan
+                        this._student_info_request_handler
                     }
-                }
+                },
+
+                _student_info_request_handler: function () {
+                    this.$.ajax_student_info.contentType = "application/json";
+                    this.$.ajax_student_info.body = {
+                        "username": this.c_data.subpage,
+                    };
+                    this.$.ajax_student_info.generateRequest();
+                },
+
+                _student_info_response_handler: function (request) {
+                    this.user_results = request.detail.response;
+                },
             });
+
         })();
     </script>
 </dom-module>

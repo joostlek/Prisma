@@ -249,7 +249,10 @@
                 <section page-name="studentinfo"
                          title="studentinfo"
                          element$="my-studentinfo">
-                    <my-studentinfo></my-studentinfo>
+                    <my-studentinfo
+                            c_data="[[_ar_subroute_data]]"
+                            c_visible="[[_are_strings_equal(_ar_page, 'studentinfo')]]">
+                    </my-studentinfo>
                 </section>
 
                 <section page-name="rooster"
