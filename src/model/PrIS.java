@@ -76,6 +76,7 @@ public class PrIS {
     }
 
     public Student getStudent(String username) {
+        System.out.println(username);
         for (Student student : this.students) {
             if (student.getUsername().equals(username)) {
                 return student;
@@ -116,8 +117,8 @@ public class PrIS {
 
     /**
      * @param username
-     * @param password Geef een Rol terug zodat we die kunnen gebruiken in de front-end
-     * @return
+     * @param password
+     * @return Geef een Rol terug zodat we die kunnen gebruiken in de front-end
      */
     public String login(String username, String password) {
         for (Person person : people) {
@@ -199,7 +200,8 @@ public class PrIS {
                             element[1],
                             "geheim",
                             gebruikersnaam,
-                            Integer.parseInt(element[0])
+                            Integer.parseInt(element[0]),
+                            group.getGroupCode()
                     );
                     this.people.add(lStudent);
                     this.students.add(lStudent);

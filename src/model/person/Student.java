@@ -5,10 +5,10 @@ public class Student extends Person {
 	private int studentId;
 	private String groupId;
 
-	public Student(String firstName, String middleName, String lastName, String password, String username, int studentId) {
+	public Student(String firstName, String middleName, String lastName, String password, String username, int studentId, String groupId) {
 		super(firstName, middleName, lastName, password, username);
 		this.studentId = studentId;
-		this.setGroupId("");
+		this.groupId = groupId;
 	}
 
 	@Override
