@@ -11,6 +11,8 @@ import server.Conversation;
 import server.Handler;
 
 import javax.json.JsonObject;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.*;
@@ -51,13 +53,12 @@ public class AgendaController implements Handler {
         cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         friday.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
         ArrayList<Map<String, Object>> res = new ArrayList<>();
+        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+
+
         for (cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY); cal.get(Calendar.DAY_OF_WEEK) < Calendar.SATURDAY; cal.add(Calendar.DAY_OF_MONTH, 1)) {
             HashMap<String, Object> r = new HashMap<>();
-            HashMap<String, Object> date = new HashMap<>();
-            date.put("day", cal.get(Calendar.DAY_OF_MONTH));
-            date.put("month", cal.get(Calendar.MONTH) + 1);
-            date.put("year", cal.get(Calendar.YEAR));
-            r.put("datum", date);
+            r.put("datum", formatter.format(cal.getTime()));
             r.put("items", new ArrayList<LessonResponse>());
             res.add(r);
         }
