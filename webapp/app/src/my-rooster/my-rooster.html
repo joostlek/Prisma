@@ -1,104 +1,93 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
 <link rel="import" href="/bower_components/paper-button/paper-button.html">
-
+<link rel="import" href="/src/my-presentie-les/my-presentie-les.html">
 
 <dom-module id="my-rooster">
     <template>
         <style>
-            .rooster > section:first-child {
-                margin-left: 0px;
-            }
-
-            .my-button {
-                width: 30px;
-                height: 20px;
-                padding: 20px;
-                margin: 10px;
-                color: white;
-                background: #1a9fd9;
-                --paper-button-ink-color: #00567B;
-                margin-top: 15px;
-            }
-
+        .rooster > section:first-child {
+        		margin-left: 0px;
+        }
+        	
+        	.my-button {
+			    width: 30px;
+			    height: 20px;
+			    padding: 20px;
+			    margin: 10px;
+			    color: white;
+			    background: #1a9fd9;
+			    --paper-button-ink-color: #00567B;
+			    margin-top: 15px;
+			}
+        	
             .rooster {
-                justify-content: center;
-                display: flex;
-
+		    	justify-content: center;
+             	display: flex;
+                
             }
-
             .rooster > section {
                 text-align: center;
                 width: 200px;
                 min-height: 600px;
-                box-shadow: 0px 2px 2px gray;
-                background: #A9E2F3;
+        		box-shadow: 0px 2px 2px gray;
+        		background: #A9E2F3;
                 display: inline-block;
                 position: relative;
                 margin-top: 15px;
                 margin-left: 15px;
                 margin-bottom: 15px;
-
-            }
-
-            .les {
-                text-align: left;
-                width: 180px;
-                padding: 0;
-                margin-left: 10px;
-                margin-right: 10px;
-                background: #81DAF5;
-                display: block;
-                box-shadow: 0px 2px 2px gray;
-                padding-top: 5px;
-                padding-bottom: 5px;
-                list-style: none;
-            }
-
-            .les li {
-                margin: 0;
-                padding: 0 0 0 5px;
-            }
+                
+      
+        	}
+        	.les{
+        		text-align: left;
+        		width: 180px;
+        		padding: 0;
+        		margin-left: 10px;
+        		margin-right: 10px;
+        		background: #81DAF5;
+        		display: block;
+        		box-shadow: 0px 2px 2px gray;
+        		padding-top: 5px;
+        		padding-bottom: 5px;
+        		list-style:none;
+        	}
+        	.les li {
+        		margin:0;
+        		padding: 0 0 0 5px;
+        	}
+        	
+        	a{
+        		color: black;
+        		text-decoration: none;
+        	}
         </style>
         <section class="rooster">
-            <paper-button class="my-button">
-                <iron-icon icon="icons:chevron-left"></iron-icon>
-            </paper-button>
-            <template is="dom-repeat" items="{{dates}}" id="rooster_list">
-                <section class="maandag">
-                    <h1>[[item.datum]]</h1>
-                    <template is="dom-repeat" items="{{item.items}}" as="les">
-                        <ul class="les">
-                            <li>{{les.naam}}</li>
-                            <li>{{les.leraar}}</li>
-                            <li>tijd</li>
-                            <li>lokaal</li>
-                        </ul>
-                    </template>
-                </section>
-            </template>
-
-            <!-- 			<section class="dinsdag">
-                            <h1>dinsdag <br> datum</h1>
-                        </section>
-                        <section class="woensdag">
-                            <h1>woensdag <br> datum</h1>
-                        </section>
-                        <section class="donderdag">
-                            <h1>donderdag <br> datum</h1>
-                        </section>
-                        <section class="vrijdag">
-                            <h1>vrijdag <br> datum</h1>
-                        </section> -->
-            <paper-button class="my-button">
-                <iron-icon icon="icons:chevron-right"></iron-icon>
-            </paper-button>
+        	<paper-button class="my-button" onclick="_rooster_previous_week()"><iron-icon icon="icons:chevron-left"></iron-icon></paper-button>
+              <template is="dom-repeat" items="{{dates}}" id="rooster_list">
+				<section class="maandag">
+					<h1>[[item.datum=]]</h1>
+	                <template is="dom-repeat" items="{{item.items}}" as="les">
+						<a href="#/student_presentie">
+						<ul class="les">
+							<li>{{les.naam}}</li>
+							<li>{{les.leraar}}</li>
+							<li>{{les.starttijd}} - {{les.eindtijd}}</li>
+							<li>{{les.lokaal}}</li>
+						</ul>
+						</a>
+		              </template>
+				</section>
+              </template>
+			<paper-button class="my-button" onclick="_rooster_next_week()"><iron-icon icon="icons:chevron-right"></iron-icon></paper-button>
         </section>
-        <iron-ajax
-                id="ajax_rooster"
-                method="POST"
-                url="/agenda/laad"
-                handle-as="json"
-                on-response="_rooster_response_handler"></iron-ajax>
+		<iron-ajax
+				id="ajax_rooster"
+				method="GET"
+				url="../agenda/laad"
+				handle-as="json"
+				on-response="_rooster_response_handler">
+		</iron-ajax>
     </template>
     <script>
         (function () {
@@ -124,11 +113,11 @@
                     },
 
                     dates: {
-                        type: Array,
+                    	type: Array,
                     },
                     c_visible: {
                         type: Boolean, /* true when element is the active visible item */
-                        value: false,
+                        value: true,
                         observer: '_initializing',
                     },
                 },
@@ -143,24 +132,35 @@
 
                 _initializing: function () {
                     if (this.c_visible) {                                 // zodra zichtbaar geworden moet er wat worden gedaan
-                        this._rooster_request_handler()
+                    	this._rooster_request_handler()
                     }
                 },
 
-                _rooster_request_handler: function () {
+                _rooster_request_handler: function() {
                     this.$.ajax_rooster.contentType = "application/json";
                     this.$.ajax_rooster.body = {
-                        "username": this.c_username,
-                        "weeknummer": 15,
+                        "username" : this.c_username,
                     };
                     this.$.ajax_rooster.generateRequest();
                 },
 
-                _rooster_response_handler: function (request) {
+                _rooster_response_handler: function(request) {
                     console.log(this.$.rooster_list.items)
-                    console.log(request.detail.response)
-                    this.$.rooster_list.items = request.detail.response.rooster;
+					console.log(request.detail.response)
+                    this.$.rooster_list.items = request.detail.response;
                 },
+                
+                _rooster_next_week: function(week) {
+                	week += 1;
+                	console.log(week);
+                	this.$.ajax_rooster.generateRequest();
+                },
+                
+                _rooster_previous_week: function(week) {
+                	week -= 1;
+                	console.log(week);
+                	this.$.ajax_rooster.generateRequest();
+                }
             });
         })();
     </script>

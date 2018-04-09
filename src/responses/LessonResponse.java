@@ -3,8 +3,10 @@ package responses;
 import model.Lesson;
 import model.Presention;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class LessonResponse {
 
@@ -13,7 +15,6 @@ public class LessonResponse {
     public String eindtijd;
     public String leraar;
     public String lokaal;
-    public String klas;
     public ArrayList<PresentionResponse> presentionResponses;
 
     public LessonResponse(Lesson lesson) {
@@ -23,7 +24,6 @@ public class LessonResponse {
         this.eindtijd = lesson.getToTime().format(dtf);
         this.leraar = lesson.getTeacher().getFullName();
         this.lokaal = lesson.getRoom();
-        this.klas = lesson.getGroup().getGroupCode();
         for (Presention presention: lesson.getPresentions()) {
             this.presentionResponses.add(presention.toPresentionResponse());
         }

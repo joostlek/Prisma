@@ -58,9 +58,6 @@ public class Application {
         // @route /presentie/ophalen
         server.registerHandler(StudentController.ROUTE_PRESENT_FETCH, studentController);
 
-        // @route /student/info
-        server.registerHandler(StudentController.ROUTE_STUDENT_INFO, studentController);
-
         server.registerHandler("/student/medestudenten/opslaan", medestudentenController);
 
         // @route /agenda/laad
