@@ -5,9 +5,9 @@
 <dom-module id="my-rooster">
     <template>
         <style>
-        	.maandag{
+        .rooster > section:first-child {
         		margin-left: 0px;
-        	}
+        }
         	
         	.my-button {
 			    width: 30px;
@@ -59,53 +59,21 @@
         </style>
         <section class="rooster">
         	<paper-button class="my-button"><iron-icon icon="icons:chevron-left"></iron-icon></paper-button>
-			<section class="maandag">
-				<h1>maandag <br> datum</h1>
-				
-				<ul class="les">
-					<li>vak</li>
-					<li>leraar</li>
-					<li>tijd</li>
-					<li>lokaal</li>
-				</ul>
-				<ul class="les">
-					<li>vak</li>
-					<li>leraar</li>
-					<li>tijd</li>
-					<li>lokaal</li>
-				</ul>
-				<ul class="les">
-					<li>vak</li>
-					<li>leraar</li>
-					<li>tijd</li>
-					<li>lokaal</li>
-				</ul>
-				<ul class="les">
-					<li>vak</li>
-					<li>leraar</li>
-					<li>tijd</li>
-					<li>lokaal</li>
-				</ul>
-				<ul class="les">
-					<li>vak</li>
-					<li>leraar</li>
-					<li>tijd</li>
-					<li>lokaal</li>
-				</ul>
-				<ul class="les">
-					<li>vak</li>
-					<li>leraar</li>
-					<li>tijd</li>
-					<li>lokaal</li>
-				</ul>
-				<ul class="les">
-					<li>vak</li>
-					<li>leraar</li>
-					<li>tijd</li>
-					<li>lokaal</li>
-				</ul>
-			</section>
-			<section class="dinsdag">
+              <template is="dom-repeat" items="{{dates}}">
+				<section class="maandag">
+					<h1>[[item.datum]]</h1>
+	                <template is="dom-repeat" items="{{item.items}}" as="les">
+						<ul class="les">
+							<li>{{les.naam}}</li>
+							<li>{{les.leraar}}</li>
+							<li>tijd</li>
+							<li>lokaal</li>
+						</ul>
+		              </template>
+				</section>
+              </template>
+
+<!-- 			<section class="dinsdag">
 				<h1>dinsdag <br> datum</h1>
 			</section>
 			<section class="woensdag">
@@ -116,7 +84,7 @@
 			</section>
 			<section class="vrijdag">
 				<h1>vrijdag <br> datum</h1>
-			</section>
+			</section> -->
 			<paper-button class="my-button"><iron-icon icon="icons:chevron-right"></iron-icon></paper-button>
         </section>
     </template>
@@ -142,6 +110,19 @@
                     c_username: {
                         type: String,
                     },
+                    
+                    dates: {
+                    	type: Array,
+                    	value() {
+                    		return [
+                    			{datum: "6-4-2016", items: [{naam: "ICT", leraar: "jan van den bakker"},{naam: "ENGELS", leraar: "jan van den bakker"}]},
+                    			{datum: "7-4-2016", items: [{naam: "ICT", leraar: "jan van den bakker"}]},
+                    			{datum: "8-4-2016", items: [{naam: "ICT", leraar: "jan van den bakker"}]},
+                    			{datum: "9-4-2016", items: [{naam: "ICT", leraar: "jan van den bakker"}]},
+                    			{datum: "9-4-2016", items: [{naam: "ICT", leraar: "jan van den bakker"}]}
+                    		];
+                    	}
+                    },
                     c_visible: {
                         type: Boolean, /* true when element is the active visible item */
                         value: true,
@@ -157,6 +138,11 @@
                                                                     // door de two way binding in <app-route> en <app-location>
                                                                     // zal ook de url echt wijzigen
                 },
+                
+                _date_to_string: function (date) {
+               		return null;
+                },
+                
 
                 _initializing: function () {
                     if (this.c_visible) {                                 // zodra zichtbaar geworden moet er wat worden gedaan

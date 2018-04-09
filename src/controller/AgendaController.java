@@ -1,14 +1,13 @@
 package controller;
 
+import com.google.gson.Gson;
 import model.Group;
 import model.PrIS;
 import model.person.Student;
 import server.Conversation;
 import server.Handler;
 
-import javax.json.Json;
 import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 
 public class AgendaController implements Handler {
 
@@ -35,14 +34,9 @@ public class AgendaController implements Handler {
         JsonObject lJsonObjectIn = (JsonObject) conversation.getRequestBodyAsJSON();
         Student student = informatieSysteem.getStudent(lJsonObjectIn.getString("username"));
         String groupCode = student.getGroupId();
-
-
         Group group = informatieSysteem.getGroup(groupCode);
-        JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
 
-
-        String JSONoutString = jsonObjectBuilder.build().toString();
-        conversation.sendJSONMessage(JSONoutString);
-
+        Gson gson = new Gson();
+        conversation.sendJSONMessage(gson.toJson(group));
     }
 }

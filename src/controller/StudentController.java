@@ -4,8 +4,10 @@ import com.google.gson.Gson;
 import model.Group;
 import model.Lesson;
 import model.PrIS;
+import model.Presention;
 import model.person.Student;
 import responses.LessonResponse;
+import responses.PresentionResponse;
 import server.Conversation;
 import server.Handler;
 
@@ -42,7 +44,12 @@ public class StudentController implements Handler {
             Group group = informatieSysteem.getStudentGroup(student);
             System.out.println(student.getGroupId());
             for (Lesson lesson : group.getLessons()) {
-                presentResponse.add(new LessonResponse(lesson.getCourse().getName(), lesson.getFromTime(), lesson.getToTime()));
+                ArrayList<PresentionResponse> presentionResponses = new ArrayList<>();
+                for (Presention presention: lesson.getPresentions()) {
+                    presentionResponses.add(presention.toPresentionResponse());
+                }
+                LessonResponse lessonResponse = new LessonResponse(lesson.getCourse().getName(), lesson.getFromTime(), lesson.getToTime(), presentionResponses);
+                presentResponse.add(lessonResponse);
             }
 
             Gson gson = new Gson();

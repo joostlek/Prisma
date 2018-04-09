@@ -3,6 +3,7 @@ package model;
 import model.person.Teacher;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class Lesson {
     private LocalDateTime fromTime;
@@ -11,6 +12,7 @@ public class Lesson {
     private Teacher teacher;
     private String room;
     private Group group;
+    private ArrayList<Presention> presentions = new ArrayList<>();
 
     public Lesson(LocalDateTime fromTime, LocalDateTime toTime, Course course, Teacher teacher, String room, Group group) {
         this.fromTime = fromTime;
@@ -67,5 +69,13 @@ public class Lesson {
 
     public void setGroup(Group group) {
         this.group = group;
+    }
+
+    public ArrayList<Presention> getPresentions() {
+        return presentions;
+    }
+
+    public void setPresentions(ArrayList<Presention> presentions) {
+        this.presentions = presentions;
     }
 }
