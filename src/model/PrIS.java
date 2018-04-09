@@ -1,8 +1,6 @@
 package model;
 
-import model.person.Person;
-import model.person.Student;
-import model.person.Teacher;
+import model.person.*;
 import utils.CSVReader;
 
 import java.io.IOException;
@@ -16,6 +14,8 @@ public class PrIS {
     private ArrayList<Student> students;
     private ArrayList<Group> groups;
     private ArrayList<Person> people;
+    private ArrayList<Decaan> decanen;
+    private ArrayList<Logistic> logistics;
     private Study study;
 
     /**
@@ -46,6 +46,9 @@ public class PrIS {
         students = new ArrayList<>();
         groups = new ArrayList<>();
         people = new ArrayList<>();
+        decanen = new ArrayList<>();
+        logistics = new ArrayList<>();
+
 
         fillGroup();
         fillStudents();
@@ -55,6 +58,8 @@ public class PrIS {
 //        study.setCourses(getCourses());
 
         fillSchedule();
+        fillDecanen();
+        fillLogistics();
     }
 
     public Teacher getTeacher(String username) {
@@ -186,6 +191,44 @@ public class PrIS {
         this.groups.add(new Group("TICT-SIE-V1D", "V1D"));
         this.groups.add(new Group("TICT-SIE-V1E", "V1E"));
         this.groups.add(new Group("TICT-SIE-V1F", "V1F"));
+    }
+
+    private void fillDecanen() {
+        String csvFile = "./CSV/decaan.csv";
+        CSVReader csvReader = new CSVReader();
+        try {
+            List<String[]> data = csvReader.read(csvFile);
+            for (String[] element : data) {
+                String username = element[0].toLowerCase();
+                String firstName = element[1];
+                String middleName = element[2];
+                String lastName = element[3];
+                Decaan decaan = new Decaan(firstName, middleName, lastName, "geheim", username);
+                this.decanen.add(decaan);
+                this.people.add(decaan);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void fillLogistics() {
+        String csvFile = "./CSV/logistiek.csv";
+        CSVReader csvReader = new CSVReader();
+        try {
+            List<String[]> data = csvReader.read(csvFile);
+            for (String[] element : data) {
+                String username = element[0].toLowerCase();
+                String firstName = element[1];
+                String middleName = element[2];
+                String lastName = element[3];
+                Logistic logistic = new Logistic(firstName, middleName, lastName, "geheim", username);
+                this.logistics.add(logistic);
+                this.people.add(logistic);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void fillStudents() {
