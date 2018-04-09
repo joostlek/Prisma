@@ -3,11 +3,11 @@ package responses;
 import model.Presention;
 
 public class PresentionResponse {
-    public StudentResponse studentResponse;
+    public int studentId;
     public boolean present;
 
     public PresentionResponse(Presention presention) {
-        this.studentResponse = presention.getStudent().toStudentResponse();
+        this.studentId = presention.getStudent().getStudentId();
         this.present = presention.isPresent();
     }
 }
