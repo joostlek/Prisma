@@ -122,14 +122,14 @@
                     </a>
 
                     <a name="studentinfo"
-                       href$="[[_c_baseURL]]studentinfo/[[_username]]"
+                       href$="[[_c_baseURL]]student/[[_username]]"
                        verborgen$="[[!_has_role(_rol, 'student')]]">
                         <iron-icon icon="social:group"></iron-icon>
                         <span>Eigen gegevens</span>
                     </a>
 
                     <a name="rooster" href$="[[_c_baseURL]]rooster"
-                       verborgen$="[[!_has_role(_rol, 'docent', 'slb')]]">
+                       verborgen$="[[!_has_role(_rol, 'docent', 'slb', 'decaan')]]">
                         <iron-icon icon="social:group"></iron-icon>
                         <span>Rooster</span>
                     </a>
@@ -238,12 +238,12 @@
                    SEARCH blocks
                 -->
 
-                <section page-name="studentinfo"
-                         title="studentinfo"
+                <section page-name="student"
+                         title="student"
                          element$="my-studentinfo">
                     <my-studentinfo
                             c_data="[[_ar_subroute_data]]"
-                            c_visible="[[_are_strings_equal(_ar_page, 'studentinfo')]]">
+                            c_visible="[[_are_strings_equal(_ar_page, 'student')]]">
                     </my-studentinfo>
                 </section>
 
