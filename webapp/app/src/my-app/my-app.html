@@ -321,13 +321,13 @@
                     </my-presentie-les>
                 </section>
                 
-                <section page-name="presentie_lijst"
+                <section page-name="student_presentie_lijst"
                          title="presentie lijst"
                          element$="my-presentie-lijst">
-                    <my-presentie-les
+                    <my-presentie-lijst
                             c_visible="[[_are_strings_equal(_ar_page, 'student_presentie_lijst')]]"
                             c_data="[[_ar_subroute_data]]">
-                    </my-presentie-les>
+                    </my-presentie-lijst>
                     
                 </section>
             </iron-pages>
@@ -448,7 +448,7 @@
                   wordt gebruikt in index.html
                 */
                 _are_strings_equal(p_str1, p_str2) {
-                    console.log("_are_strings_equal: " + p_str1 + " met: " + p_str2);
+                    console.log("_are_strings_equal: " + p_str1 + " met: 2 " + p_str2);
                     return (p_str1 == p_str2);
                 },
 

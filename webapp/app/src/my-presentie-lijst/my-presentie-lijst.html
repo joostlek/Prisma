@@ -11,6 +11,7 @@
                 padding: 0;
                 margin: 0;
             }
+            
 
             vaadin-grid {
                 min-height: 300px;
@@ -37,12 +38,18 @@
                 border-radius: 3px;
                 text-decoration: none;
             }
+            
+            .poep{
+            	width: 700px;
+            	margin: auto;
+            }
+            
         </style>
         
 
         <div class="container">
-        
-        <h1>Naam Cursus</h1><h1>Datum: 00-00-2001</h1>
+        <h1>Naam Cursus</h1><h1>Datum: 00-00-2000</h1>
+        <div class="poep">
             <vaadin-grid id="vaadin">
                 <vaadin-grid-column>
                     <template class="header">
@@ -77,6 +84,7 @@
                 </vaadin-grid-column>
             </vaadin-grid>
             <a class="my-button">OPSLAAN</a>
+            </div>
         </div>
 
         <iron-ajax
