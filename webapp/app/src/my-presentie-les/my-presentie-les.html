@@ -55,18 +55,11 @@
                         </vaadin-grid-sorter>
                     </template>
                     <template>
-                        <vaadin-checkbox></vaadin-checkbox>
-                    </template>
-                </vaadin-grid-column>
-
-                <vaadin-grid-column>
-                    <template class="header">
-                        <vaadin-grid-sorter>
-                            Absent
-                        </vaadin-grid-sorter>
-                    </template>
-                    <template>
-                        <vaadin-checkbox></vaadin-checkbox>
+                        <paper-checkbox
+                                class="my-check"
+                                checked="{{item.present}}"
+                                disabled>
+                        </paper-checkbox>
                     </template>
                 </vaadin-grid-column>
             </vaadin-grid>

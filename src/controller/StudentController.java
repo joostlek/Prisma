@@ -52,7 +52,7 @@ public class StudentController implements Handler {
 
         System.out.println(student.getGroupId());
         for (Lesson lesson : group.getLessons()) {
-            presentResponse.add(lesson.toLessonResponse());
+            presentResponse.add(lesson.toLessonResponse(student));
         }
 
         StudentResponse studentResponse = student.toStudentResponse();

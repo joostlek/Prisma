@@ -89,6 +89,10 @@ public class Lesson {
         return new LessonResponse(this);
     }
 
+    public LessonResponse toLessonResponse(Student student) {
+        return new LessonResponse(this, student);
+    }
+
     public void addPresention(Presention presention) {
         this.presentions.add(presention);
     }
