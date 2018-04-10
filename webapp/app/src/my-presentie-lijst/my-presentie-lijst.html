@@ -65,7 +65,7 @@
                                 Naam
                             </vaadin-grid-sorter>
                         </template>
-                        <template>[[item.studentResponse.fullName]]</template>
+                        <template>[[item.name]]</template>
                     </vaadin-grid-column>
 
                     <vaadin-grid-column>
@@ -75,11 +75,17 @@
                             </vaadin-grid-sorter>
                         </template>
                         <template>
-                            <vaadin-checkbox checked="[[item.present]]"></vaadin-checkbox>
+                            <paper-checkbox
+                                    class="my-check"
+                                    checked="{{item.present}}">
+                            </paper-checkbox>
                         </template>
                     </vaadin-grid-column>
                 </vaadin-grid>
-                <a class="my-button">OPSLAAN</a>
+                <paper-button
+                        class="my-button"
+                        on-click="_presention_opslaan_request_handler">Opslaan
+                </paper-button>
             </div>
         </div>
 
@@ -89,6 +95,14 @@
                 url="/presentie"
                 handle-as="json"
                 on-response="_presention_response_handler">
+        </iron-ajax>
+
+        <iron-ajax
+                id="ajax_presention_opslaan"
+                method="POST"
+                url="/presentie/opslaan"
+                handle-as="json"
+                on-response="_presention_opslaan_response_handler">
         </iron-ajax>
     </template>
     <script>
@@ -141,17 +155,45 @@
                     };
                     this.$.ajax_presentie_per_lijst.generateRequest();
                 },
+
                 _presention_response_handler: function (request) {
                     this.presentie_results = request.detail.response;
-                    this.presentie_table = [];
-                    for (let presentie in this.presentie_results.presentionResponses) {
-                        this.presentie_table.push({
+                    var presentie_table = [];
+                    request.detail.response.presentionResponses.forEach(function (presentie) {
+                        console.log(presentie)
+                        presentie_table.push({
                             "id": presentie.studentResponse.studentId,
                             "name": presentie.studentResponse.fullName,
                             "present": presentie.present,
                         })
-                    }
+                    });
+                    this.presentie_table = presentie_table;
                 },
+
+                _presention_opslaan_request_handler: function () {
+                    this.$.ajax_presention_opslaan.contentType = "application/json";
+                    this.$.ajax_presention_opslaan.body = {
+                        "username": this.username,
+                        "lessonId": this.c_data.subpage,
+                        "presenties": this._table_to_post_format(this.presentie_table),
+                    };
+                    this.$.ajax_presention_opslaan.generateRequest();
+                },
+
+                _medestudenten_opslaan_response_handler: function () {
+
+                },
+
+                _table_to_post_format() {
+                    var presenties_array = {};
+
+                    this.presentie_table.forEach(function (presentie) {
+                        presenties_array[presentie.id] = presentie.present;
+                    });
+
+                    return presenties_array;
+                }
+
             });
         })();
     </script>
