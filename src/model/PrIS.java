@@ -343,4 +343,24 @@ public class PrIS {
         }
         return null;
     }
+
+    public int getPercentageByGroup(Group group) {
+        int sum = 0;
+        for (Lesson lesson: group.getLessons()) {
+            sum += getSumByLesson(lesson);
+        }
+        return (sum / (group.getLessons().size() * group.getStudents().size()));
+    }
+
+    public int getSumByLesson(Lesson lesson) {
+        int i = 0;
+        if (lesson.getPresentions().size() != 0) {
+            for (Presention presention: lesson.getPresentions()) {
+                if (presention.isPresent()) {
+                    i += 1;
+                }
+            }
+        }
+        return i;
+    }
 }

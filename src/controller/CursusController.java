@@ -48,8 +48,10 @@ public class CursusController implements Handler {
 
                 lJsonArrayBuilder.add(jsonObjectBuilderStudent);                                                    //voeg het JsonObject aan het array toe
             }
-
-            conversation.sendJSONMessage(lJsonArrayBuilder.build().toString());
+            JsonObjectBuilder res = Json.createObjectBuilder();
+            res.add("present", informatieSysteem.getPercentageByGroup(informatieSysteem.getGroup(studentList.get(0).getGroupId())));
+            res.add("students", lJsonArrayBuilder);
+            conversation.sendJSONMessage(res.build().toString());
         }
 
     }
