@@ -13,11 +13,10 @@ import javax.json.JsonObject;
 import java.util.ArrayList;
 
 public class SearchController implements Handler {
-    private PrIS informatieSysteem;
-
     public static String ROUTE_SEARCH = "/search";
     public static String SEARCH_TYPE_STUDENT = "student";
     public static String SEARCH_TYPE_CURSUS = "cursus";
+    private PrIS informatieSysteem;
 
 
     /**
@@ -39,9 +38,21 @@ public class SearchController implements Handler {
             JsonObject responseObject = (JsonObject) conversation.getRequestBodyAsJSON();
             String keywords = responseObject.getString("keywords");
             String searchType = responseObject.getString("type");
+            Group group = null;
+
+            try {
+                String username = responseObject.getString("username");
+                group = informatieSysteem.getTeacher(username).getSLB();
+            } catch (NullPointerException ex) {
+                System.out.println(ex.getMessage());
+            }
 
             if (searchType.equals(SEARCH_TYPE_STUDENT)) {
-                response = searchStudent(keywords);
+                if (group != null) {
+                    response = searchStudent(keywords, group);
+                } else {
+                    response = searchStudent(keywords);
+                }
             } else if (searchType.equals(SEARCH_TYPE_CURSUS)) {
                 response = searchCursus(keywords);
             }
@@ -49,6 +60,20 @@ public class SearchController implements Handler {
             conversation.sendJSONMessage(response);
         }
 
+    }
+
+    private String searchStudent(String keywords, Group group) {
+        ArrayList<Student> searchResults = informatieSysteem.searchStudents(keywords);
+        ArrayList<SearchResponse> searchResponses = new ArrayList<>();
+
+        for (Student student : searchResults) {
+            if (group.hasStudent(student)) {
+                searchResponses.add(new SearchResponse(String.valueOf(student.getStudentId()), student.getUsername()));
+            }
+        }
+
+        Gson gson = new Gson();
+        return gson.toJson(searchResponses);
     }
 
     private String searchStudent(String keywords) {
