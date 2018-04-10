@@ -160,7 +160,6 @@
                     this.presentie_results = request.detail.response;
                     var presentie_table = [];
                     request.detail.response.presentionResponses.forEach(function (presentie) {
-                        console.log(presentie)
                         presentie_table.push({
                             "id": presentie.studentResponse.studentId,
                             "name": presentie.studentResponse.fullName,
