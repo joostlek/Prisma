@@ -100,7 +100,7 @@
                     <vaadin-grid-column>
                         <template class="header">
                             <vaadin-grid-sorter path="title">
-                                <b>Naam Klas/Cursus<b>
+                                <b>Naam Klas/Cursus</b>
                             </vaadin-grid-sorter>
                         </template>
                         <template>
@@ -119,8 +119,8 @@
             </paper-material>
             <paper-material elevation="1">
                 <div class="box2text">
-                    <p>Presentie: </p>
-                    <p>Absentie: </p>
+                    <p>Presentie: [[presentie]]</p>
+                    <p>Absentie: [[absentie]]</p>
                 </div>
             </paper-material>
         </div>
@@ -157,6 +157,12 @@
                         value: false,
                         observer: '_initializing',
                     },
+                    presentie: {
+                        type: Number
+                    },
+                    absentie: {
+                        type: Number
+                    }
                 },
                 _go_home: function () {
                     var lApp = document.querySelector('my-app');  //het polymer element <my-app>
@@ -180,8 +186,10 @@
                     this.$.ajax_cursus_information.generateRequest();
                 },
                 _cursus_information_response_handler: function (request) {
-                    console.log("_mededestudenten_ophalen_response_handler aantal studenten=" + request.detail.response.length);
-                    this.$.lol.items = request.detail.response;
+                    console.log("_mededestudenten_ophalen_response_handler aantal studenten=" + request.detail.response.students.length);
+                    this.$.lol.items = request.detail.response.students;
+                    this.presentie = request.detail.response.presentie;
+                    this.absentie = 100 - this.presentie;
                 },
             });
         })();
