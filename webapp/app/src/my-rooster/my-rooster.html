@@ -63,7 +63,7 @@
         	}
         </style>
         <section class="rooster">
-        	<paper-button class="my-button" onclick="_rooster_previous_week()"><iron-icon icon="icons:chevron-left"></iron-icon></paper-button>
+        	<paper-button class="my-button" on-click="_rooster_previous_week"><iron-icon icon="icons:chevron-left"></iron-icon></paper-button>
               <template is="dom-repeat" items="{{dates}}" id="rooster_list">
 				<section class="maandag">
 					<h1>[[item.datum]]</h1>
@@ -79,7 +79,7 @@
 		              </template>
 				</section>
               </template>
-			<paper-button class="my-button" onclick="_rooster_next_week()"><iron-icon icon="icons:chevron-right"></iron-icon></paper-button>
+			<paper-button class="my-button" on-click="_rooster_next_week"><iron-icon icon="icons:chevron-right"></iron-icon></paper-button>
         </section>
 		<iron-ajax
 				id="ajax_rooster"
@@ -107,6 +107,9 @@
                     },
                     c_rol: {
                         type: String,
+                    },
+                    weeknummer: {
+                        type: Number
                     },
                     c_username: {
                         type: String,
@@ -145,20 +148,23 @@
                 },
 
                 _rooster_response_handler: function(request) {
-                    console.log(this.$.rooster_list.items)
-					console.log(request.detail.response)
+                    console.log(this.$.rooster_list.items);
+					console.log(request.detail.response);
                     this.$.rooster_list.items = request.detail.response.rooster;
+                    this.weeknummer = request.detail.response.weeknummer;
                 },
                 
-                _rooster_next_week: function(week) {
-                	week += 1;
-                	console.log(week);
+                _rooster_next_week: function() {
+                	this.weeknummer += 1;
+                	console.log(this.weeknummer);
+                	this.$.ajax_rooster.body['weeknummer'] = this.weeknummer;
                 	this.$.ajax_rooster.generateRequest();
                 },
                 
-                _rooster_previous_week: function(week) {
-                	week -= 1;
-                	console.log(week);
+                _rooster_previous_week: function() {
+                	this.weeknummer -= 1;
+                	console.log(this.weeknummer);
+                	this.$.ajax_rooster.body['weeknummer'] = this.weeknummer;
                 	this.$.ajax_rooster.generateRequest();
                 }
             });
