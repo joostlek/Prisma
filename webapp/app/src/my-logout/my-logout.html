@@ -3,8 +3,8 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 
 <dom-module id="my-logout">
-  <template>
-    <style>
+    <template>
+        <style>
       :host {
         display: block;
       }
@@ -12,13 +12,24 @@
       span {
         @apply --paper-font-body1;
       }
-    </style>
+      .center{
+            margin: auto;
+            width: 31%;
+            padding: 10em;
+      }
+      paper-button.lightBlue{
+             background-color: #1a9fd9;
+             color: white;
+             font-size: 16px;
+      }
+        </style>
+        <div class="center">
+            <paper-button class="lightBlue" raised on-click="_logout_clicked">Klik hier als je zeker weet dat je echt wilt uitloggen
+            </paper-button>
+        </div>
+    </template>
 
-    <paper-button raised on-click="_logout_clicked">Klik hier als je zeker weet dat je echt wilt uitloggen</paper-button>
-
-  </template>
-
-  <script>
+    <script>
     (function() {
       'use strict';
       /* _xxxx private              : geen external data binding      - geen notify
@@ -52,5 +63,20 @@
          },
       });
     })();
-  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
 </dom-module>

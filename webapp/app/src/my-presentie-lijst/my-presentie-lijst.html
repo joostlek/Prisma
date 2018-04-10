@@ -48,18 +48,26 @@
 
 
         <div class="container">
-            <h1>Naam Cursus</h1><h1>Datum: 01-01-2001</h1>
+            <h1>{{presentie_results.klas}} - {{presentie_results.lokaal}} - {{presentie_results.leraar}}</h1><h1>{{presentie_results.starttijd}} - {{presentie_results.eindtijd}}</h1>
             <div class="container2">
-                <vaadin-grid items="[[search_results]]" id="vaadin">
+                <vaadin-grid items="[[presentie_results.presentionResponses]]">
+                    <vaadin-grid-column>
+                        <template class="header">
+                            <vaadin-grid-sorter path="datum">
+                                Id
+                            </vaadin-grid-sorter>
+                        </template>
+                        <template>[[item.studentResponse.studentId]]</template>
+                    </vaadin-grid-column>
+
                     <vaadin-grid-column>
                         <template class="header">
                             <vaadin-grid-sorter path="datum">
                                 Naam
                             </vaadin-grid-sorter>
                         </template>
-                        <template>[[item.naam]]</template>
+                        <template>[[item.studentResponse.fullName]]</template>
                     </vaadin-grid-column>
-
 
                     <vaadin-grid-column>
                         <template class="header">
@@ -68,18 +76,7 @@
                             </vaadin-grid-sorter>
                         </template>
                         <template>
-                            <vaadin-checkbox></vaadin-checkbox>
-                        </template>
-                    </vaadin-grid-column>
-
-                    <vaadin-grid-column>
-                        <template class="header">
-                            <vaadin-grid-sorter>
-                                Absent
-                            </vaadin-grid-sorter>
-                        </template>
-                        <template>
-                            <vaadin-checkbox></vaadin-checkbox>
+                            <vaadin-checkbox checked="[[item.present]]"></vaadin-checkbox>
                         </template>
                     </vaadin-grid-column>
                 </vaadin-grid>
@@ -90,9 +87,9 @@
         <iron-ajax
                 id="ajax_presentie_per_lijst"
                 method="POST"
-                url="/presentie/ophalen"
+                url="/presentie"
                 handle-as="json"
-                on-response="_search_request_response_handler">
+                on-response="_presention_response_handler">
         </iron-ajax>
     </template>
     <script>
@@ -109,7 +106,10 @@
                     c_data: {
                         type: String,
                     },
-                    cursus_results: {
+                    username: {
+                        type: String,
+                    },
+                    presentie_results: {
                         type: Array,
                     },
                     c_visible: {
@@ -127,19 +127,20 @@
                 },
                 _initializing: function () {
                     if (this.c_visible) {
-                        this._search_request_handler();    //    haal info op van server
+                        this._presention_request_handler();    //    haal info op van server
                     }
                 },
-                _search_request_handler: function () {
+                _presention_request_handler: function () {
                     console.log("_search keywords=" + this.c_data.subpage);
                     this.$.ajax_presentie_per_lijst.contentType = "application/json";
                     this.$.ajax_presentie_per_lijst.body = {
-                        "student_id": this.c_data.subpage,
+                        "username": this.username,
+                        "lessonId": this.c_data.subpage,
                     };
                     this.$.ajax_presentie_per_lijst.generateRequest();
                 },
-                _search_request_response_handler: function (request) {
-                    this.$.vaadin.items = request.detail.response;
+                _presention_response_handler: function (request) {
+                    this.presentie_results = request.detail.response;
                 },
             });
         })();

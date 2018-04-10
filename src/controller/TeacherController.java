@@ -13,7 +13,7 @@ import javax.json.JsonObject;
 public class TeacherController implements Handler {
     private PrIS informatieSysteem;
 
-    public static String ROUTE_PRESENTION = "/presentie/";
+    public static String ROUTE_PRESENTION = "/presentie";
     public static String ROUTE_PRESENTION_SAVE = "/presentie/opslaan";
 
     public TeacherController(PrIS informatieSysteem) {
