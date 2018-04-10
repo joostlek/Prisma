@@ -59,6 +59,10 @@
                 margin: 16px auto 16px auto;
                 background: var(--app-lightgray);
             }
+
+            .home {
+                text-align: center;
+            }
         </style>
 
         <app-location route="{{_ar_route}}" use-hash-as-path></app-location>
@@ -182,11 +186,13 @@
 
                 <!-- sections voor iedereen -->
                 <!-- element$="none" of weglaten van element$ geeft beide aan dat er geen polymerElement gebruikt zal gaan worden -->
-                <section page-name="home" title="HOME" element$="none">
+                <section page-name="home" title="HOME" element$="none" class="home">
                     <paper-material elevation="1">
-                        <p>Demo app gebaseerd op Polymer.</p>
+                        <h1>Presentie informatie systeem</h1>
+                        <p>In dit systeem kunnen studenten en medewerkers van de Hogeschool Utrecht
+                        de presentie van studenten bekijken. </p>
                         <p>Deze app past nadat je bent ingelogged het menu aan, aan de rol die gekoppeld is aan de
-                            ingeloggede user.</p>
+                            ingelogde user.</p>
                     </paper-material>
                 </section>
 
