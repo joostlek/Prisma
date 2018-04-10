@@ -2,6 +2,7 @@ package controller;
 
 import model.PrIS;
 import model.person.Student;
+import model.person.Teacher;
 import server.JSONFileServer;
 
 import java.io.File;
@@ -37,6 +38,7 @@ public class Application {
         SearchController searchController = new SearchController(infoSysteem);
         StudentController studentController = new StudentController(infoSysteem);
         CursusController cursusController = new CursusController(infoSysteem);
+        TeacherController teacherController = new TeacherController(infoSysteem);
 
 
         // @route /login
@@ -66,6 +68,8 @@ public class Application {
 
         // @route /agenda/laad
         server.registerHandler(AgendaController.ROUTE_AGENDA_LADEN, agendaController);
+
+        server.registerHandler(TeacherController.ROUTE_PRESENTION, teacherController);
 
         server.start();
     }
