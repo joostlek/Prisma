@@ -54,7 +54,11 @@ public class SearchController implements Handler {
                     response = searchStudent(keywords);
                 }
             } else if (searchType.equals(SEARCH_TYPE_CURSUS)) {
-                response = searchCursus(keywords);
+                if (group != null) {
+                    response = searchCursus(group);
+                } else {
+                    response = searchCursus(keywords);
+                }
             }
 
             conversation.sendJSONMessage(response);
@@ -88,9 +92,16 @@ public class SearchController implements Handler {
         return gson.toJson(searchResponses);
     }
 
+    private String searchCursus(Group group) {
+        ArrayList<SearchResponse> searchResponses = new ArrayList<>();
+        searchResponses.add(new SearchResponse(group.getGroupCode(), group.getName()));
+
+        Gson gson = new Gson();
+        return gson.toJson(searchResponses);
+    }
+
     private String searchCursus(String keywords) {
         ArrayList<Group> searchResults = informatieSysteem.searchCursus(keywords);
-
         ArrayList<SearchResponse> searchResponses = new ArrayList<>();
 
         for (Group group : searchResults) {                                            // met daarin voor elke medestudent een JSON-object...
