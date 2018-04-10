@@ -38,16 +38,34 @@
                 border-radius: 3px;
                 text-decoration: none;
             }
+            
+            .my-button2 {
+                /*width: 30px; !* full width *!*/
+                padding: 10px;
+                margin-top: 10px;
+                margin-left: 10px;
+                color: white; /* white tekst */
+                background: #1a9fd9; /* kind of blue */
+                --paper-button-ink-color: #00567B; /* kind of dark blue */
+                border-radius: 3px;
+                text-decoration: none;
+            }
 
             .container2{
                 width: 700px;
                 margin: auto;
             }
+            
+			a{
+        		color: black;
+        		text-decoration: none;
+        	}
 
         </style>
 
 
         <div class="container">
+        	<a href="#/rooster"><paper-button class="my-button2">terug</paper-button></a>
             <h1>Naam Cursus</h1><h1>Datum: 01-01-2001</h1>
             <div class="container2">
                 <vaadin-grid items="[[search_results]]" id="vaadin">
