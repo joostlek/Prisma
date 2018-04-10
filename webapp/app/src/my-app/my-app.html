@@ -140,11 +140,12 @@
                     <!-- beschikbaar voor docent -->
 
                     <!-- beschikbaar voor student -->
+                    <!--  
                     <a name="student_medestudenten" href$="[[_c_baseURL]]student_medestudenten"
                        verborgen$="[[!_are_strings_equal(_rol, 'student')]]">
                         <iron-icon icon="social:group"></iron-icon>
                         <span>Toon medestudenten</span>
-                    </a>
+                    </a>-->
 
                     <a name="login"
                        href$="[[_c_baseURL]]login"
@@ -236,7 +237,9 @@
                          title="ZOEKEN"
                          element$="my-search">
                     <my-search
+                            c_username="[[_username]]"
                             c_visible="[[_are_strings_equal(_ar_page, 'zoeken')]]"
+                            c_rol="[[_rol]]"
                     ></my-search>
                 </section>
                 <!--
