@@ -26,10 +26,10 @@
             }
         </style>
         
-        <h1>Naam Student</h1>
+        <h1>[[presentie_results.fullName]]</h1>
 
         <div class="container">
-            <vaadin-grid id="vaadin">
+            <vaadin-grid id="vaadin" items="[[presentie_results.lessons]]">
                 <vaadin-grid-column>
                     <template class="header">
                         <vaadin-grid-sorter path="tijd">
@@ -95,7 +95,7 @@
                     c_data: {
                         type: String,
                     },
-                    cursus_results: {
+                    presentie_results: {
                         type: Array,
                     },
                     c_visible: {
@@ -129,7 +129,7 @@
                 },
 
                 _search_request_response_handler: function (request) {
-                    this.$.vaadin.items = request.detail.response;
+                    this.presentie_results = request.detail.response;
                 },
             });
         })();

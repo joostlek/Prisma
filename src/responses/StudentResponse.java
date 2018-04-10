@@ -50,4 +50,8 @@ public class StudentResponse {
     public void setHoursAbsent(int hoursAbsent) {
         this.hoursAbsent = hoursAbsent;
     }
+
+    public void setLessons(ArrayList<LessonResponse> lessons) {
+        this.lessons = lessons;
+    }
 }
