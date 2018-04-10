@@ -1,6 +1,7 @@
 
 package model;
 
+import model.person.Student;
 import model.person.Teacher;
 import responses.LessonResponse;
 
@@ -98,5 +99,14 @@ public class Lesson {
 
     public void setLessonId(int lessonId) {
         this.lessonId = lessonId;
+    }
+
+    public boolean getPresent (Student student) {
+        for (Presention presention: this.presentions) {
+            if (presention.getStudent().equals(student)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

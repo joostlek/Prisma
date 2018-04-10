@@ -66,7 +66,8 @@ public class StudentController implements Handler {
         Student student = informatieSysteem.getStudent(studentUsername);
 
         StudentResponse studentResponse = new StudentResponse(student);
-        studentResponse.calculatePresent();
+        studentResponse.setHoursPresent(informatieSysteem.getStats(student));
+        studentResponse.setHoursAbsent(informatieSysteem.getAbsent(student));
 
         Gson gson = new Gson();
         conversation.sendJSONMessage(gson.toJson(studentResponse));
