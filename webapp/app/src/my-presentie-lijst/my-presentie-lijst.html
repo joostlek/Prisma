@@ -1,4 +1,3 @@
-
 <link rel="import" href="/bower_components/polymer/polymer-element.html">
 <link rel="import" href="/bower_components/vaadin-grid/vaadin-grid.html">
 <link rel="import" href="/bower_components/vaadin-grid/vaadin-grid-sorter.html">
@@ -20,12 +19,11 @@
                 margin: 20px auto;
             }
 
-            h1{
+            h1 {
                 width: 700px;
                 margin: 20px auto;
                 text-align: center;
             }
-
 
             .my-button {
                 /*width: 30px; !* full width *!*/
@@ -39,7 +37,7 @@
                 text-decoration: none;
             }
 
-            .container2{
+            .container2 {
                 width: 700px;
                 margin: auto;
             }
@@ -48,16 +46,17 @@
 
 
         <div class="container">
-            <h1>{{presentie_results.klas}} - {{presentie_results.lokaal}} - {{presentie_results.leraar}}</h1><h1>{{presentie_results.starttijd}} - {{presentie_results.eindtijd}}</h1>
+            <h1>{{presentie_results.klas}} - {{presentie_results.lokaal}} - {{presentie_results.leraar}}</h1>
+            <h1>{{presentie_results.starttijd}} - {{presentie_results.eindtijd}}</h1>
             <div class="container2">
-                <vaadin-grid items="[[presentie_results.presentionResponses]]">
+                <vaadin-grid items="[[presentie_table]]">
                     <vaadin-grid-column>
                         <template class="header">
                             <vaadin-grid-sorter path="datum">
                                 Id
                             </vaadin-grid-sorter>
                         </template>
-                        <template>[[item.studentResponse.studentId]]</template>
+                        <template>[[item.id]]</template>
                     </vaadin-grid-column>
 
                     <vaadin-grid-column>
@@ -112,6 +111,9 @@
                     presentie_results: {
                         type: Array,
                     },
+                    presentie_table: {
+                        type: Array,
+                    },
                     c_visible: {
                         type: Boolean, /* true when element is the active visible item */
                         value: false,
@@ -141,6 +143,14 @@
                 },
                 _presention_response_handler: function (request) {
                     this.presentie_results = request.detail.response;
+                    this.presentie_table = [];
+                    for (let presentie in this.presentie_results.presentionResponses) {
+                        this.presentie_table.push({
+                            "id": presentie.studentResponse.studentId,
+                            "name": presentie.studentResponse.fullName,
+                            "present": presentie.present,
+                        })
+                    }
                 },
             });
         })();

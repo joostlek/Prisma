@@ -126,8 +126,8 @@ public class PrIS {
     }
 
     public Lesson getLesson(int lessonId) {
-        for (Group group: this.groups) {
-            for (Lesson lesson: group.getLessons()) {
+        for (Group group : this.groups) {
+            for (Lesson lesson : group.getLessons()) {
                 if (lesson.getLessonId() == lessonId) {
                     return lesson;
                 }
@@ -146,6 +146,9 @@ public class PrIS {
             if (person.getUsername().equals(username)) {
                 if (person.samePassword(password)) {
                     if (person instanceof Teacher) {
+                        if (((Teacher) person).isSLB()) {
+                            return Role.SLB.getRole();
+                        }
                         return Role.TEACHER.getRole();
                     } else if (person instanceof Student) {
                         return Role.STUDENT.getRole();

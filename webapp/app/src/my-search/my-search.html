@@ -67,6 +67,9 @@
                 border-radius: 3px;
                 text-decoration: none;
             }
+            .my-button[disabled] {
+                display: none;
+            }
 
             .l-btn-container {
                 border-radius: 3px;
@@ -115,9 +118,9 @@
                             <div class="cell">
                                 <h3 class="resultaat">[[item.title]]</h3>
                                 <div class="l-btn-container">
-                                    <a href$="#/[[search_type]]/[[item.title]]" class="my-button">INFO</a>
+                                    <a href$="#/[[search_type]]/[[item.title]]" class="my-button" disabled$="[[_is_logistiek(c_rol, search_type)]]">INFO</a>
                                     <template is="dom-if" if="[[render_student_present_option]]">
-                                        <a href$="#/student_presentie/[[item.title]]" class="my-button">PRESENTIE</a>
+                                        <a href$="#/student_presentie/[[item.title]]" class="my-button" disabled$="[[_is_logistiek(c_rol, '')]]">PRESENTIE</a>
                                     </template>
                                 </div>
                             </div>
@@ -181,6 +184,10 @@
                     if (this.c_visible) {
                     }
                 },
+                _is_logistiek(rol, search_type) {
+                    console.log(search_type)
+                    return rol == "logistiek" && search_type != "cursus";
+                },
 
                 _search_type_changed : function() {
                     this.search_results = [];
@@ -197,6 +204,7 @@
                 _search_request_handler : function() {
                     this.$.ajax_search.contentType = "application/json";
                     this.$.ajax_search.body = {
+                        "username": this.c_username,
                         "keywords" : this.search_keyword,
                         "type" : this.search_type,
                     };
