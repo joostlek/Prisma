@@ -20,6 +20,7 @@ public class MedestudentenController implements Handler {
 	private PrIS informatieSysteem;
 
 	public static String ROUTE_MEDESTUDENT_OPHALEN = "/student/medestudenten/ophalen";
+	public static String ROUTE_MEDESTUDENT_OPSLAAN = "/student/medestudenten/opslaan";
 	/**
 	 * De StudentController klasse moet alle student-gerelateerde aanvragen
 	 * afhandelen. Methode handle() kijkt welke URI is opgevraagd en laat

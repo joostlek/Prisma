@@ -62,7 +62,8 @@ public class Application {
         // @route /student/info
         server.registerHandler(StudentController.ROUTE_STUDENT_INFO, studentController);
 
-        server.registerHandler("/student/medestudenten/opslaan", medestudentenController);
+        // @route /student/medestudenten/opslaan
+        server.registerHandler(MedestudentenController.ROUTE_MEDESTUDENT_OPSLAAN, medestudentenController);
 
         // @route /agenda/laad
         server.registerHandler(AgendaController.ROUTE_AGENDA_LADEN, agendaController);
