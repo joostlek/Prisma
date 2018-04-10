@@ -35,6 +35,22 @@ public class StudentResponse {
         this.hoursAbsent = 10;
     }
 
+    public int getHoursPresent() {
+        return hoursPresent;
+    }
+
+    public void setHoursPresent(int hoursPresent) {
+        this.hoursPresent = hoursPresent;
+    }
+
+    public int getHoursAbsent() {
+        return hoursAbsent;
+    }
+
+    public void setHoursAbsent(int hoursAbsent) {
+        this.hoursAbsent = hoursAbsent;
+    }
+
     public void setLessons(ArrayList<LessonResponse> lessons) {
         this.lessons = lessons;
     }

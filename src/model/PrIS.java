@@ -363,4 +363,20 @@ public class PrIS {
         }
         return i;
     }
+
+    public int getStats(Student student) {
+        int i = 0;
+        int count = 0;
+        Group group = getStudentGroup(student);
+        for (Lesson lesson: group.getLessons()) {
+            if (lesson.getPresent(student)) {
+                i++;
+            }
+        }
+        return i;
+    }
+
+    public int getAbsent(Student student) {
+        return getStudentGroup(student).getLessons().size() - getStats(student);
+    }
 }

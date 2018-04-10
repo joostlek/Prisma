@@ -52,10 +52,10 @@ public class StudentController implements Handler {
 
         System.out.println(student.getGroupId());
         for (Lesson lesson : group.getLessons()) {
-            presentResponse.add(new LessonResponse(lesson));
+            presentResponse.add(lesson.toLessonResponse());
         }
 
-        StudentResponse studentResponse = new StudentResponse(student);
+        StudentResponse studentResponse = student.toStudentResponse();
         studentResponse.setLessons(presentResponse);
 
         Gson gson = new Gson();
@@ -69,7 +69,8 @@ public class StudentController implements Handler {
         Student student = informatieSysteem.getStudent(studentUsername);
 
         StudentResponse studentResponse = new StudentResponse(student);
-        studentResponse.calculatePresent();
+        studentResponse.setHoursPresent(informatieSysteem.getStats(student));
+        studentResponse.setHoursAbsent(informatieSysteem.getAbsent(student));
 
         Gson gson = new Gson();
         conversation.sendJSONMessage(gson.toJson(studentResponse));
