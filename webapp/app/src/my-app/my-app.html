@@ -1,4 +1,3 @@
-
 <!doctype html>
 
 <link rel="import" href="elements.html"> <!-- gewijzigd tov PSK -->
@@ -59,6 +58,10 @@
                 margin: 16px auto 16px auto;
                 background: var(--app-lightgray);
             }
+
+            .home {
+                text-align: center;
+            }
         </style>
 
         <app-location route="{{_ar_route}}" use-hash-as-path></app-location>
@@ -117,14 +120,14 @@
                     <a name="zoeken"
                        href$="[[_c_baseURL]]zoeken"
                        verborgen$="[[!_has_role(_rol, 'slb', 'decaan', 'logistiek')]]">
-                        <iron-icon icon="social:group"></iron-icon>
+                        <iron-icon icon="search"></iron-icon>
                         <span>Zoeken</span>
                     </a>
 
                     <a name="studentinfo"
                        href$="[[_c_baseURL]]student/[[_username]]"
                        verborgen$="[[!_has_role(_rol, 'student')]]">
-                        <iron-icon icon="social:group"></iron-icon>
+                        <iron-icon icon="account-box"></iron-icon>
                         <span>Eigen gegevens</span>
                     </a>
 
@@ -146,14 +149,14 @@
                     <a name="login"
                        href$="[[_c_baseURL]]login"
                        verborgen$="[[!_has_role(_rol, 'undefined')]]">
-                        <iron-icon icon="account-box"></iron-icon>
+                        <iron-icon icon="input"></iron-icon>
                         <span>Inloggen</span>
                     </a>
 
                     <a name="logout"
                        href$="[[_c_baseURL]]logout"
                        verborgen$="[[_has_role(_rol, 'undefined')]]">
-                        <iron-icon icon="account-box"></iron-icon>
+                        <iron-icon icon="input"></iron-icon>
                         <span>Uitloggen</span>
                     </a>
 
@@ -182,11 +185,13 @@
 
                 <!-- sections voor iedereen -->
                 <!-- element$="none" of weglaten van element$ geeft beide aan dat er geen polymerElement gebruikt zal gaan worden -->
-                <section page-name="home" title="HOME" element$="none">
+                <section page-name="home" title="HOME" element$="none" class="home">
                     <paper-material elevation="1">
-                        <p>Demo app gebaseerd op Polymer.</p>
+                        <h1>Presentie informatie systeem</h1>
+                        <p>In dit systeem kunnen studenten en medewerkers van de Hogeschool Utrecht
+                        de presentie van studenten bekijken. </p>
                         <p>Deze app past nadat je bent ingelogged het menu aan, aan de rol die gekoppeld is aan de
-                            ingeloggede user.</p>
+                            ingelogde user.</p>
                     </paper-material>
                 </section>
 
@@ -219,9 +224,9 @@
                 <section page-name="logout"
                          title="UITLOGGEN"
                          element="my-logout">
-                    <paper-material elevation="1">
+                    <div>
                         <my-logout rol="{{_rol}}"></my-logout>
-                    </paper-material>
+                    </div>
                 </section>
 
                 <!--
@@ -289,9 +294,9 @@
                 <section page-name="view404"
                          title="PAGE NOT FOUND"
                          element$="my-view404">
-                    <paper-material elevation="1">
+                    <div>
                         <my-view404></my-view404>
-                    </paper-material>
+                    </div>
                 </section>
 
                 <section page-name="cursus"
@@ -317,6 +322,7 @@
                          element$="my-presentie-lijst">
                     <my-presentie-lijst
                             c_visible="[[_are_strings_equal(_ar_page, 'student_presentie_lijst')]]"
+                            username="{{_username}}"
                             c_data="[[_ar_subroute_data]]">
                     </my-presentie-lijst>
                 </section>
@@ -482,6 +488,7 @@
         })
             ;
         })();
+
     </script>
 
 </dom-module>
