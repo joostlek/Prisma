@@ -34,4 +34,8 @@ public class StudentResponse {
         this.hoursPresent = 90;
         this.hoursAbsent = 10;
     }
+
+    public void setLessons(ArrayList<LessonResponse> lessons) {
+        this.lessons = lessons;
+    }
 }

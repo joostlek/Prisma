@@ -44,19 +44,22 @@ public class StudentController implements Handler {
     public void handlePresent(Conversation conversation) {
         ArrayList<LessonResponse> presentResponse = new ArrayList<>();
 
-
         JsonObject responseObject = (JsonObject) conversation.getRequestBodyAsJSON();
         String studentUsername = responseObject.getString("username");
 
         Student student = informatieSysteem.getStudent(studentUsername);
         Group group = informatieSysteem.getStudentGroup(student);
+
         System.out.println(student.getGroupId());
         for (Lesson lesson : group.getLessons()) {
             presentResponse.add(new LessonResponse(lesson));
         }
 
+        StudentResponse studentResponse = new StudentResponse(student);
+        studentResponse.setLessons(presentResponse);
+
         Gson gson = new Gson();
-        conversation.sendJSONMessage(gson.toJson(presentResponse));
+        conversation.sendJSONMessage(gson.toJson(studentResponse));
     }
 
     public void handleStudentInfo(Conversation conversation) {
