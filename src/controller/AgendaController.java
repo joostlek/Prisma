@@ -62,6 +62,8 @@ public class AgendaController implements Handler {
             r.put("items", new ArrayList<LessonResponse>());
             res.add(r);
         }
+        System.out.println(cal.toString());
+        System.out.println(friday.toString());
         cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         for (Group group: informatieSysteem.getGroups()) {
             for (Lesson lesson: group.getLessons()) {
@@ -73,6 +75,7 @@ public class AgendaController implements Handler {
                 }
             }
         }
+
         HashMap<String, Object> ress = new HashMap<>();
         ress.put("rooster", res);
         ress.put("weeknummer", cal.get(Calendar.WEEK_OF_YEAR));

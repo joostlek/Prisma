@@ -1,3 +1,4 @@
+
 <link rel="import" href="/bower_components/polymer/polymer-element.html">
 <link rel="import" href="/bower_components/vaadin-grid/vaadin-grid.html">
 <link rel="import" href="/bower_components/vaadin-grid/vaadin-grid-sorter.html">
@@ -11,7 +12,6 @@
                 padding: 0;
                 margin: 0;
             }
-            
 
             vaadin-grid {
                 min-height: 300px;
@@ -19,14 +19,14 @@
                 width: 700px;
                 margin: 20px auto;
             }
-            
+
             h1{
-            width: 700px;
-            margin: 20px auto;
-            text-align: center;  
+                width: 700px;
+                margin: 20px auto;
+                text-align: center;
             }
-            
-            
+
+
             .my-button {
                 /*width: 30px; !* full width *!*/
                 float: right;
@@ -38,52 +38,52 @@
                 border-radius: 3px;
                 text-decoration: none;
             }
-            
+
             .container2{
-            	width: 700px;
-            	margin: auto;
+                width: 700px;
+                margin: auto;
             }
-            
+
         </style>
-        
+
 
         <div class="container">
-        <h1>Naam Cursus</h1><h1>Datum: 01-01-2001</h1>
-        <div class="container2">
-            <vaadin-grid items="[[search_results]]" id="vaadin">
-                <vaadin-grid-column>
-                    <template class="header">
-                        <vaadin-grid-sorter path="datum">
-                            Naam
-                        </vaadin-grid-sorter>
-                    </template>
-                    <template>[[item.naam]]</template>
-                </vaadin-grid-column>
+            <h1>Naam Cursus</h1><h1>Datum: 01-01-2001</h1>
+            <div class="container2">
+                <vaadin-grid items="[[search_results]]" id="vaadin">
+                    <vaadin-grid-column>
+                        <template class="header">
+                            <vaadin-grid-sorter path="datum">
+                                Naam
+                            </vaadin-grid-sorter>
+                        </template>
+                        <template>[[item.naam]]</template>
+                    </vaadin-grid-column>
 
 
-                <vaadin-grid-column>
-                    <template class="header">
-                        <vaadin-grid-sorter>
-                            Present
-                        </vaadin-grid-sorter>
-                    </template>
-                    <template>
-                        <vaadin-checkbox></vaadin-checkbox>
-                    </template>
-                </vaadin-grid-column>
+                    <vaadin-grid-column>
+                        <template class="header">
+                            <vaadin-grid-sorter>
+                                Present
+                            </vaadin-grid-sorter>
+                        </template>
+                        <template>
+                            <vaadin-checkbox></vaadin-checkbox>
+                        </template>
+                    </vaadin-grid-column>
 
-                <vaadin-grid-column>
-                    <template class="header">
-                        <vaadin-grid-sorter>
-                            Absent
-                        </vaadin-grid-sorter>
-                    </template>
-                    <template>
-                        <vaadin-checkbox></vaadin-checkbox>
-                    </template>
-                </vaadin-grid-column>
-            </vaadin-grid>
-            <a class="my-button">OPSLAAN</a>
+                    <vaadin-grid-column>
+                        <template class="header">
+                            <vaadin-grid-sorter>
+                                Absent
+                            </vaadin-grid-sorter>
+                        </template>
+                        <template>
+                            <vaadin-checkbox></vaadin-checkbox>
+                        </template>
+                    </vaadin-grid-column>
+                </vaadin-grid>
+                <a class="my-button">OPSLAAN</a>
             </div>
         </div>
 
@@ -105,7 +105,6 @@
             */
             Polymer({
                 is: 'my-presentie-lijst',
-
                 properties: {
                     c_data: {
                         type: String,
@@ -119,7 +118,6 @@
                         observer: '_initializing',
                     },
                 },
-
                 _go_home: function () {
                     var lApp = document.querySelector('my-app');  //het polymer element <my-app>
                     var lAppRouter = lApp.$.approuter;            // het html-element <app-route> met id=approuter
@@ -127,13 +125,11 @@
                                                                     // door de two way binding in <app-route> en <app-location>
                                                                     // zal ook de url echt wijzigen
                 },
-
                 _initializing: function () {
                     if (this.c_visible) {
                         this._search_request_handler();    //    haal info op van server
                     }
                 },
-
                 _search_request_handler: function () {
                     console.log("_search keywords=" + this.c_data.subpage);
                     this.$.ajax_presentie_per_lijst.contentType = "application/json";
@@ -142,7 +138,6 @@
                     };
                     this.$.ajax_presentie_per_lijst.generateRequest();
                 },
-
                 _search_request_response_handler: function (request) {
                     this.$.vaadin.items = request.detail.response;
                 },

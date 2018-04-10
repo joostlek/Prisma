@@ -1,3 +1,4 @@
+
 package model;
 
 import model.person.*;
@@ -141,13 +142,17 @@ public class PrIS {
      * @return Geef een Rol terug zodat we die kunnen gebruiken in de front-end
      */
     public String login(String username, String password) {
-        for (Person person : people) {
+        for (Person person : this.people) {
             if (person.getUsername().equals(username)) {
                 if (person.samePassword(password)) {
                     if (person instanceof Teacher) {
                         return Role.TEACHER.getRole();
                     } else if (person instanceof Student) {
                         return Role.STUDENT.getRole();
+                    } else if (person instanceof Decaan) {
+                        return Role.DECAAN.getRole();
+                    } else if (person instanceof Logistic) {
+                        return Role.LOGISTIEK.getRole();
                     }
                 }
             }

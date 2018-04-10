@@ -1,3 +1,4 @@
+
 <link rel="import" href="/bower_components/polymer/polymer.html">
 <link rel="import" href="/bower_components/paper-styles/typography.html">
 <link rel="import" href="/bower_components/paper-button/paper-button.html">
@@ -18,19 +19,16 @@
             span {
                 @apply --paper-font-body1;
             }
-
             .my-title {
                 font-size: 20px;
                 border-bottom: 1px solid gray; /* a red line */
                 padding-bottom: 2px; /* space above the border line */
             }
-
             paper-material {
                 display: block;
                 margin: 10px;
                 padding: 10px;
             }
-
             paper-dropdown-menu, paper-listbox {
                 width: 200px;
                 margin: auto;
@@ -38,22 +36,18 @@
                 background: transparent;
                 box-shadow: 0 2px 6px rgba(191, 191, 191, 0.48);
             }
-
             paper-listbox paper-item:not(:last-child) {
                 border-bottom: 1px solid #e6e6e6;
             }
-
             .search-box {
                 display: flex;
                 margin: 0 auto;
                 width: 500px;
             }
-
             .search-box > * {
                 margin: 0 10px;
                 align-self: center;
             }
-
             .my-button {
                 width: 30px; /* full width */
                 height: 20px;
@@ -63,14 +57,12 @@
                 background: #1a9fd9; /* kind of blue */
                 --paper-button-ink-color: #00567B; /* kind of dark blue */
             }
-
             .box1 {
                 width: 710px;
                 height: 405px;
                 flex-grow: 0;
                 display: inline-block;
             }
-
             .box2 {
                 width: 300px;
                 height: 405px;
@@ -78,19 +70,15 @@
                 position: relative;
                 display: inline-block;
             }
-
             .vaadinButton {
                 width: 100px;
                 float: right;
             }
-
             vaadin-grid {
                 min-height: 404px;
                 max-height: 404px;
                 display: block;
             }
-
-
         </style>
 
 
@@ -159,7 +147,6 @@
             */
             Polymer({
                 is: 'my-klassenlijst',
-
                 properties: {
                     c_data: {
                         type: String,
@@ -173,7 +160,6 @@
                         observer: '_initializing',
                     },
                 },
-
                 _go_home: function () {
                     var lApp = document.querySelector('my-app');  //het polymer element <my-app>
                     var lAppRouter = lApp.$.approuter;            // het html-element <app-route> met id=approuter
@@ -181,14 +167,12 @@
                                                                     // door de two way binding in <app-route> en <app-location>
                                                                     // zal ook de url echt wijzigen
                 },
-
                 _initializing: function () {
                     if (this.c_visible) {
                         console.log(this.c_data)
                         this._search_request_handler();    //    haal info op van server
                     }
                 },
-
                 _search_request_handler: function () {
                     console.log("_search keywords=" + this.c_data.subpage);
                     this.$.ajax_cursus_information.contentType = "application/json";
@@ -197,7 +181,6 @@
                     };
                     this.$.ajax_cursus_information.generateRequest();
                 },
-
                 _cursus_information_response_handler: function (request) {
                     console.log("_mededestudenten_ophalen_response_handler aantal studenten=" + request.detail.response.length);
                     this.$.lol.items = request.detail.response;

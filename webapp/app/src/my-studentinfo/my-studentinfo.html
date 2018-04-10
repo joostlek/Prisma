@@ -64,24 +64,21 @@
         <h1>[[user_results.fullName]]</h1>
         <div class="container">
             <div class="links">
-                <h2>Aantal uren present:</h2>
-                <h2>Aantal uren absent:</h2>
+                <h2>Aantal uren present: [[user_results.hoursPresent]]</h2>
+                <h2>Aantal uren absent: [[user_results.hoursAbsent]]</h2>
             </div>
             <div class="rechts">
                 <div id="personal-info">
                     <h3>Persoonlijke gegevens:</h3>
-                    <p>Naam:</p>
-                    <p>Studentnummer:</p>
-                    <p>E-mailadres:</p>
-                    <p>Adres:</p>
+                    <p>Naam: [[user_results.fullName]]</p>
+                    <p>Email: [[user_results.userName]]</p>
                 </div>
                 <div class="wat">
-                    <a href$="/student_presentie/[[item.id]]"
+                    <a href$="#/student_presentie/[[user_results.userName]]"
                        id="present-button">PRESENTIE</a>
                 </div>
             </div>
         </div>
-
 
         <iron-ajax
                 id="ajax_student_info"
@@ -135,11 +132,12 @@
 
                 _initializing: function () {
                     if (this.c_visible) {                                 // zodra zichtbaar geworden moet er wat worden gedaan
-                        this._student_info_request_handler
+                        this._student_info_request_handler()
                     }
                 },
 
                 _student_info_request_handler: function () {
+                    console.log(this.c_data.subpage);
                     this.$.ajax_student_info.contentType = "application/json";
                     this.$.ajax_student_info.body = {
                         "username": this.c_data.subpage,

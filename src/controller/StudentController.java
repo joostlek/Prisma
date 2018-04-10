@@ -36,16 +36,19 @@ public class StudentController implements Handler {
     public void handle(Conversation conversation) {
         if (conversation.getRequestedURI().startsWith(ROUTE_PRESENT_FETCH)) {
             handlePresent(conversation);
+        } else if (conversation.getRequestedURI().startsWith(ROUTE_STUDENT_INFO)) {
+            handleStudentInfo(conversation);
         }
-
     }
 
     public void handlePresent(Conversation conversation) {
         ArrayList<LessonResponse> presentResponse = new ArrayList<>();
 
+
         JsonObject responseObject = (JsonObject) conversation.getRequestBodyAsJSON();
-        int studentId = Integer.parseInt(responseObject.getString("student_id"));
-        Student student = informatieSysteem.getStudent(studentId);
+        String studentUsername = responseObject.getString("username");
+
+        Student student = informatieSysteem.getStudent(studentUsername);
         Group group = informatieSysteem.getStudentGroup(student);
         System.out.println(student.getGroupId());
         for (Lesson lesson : group.getLessons()) {
@@ -54,7 +57,6 @@ public class StudentController implements Handler {
 
         Gson gson = new Gson();
         conversation.sendJSONMessage(gson.toJson(presentResponse));
-
     }
 
     public void handleStudentInfo(Conversation conversation) {
