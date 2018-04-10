@@ -337,7 +337,7 @@ public class PrIS {
 
     public List<Student> getStudentsByGroupCode(String groupCode) {
         for (Group group : groups) {
-            if (group.getGroupCode().equals(groupCode)) {
+            if (group.getName().equals(groupCode)) {
                 return group.getStudents();
             }
         }
