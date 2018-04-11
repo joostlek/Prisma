@@ -79,6 +79,9 @@
                 max-height: 404px;
                 display: block;
             }
+            a[disabled] {
+                display: none;
+            }
         </style>
 
 
@@ -111,7 +114,7 @@
                     <vaadin-grid-column>
                         <template class="header"></template>
                         <template>
-                            <a href$="#/student/[[item.title]]">Bekijk</a>
+                            <a href$="#/student/[[item.title]]" disabled$="[[_is_logistiek(c_rol)]]">Bekijk</a>
                         </template>
                     </vaadin-grid-column>
 
@@ -152,6 +155,9 @@
                     cursus_results: {
                         type: Array,
                     },
+                    c_rol: {
+                        type: String,
+                    },
                     c_visible: {
                         type: Boolean, /* true when element is the active visible item */
                         value: false,
@@ -171,6 +177,10 @@
                                                                     // door de two way binding in <app-route> en <app-location>
                                                                     // zal ook de url echt wijzigen
                 },
+                _is_logistiek(rol) {
+                    return rol == "logistiek";
+                },
+
                 _initializing: function () {
                     if (this.c_visible) {
                         console.log(this.c_data)
@@ -188,7 +198,7 @@
                 _cursus_information_response_handler: function (request) {
                     console.log("_mededestudenten_ophalen_response_handler aantal studenten=" + request.detail.response.students.length);
                     this.$.lol.items = request.detail.response.students;
-                    this.presentie = request.detail.response.presentie;
+                    this.presentie = request.detail.response.present;
                     this.absentie = 100 - this.presentie;
                 },
             });
