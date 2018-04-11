@@ -32,6 +32,14 @@
             <vaadin-grid id="vaadin" items="[[presentie_results.lessons]]">
                 <vaadin-grid-column>
                     <template class="header">
+                        <vaadin-grid-sorter path="datum">
+                            Datum
+                        </vaadin-grid-sorter>
+                    </template>
+                    <template>[[item.datum]]</template>
+                </vaadin-grid-column>
+                <vaadin-grid-column>
+                    <template class="header">
                         <vaadin-grid-sorter path="tijd">
                             Tijd
                         </vaadin-grid-sorter>
