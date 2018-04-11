@@ -119,8 +119,8 @@
             </paper-material>
             <paper-material elevation="1">
                 <div class="box2text">
-                    <p>Presentie: [[presentie]]</p>
-                    <p>Absentie: [[absentie]]</p>
+                    <p>Presentie: [[presentie]]%</p>
+                    <p>Absentie: [[absentie]]%</p>
                 </div>
             </paper-material>
         </div>
@@ -187,8 +187,8 @@
                 },
                 _cursus_information_response_handler: function (request) {
                     console.log("_mededestudenten_ophalen_response_handler aantal studenten=" + request.detail.response.students.length);
+                    this.presentie = request.detail.response.present;
                     this.$.lol.items = request.detail.response.students;
-                    this.presentie = request.detail.response.presentie;
                     this.absentie = 100 - this.presentie;
                 },
             });

@@ -349,7 +349,7 @@ public class PrIS {
         for (Lesson lesson: group.getLessons()) {
             sum += getSumByLesson(lesson);
         }
-        return (sum / (group.getLessons().size() * group.getStudents().size()));
+        return ((sum *100) / (group.getLessons().size() * group.getStudents().size()));
     }
 
     public int getSumByLesson(Lesson lesson) {
