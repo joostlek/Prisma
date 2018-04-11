@@ -108,7 +108,7 @@ public class Lesson {
     public boolean getPresent (Student student) {
         for (Presention presention: this.presentions) {
             if (presention.getStudent().equals(student)) {
-                return true;
+                return presention.isPresent();
             }
         }
         return false;
